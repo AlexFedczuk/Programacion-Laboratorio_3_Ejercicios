@@ -7,3 +7,5 @@ matemáticos: ‘+’, ‘-’, ‘/’ y ‘*’; y definir dos variables enter
 símbolo que tenga la variable $operador, deberá realizarse la operación indicada y mostrarse el
 resultado por pantalla.
 */
+
+echo "probando el git";
