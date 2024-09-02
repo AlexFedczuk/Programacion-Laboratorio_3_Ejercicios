@@ -27,27 +27,27 @@ switch ($mes_actual) {
         $estacion = "Verano";
         break;   
     case 3:
-        $estacion = ($dia < 21) ? "Verano" : "Otoño";
+        $estacion = ($dia_actual < 21) ? "Verano" : "Otoño";
         break;
     case 4:
     case 5:
         $estacion = "Otoño";
         break;
     case 6:    
-        $estacion = ($dia < 21) ? "Otoño" : "Invierno";
+        $estacion = ($dia_actual < 21) ? "Otoño" : "Invierno";
         break;
     case 7:
     case 8:
         $estacion = "Invierno";
         break;
     case 9:
-        $estacion = ($dia < 21) ? "Invierno" : "Primavera";
+        $estacion = ($dia_actual < 21) ? "Invierno" : "Primavera";
     case 10:
     case 11:
         $estacion = "Primavera";
         break;
     case 12:
-        $estacion = ($dia < 21) ? "Primavera" : "Verano";
+        $estacion = ($dia_actual < 21) ? "Primavera" : "Verano";
         break;
     default:
         break;      
