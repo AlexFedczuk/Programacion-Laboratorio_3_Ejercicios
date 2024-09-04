@@ -1,5 +1,4 @@
 <?php
-
 /*
 Aplicación No 7 (Mostrar impares)
 Generar una aplicación que permita cargar los primeros 10 números impares en un Array.
@@ -8,22 +7,27 @@ salto de línea en HTML es la etiqueta <br/>). Repetir la impresión de los núm
 utilizando las estructuras while y foreach.
 */
 
-$arrayEnteros = [];
+$arrayImpares = [];
 
-
-for ($i = 0; $i < 5; $i++) {
-    $arrayEnteros[$i] = rand(0,10);
+for ($i = 1, $contador = 0; $contador < 10; $i+= 2, $contador++) {
+    $arrayImpares[$contador] = $i;
 }
 
-$total = array_sum($arrayEnteros);
-$promedio = $total / count($arrayEnteros);
-
-if ($promedio == 6) {
-    echo "El promedio es igual a 6.";
-}else if ($promedio < 6){
-    echo "El promedio es menor a 6.";
-}else {
-    echo "El promedio es mayor a 6.";
+echo "Lista de los primeros 10 numeros impares: ";
+for ($i = 0; $i < count($arrayImpares); $i++) {
+    echo "\n".$arrayImpares[$i];
 }
 
-echo "\nNumeros generados: " . implode(", ", $arrayEnteros);
+echo "\n\nLista de los primeros 10 numeros impares (con while): ";
+$i = 0;
+while ($i < count($arrayImpares)) {
+    echo "\n".$arrayImpares[$i];
+    $i++;
+}
+
+echo "\n\nLista de los primeros 10 numeros impares (con foreach): ";
+foreach ($arrayImpares as $impar) {
+    echo "\n".$impar;
+}
+
+?>
