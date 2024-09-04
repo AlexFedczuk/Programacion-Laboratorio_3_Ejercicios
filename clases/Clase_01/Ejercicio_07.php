@@ -29,5 +29,3 @@ echo "\n\nLista de los primeros 10 numeros impares (con foreach): ";
 foreach ($arrayImpares as $impar) {
     echo "\n".$impar;
 }
-
-?>
