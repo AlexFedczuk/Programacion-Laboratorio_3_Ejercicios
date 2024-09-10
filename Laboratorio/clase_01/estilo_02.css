@@ -1,0 +1,17 @@
+h1 {
+    text-align: center;
+}
+
+P {
+    font-size: 13.5px;
+}
+
+input[type="email"], input[type="password"] {
+    border-radius: 5px;
+}
+
+/* Redondear los bordes del botón */
+input[type="submit"] {
+    border-radius: 5px;
+    padding: 10px 20px; /* Ajusta el padding para mejorar el estilo del botón */
+}

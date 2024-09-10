@@ -1,0 +1,51 @@
+h1 {
+    text-align: center;         /* Alinea el texto del h1 al centro de la página */
+    color: #3498db;             /* Cambia el color del texto a un tono azul (#3498db) */
+    font-family: Verdana, sans-serif;  /* Aplica la fuente "Verdana", o "sans-serif" si no está disponible */
+}
+
+.divider {
+    border: 0;                  /* Elimina cualquier borde predeterminado del divisor */
+    height: 4px;                /* Define una altura de 4 píxeles para el divisor */
+    background-color: #0f8a42;  /* Cambia el fondo del divisor a un color verde */
+    margin: 20px 0;             /* Aplica un margen de 20px arriba y abajo (separación del contenido) */
+}
+
+p {
+    font-size: 13.5px;          /* Establece el tamaño de la fuente para los párrafos en 13.5 píxeles */
+}
+
+img {
+    border-radius: 10px;            /* Redondea las esquinas de la imagen */
+    opacity: 0.75;                  /* Establece la opacidad de la imagen en 0.75 por defecto */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Aplica una sombra negra con difuminado */
+    transition: opacity 0.3s ease;  /* Aplica una transición suave al cambiar la opacidad */
+}
+
+img:hover {
+    opacity: 1;                     /* Al pasar el cursor sobre la imagen, la opacidad será 1 (completamente visible) */
+}
+
+table {
+    width: 70%;                 /* La tabla ocupa el 70% del ancho disponible de la página */
+    margin: 0 auto;             /* Centra la tabla horizontalmente (auto en los márgenes laterales) */
+    border-collapse: collapse;  /* Colapsa los bordes de la tabla, eliminando el espacio entre las celdas */
+    border: none;               /* Elimina cualquier borde alrededor de la tabla */
+    border: 1px solid #ddd;     /* Añade un borde fino de color gris claro a las celdas de la tabla */
+}
+
+th {
+    background-color: rgba(138, 43, 226, 1); /* Cambia el fondo de los encabezados de la tabla a violeta */
+    color: white;              /* Cambia el color del texto a blanco */
+    font-weight: 800;          /* Aplica una negrita extra (extra-bold) al texto del encabezado */
+    padding: 10px;             /* Añade 10 píxeles de espacio interno (padding) alrededor del contenido del encabezado */
+    text-align: left;           /* Alinea el texto a la izquierda en los encabezados de la tabla */
+    border: 1px solid #ddd;     /* Añade un borde fino y gris claro al encabezado */
+}
+
+td {
+    padding: 10px;             /* Añade 10 píxeles de espacio interno alrededor del contenido de las celdas */
+    border: 1px solid #ddd;    /* Añade un borde fino y gris claro a cada celda */
+    text-align: left;          /* Alinea el texto a la izquierda dentro de las celdas */
+    background-color: #f4f4f4; /* Cambia el fondo de las celdas a un gris muy claro */
+}

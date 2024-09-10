@@ -1,0 +1,91 @@
+/* Estilos para el formulario usando identificadores */
+#loginForm {
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#emailInput, #passwordInput {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#submitButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submitButton:hover {
+    background-color: #2980b9;
+}
+
+/* Estilos para la presentación usando clases */
+.header {
+    text-align: center;
+    color: #3498db;
+    font-family: Verdana, sans-serif;
+}
+
+.bio {
+    font-size: 13.5px;
+    text-align: center;
+}
+
+.profile-img {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    opacity: 0.75;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.3s ease;
+}
+
+.profile-img:hover {
+    opacity: 1;
+}
+
+.divider {
+    border: 0;
+    height: 4px;
+    background-color: #0f8a42;
+    margin: 20px 0;
+}
+
+.skills-header {
+    text-align: center;
+    color: #0f8a42;
+}
+
+.skills-table {
+    width: 70%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border: none;
+}
+
+.skills-table th {
+    background-color: rgba(138, 43, 226, 1); 
+    color: white;              
+    font-weight: 800;          
+    padding: 10px;             
+    text-align: left;           
+}
+
+.skills-table td {
+    padding: 10px;
+    background-color: #f4f4f4;
+    text-align: left;
+}
