@@ -7,43 +7,43 @@ body, html {
 
 .container {
     display: flex;
+    flex-direction: row;
     height: 100vh; /* Altura completa de la ventana */
 }
 
 .left-section, .right-section {
-    width: 25vw;
     display: flex;
     flex-direction: column;
 }
 
+.left-section {
+    width: 25%; /* 25% del ancho de la ventana */
+}
+
 .right-section {
-    width: 75vw;
+    width: 75%; /* 75% del ancho de la ventana */
 }
 
-.top-left-section, .bottom-left-section, .top-right-section, .bottom-right-section {
-    flex: 1;
+.top-left-section, .top-right-section {
+    flex: 0 0 30%; /* Ajusta la altura de las secciones superiores */
 }
 
-.top-left-section, .top-right-section  {
-    flex: 0 0 45%;
+.bottom-left-section, .bottom-right-section {
+    flex: 1; /* Las secciones inferiores ocupan el resto del espacio */
 }
 
-.bottom-left-section, .bottom-right-section  {
-    flex: 1;
-}
-
-.top-left-section {    
+.top-left-section {
     background-color: #ff9999; /* Color de la parte superior izquierda */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box; /* Incluye padding en el cálculo del ancho */
 }
 
-.top-left-section img {   
-    margin-top: 5px;
-    max-width: 100px;
+.top-left-section img {
+    max-width: 100px; /* Tamaño máximo de la imagen */
     height: auto;
     border-radius: 50%;
     object-fit: cover;
@@ -57,11 +57,12 @@ body, html {
 .button {
     display: inline-block;
     padding: 10px 20px;
-    margin-top: 30px; /* Espacio arriba del botón */
+    margin-top: 10px; /* Espacio arriba del botón */
     background-color: #007bff; /* Color de fondo del botón */
     color: white; /* Color del texto del botón */
     text-decoration: none; /* Elimina el subrayado del enlace */
     border-radius: 5px; /* Bordes redondeados del botón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .button:hover {
@@ -69,8 +70,50 @@ body, html {
 }
 
 .bottom-left-section {
-    height: 75vw;
     background-color: #ffcc99; /* Color de la parte inferior izquierda */
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box; /* Incluye padding en el cálculo del ancho */
+}
+
+.box-mini-window {
+    width: 80%; /* Ancho en porcentaje */
+    height: 65%; /* Altura fija */
+    background-color: #585858; /* Fondo gris para la caja */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra de la ventana */
+    border: 1px solid #ddd; /* Borde de la ventana */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espacio interno */
+    position: absolute;
+    bottom: 10px; /* Ajusta el espacio desde el borde inferior */
+    left: 50%;
+    transform: translateX(-50%); /* Centra horizontalmente */
+}
+
+.mini-window {
+    width: 75%; /* Ancho en porcentaje */
+    height: 85%; /* Altura fija */
+    overflow-y: auto; /* Activa el desplazamiento vertical */
+    background-color: #fff; /* Fondo blanco para la ventana */
+    border: 1px solid #ddd; /* Borde de la ventana */    
+    padding: 17px; /* Espacio interno */
+    position: absolute;
+    bottom: 10px; /* Ajusta el espacio desde el borde inferior */
+    left: 50%;
+    transform: translateX(-50%); /* Centra horizontalmente */
+}
+
+.mini-window-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-window h2 {
+    margin: 0 0 10px; /* Espacio debajo del título */
+}
+
+.mini-window p {
+    margin: 5px 0; /* Espacio arriba y abajo del párrafo */
 }
 
 .top-right-section {
@@ -79,4 +122,36 @@ body, html {
 
 .bottom-right-section {
     background-color: #66ff66; /* Color de la parte inferior derecha */
+}
+
+.box-poster-window {
+    width: 60%; /* Ancho en porcentaje */
+    height: 65%; /* Altura fija */
+    background-color: #585858; /* Fondo gris para la caja */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra de la ventana */
+    border: 1px solid #ddd; /* Borde de la ventana */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espacio interno */
+    position: absolute;
+    bottom: 10px; /* Ajusta el espacio desde el borde inferior */
+    right: 50%;
+    transform: translateX(70%); /* Centra horizontalmente */
+}
+
+.poster-window {
+    width: 75%; /* Ancho en porcentaje */
+    height: 85%; /* Altura fija */
+    overflow-y: auto; /* Activa el desplazamiento vertical */
+    background-color: #fff; /* Fondo blanco para la ventana */
+    border: 1px solid #ddd; /* Borde de la ventana */    
+    padding: 17px; /* Espacio interno */
+    position: absolute;
+    bottom: 10px; /* Ajusta el espacio desde el borde inferior */
+    left: 50%;
+    transform: translateX(-50%); /* Centra horizontalmente */
+}
+
+.poster-window-content {
+    display: flex;
+    flex-direction: column;
 }
