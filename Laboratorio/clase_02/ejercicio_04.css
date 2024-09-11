@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif; /* Aplica la fuente Arial, con fallback a sans-serif */
+    font-family: Verdana, sans-serif; /* Aplica la fuente Arial, con fallback a sans-serif */
     margin: 0; /* Elimina el margen predeterminado del body */
     padding: 0; /* Elimina el padding predeterminado del body */
     box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el tamaño total de los elementos */
