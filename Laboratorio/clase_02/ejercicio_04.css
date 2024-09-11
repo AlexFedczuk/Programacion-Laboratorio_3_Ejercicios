@@ -1,83 +1,107 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    font-family: Arial, sans-serif; /* Aplica la fuente Arial, con fallback a sans-serif */
+    margin: 0; /* Elimina el margen predeterminado del body */
+    padding: 0; /* Elimina el padding predeterminado del body */
+    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el tamaño total de los elementos */
+    display: flex; /* Define el body como un contenedor flexbox */
+    flex-direction: column; /* Coloca los elementos dentro del body en una columna vertical */
+    min-height: 100vh;  /* Hace que el body ocupe al menos el 100% de la altura de la ventana */
 }
 
 /* Encabezado */
 header {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
+    background-color: #333; /* Establece el color de fondo del encabezado a un gris oscuro */
+    color: white; /* Establece el color del texto a blanco */
+    text-align: center; /* Centra el texto dentro del encabezado */
+    padding: 20px 0; /* Añade un padding de 20px en la parte superior e inferior */
 }
 
 header h1 {
-    margin: 0;
-    font-size: 36px;
+    margin: 0; /* Elimina el margen predeterminado del h1 */
+    font-size: 36px; /* Establece el tamaño de la fuente del h1 a 36px */
 }
 
 nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+    list-style: none; /* Elimina los estilos de lista (viñetas) del ul */
+    padding: 0; /* Elimina el padding predeterminado del ul */
+    margin: 0; /* Elimina el margen predeterminado del ul */
+    display: flex; /* Aplica flexbox para colocar los elementos en una fila */
+    justify-content: center; /* Centra los elementos del ul horizontalmente */
+    gap: 20px; /* Añade un espacio de 20px entre los elementos del ul */
 }
 
 nav ul li {
-    display: inline;
+    display: inline; /* Hace que los elementos li se comporten como elementos en línea */
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
+    color: white; /* Establece el color del enlace a blanco */
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+    font-size: 18px; /* Establece el tamaño de la fuente de los enlaces a 18px */
 }
 
 /* Cajas */
 main {
-    padding: 20px;
-    background-color: #4b6210;
+    padding: 20px; /* Añade un padding de 20px alrededor del contenido principal */
+    background-color: #4b6210; /* Establece un color verde oscuro de fondo para el área principal */
+    flex-grow: 1; /* Permite que el main ocupe todo el espacio disponible verticalmente */
+    margin-top: 20px;
+    margin-bottom: 100px; /* Añade un espacio de 40px entre el área principal y el footer */
+}
+
+.divider {
+    border: 0; /* Elimina el borde por defecto */
+    height: 20px; /* Ajusta el grosor de la línea */
+    background-color: white; /* Color blanco para la línea */
+    margin: 20px; /* Espacio arriba y abajo de la línea */
+    width: 100%; /* Asegura que la línea ocupe todo el ancho disponible */
 }
 
 .divs {
+    display: flex; /* Aplica flexbox para distribuir las cajas */
+    justify-content: center; /* Centra las cajas horizontalmente */
+    gap: 20px; /* Añade un espacio de 20px entre cada caja */
+    margin-bottom: 20px; /* Añade un margen inferior de 20px entre filas de cajas */
+}
+
+.section {
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px; /* Espacio blanco entre secciones */
+}
+
+.section:nth-child(2) {
+    margin-bottom: 0; /* Última sección sin espacio extra */
 }
 
 .box {
-    background-color: #f5f5f5;
-    padding: 20px;
-    width: 30%;
-    aspect-ratio: 1 / 1;  /* Mantener aspecto cuadrado */
-    display: flex;        /* Flexbox para centrar contenido */
-    justify-content: center;   /* Centra horizontalmente */
-    align-items: center;  /* Centra verticalmente */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;   /* Asegura que el texto esté centrado */
+    background-color: #f5f5f5; /* Establece el color de fondo de las cajas a un gris claro */
+    padding: 20px; /* Añade un padding de 20px dentro de las cajas */
+    width: 30%; /* Establece que las cajas ocupen el 30% del ancho del contenedor */
+    aspect-ratio: 1 / 1;  /* Mantiene las cajas con una proporción de 1:1 (cuadradas) */
+    display: flex; /* Usa flexbox para centrar el contenido dentro de las cajas */
+    justify-content: center;   /* Centra el contenido horizontalmente dentro de las cajas */
+    align-items: center;  /* Centra el contenido verticalmente dentro de las cajas */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Añade una sombra suave a las cajas */
+    text-align: center;   /* Centra el texto dentro de las cajas */
 }
 
 .rounded {
-    border-radius: 15px;
+    border-radius: 15px; /* Aplica un borde redondeado de 15px a las cajas que tengan esta clase */
 }
 
 /* Footer */
 footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    background-color: #333; /* Establece el color de fondo del footer a gris oscuro */
+    color: white; /* Establece el color del texto del footer a blanco */
+    text-align: center; /* Centra el texto dentro del footer */
+    padding: 10px; /* Añade un padding de 10px alrededor del contenido del footer */
+    width: 100%; /* Asegura que el footer ocupe el 100% del ancho de la ventana */
+    margin-top: auto; /* Coloca el footer al final de la página cuando el contenido no llena toda la pantalla */
 }
 
 footer p {
-    margin: 0;
-    font-size: 14px;
+    margin: 0; /* Elimina el margen predeterminado del párrafo dentro del footer */
+    font-size: 14px; /* Establece el tamaño de la fuente del texto en el footer a 14px */
 }
