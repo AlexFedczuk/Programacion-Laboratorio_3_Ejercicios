@@ -126,11 +126,10 @@ body, html {
 
 .box-poster-window {
     width: 60%; /* Ancho en porcentaje */
-    height: 65%; /* Altura fija */
-    background-color: #585858; /* Fondo gris para la caja */
+    height: 75%; /* Altura fija */
+    background-color: #f7ff9c; /* Fondo gris para la caja */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra de la ventana */
     border: 1px solid #ddd; /* Borde de la ventana */
-    border-radius: 10px; /* Bordes redondeados */
     padding: 10px; /* Espacio interno */
     position: absolute;
     bottom: 10px; /* Ajusta el espacio desde el borde inferior */
@@ -140,7 +139,7 @@ body, html {
 
 .poster-window {
     width: 75%; /* Ancho en porcentaje */
-    height: 85%; /* Altura fija */
+    height: 65%; /* Altura fija */
     overflow-y: auto; /* Activa el desplazamiento vertical */
     background-color: #fff; /* Fondo blanco para la ventana */
     border: 1px solid #ddd; /* Borde de la ventana */    
