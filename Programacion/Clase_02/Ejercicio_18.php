@@ -1,5 +1,4 @@
 <?php
-
 /*
 Aplicación No 18 (Auto - Garage)
 Crear la clase Garage que posea como atributos privados:

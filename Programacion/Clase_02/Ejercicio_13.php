@@ -1,5 +1,4 @@
 <?php
-
 /*
 Aplicación No 13 (Invertir palabra)
 
