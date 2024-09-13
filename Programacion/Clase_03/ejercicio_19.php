@@ -94,7 +94,7 @@ class Auto {
             $datos = [
                 $auto->_marca,
                 $auto->_color,
-                number_format($auto->_precio, 2),
+                $auto->_precio,
                 $auto->_fecha->format('d-m-Y')
             ];
 

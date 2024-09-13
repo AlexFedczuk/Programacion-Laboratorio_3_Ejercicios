@@ -34,3 +34,26 @@ echo "\n";
 Auto::MostrarAuto($auto2);
 echo "\n";
 Auto::MostrarAuto($auto3);
+
+// Probar el método para guardar autos en el archivo autos.csv
+echo "\nGuardando autos en un archivo .csv...\n";
+$arrayAutos = [$auto1, $auto2, $auto3, $auto4, $auto5];
+$archivo = "archivo_de_autos.csv";
+foreach ($arrayAutos as $auto) {
+    Auto::AltaAuto($auto, $archivo);
+}
+
+// Probar el método para leer autos desde el archivo autos.csv
+echo "\nLeyendo autos desde el archivo '$archivo'...\n";
+$autosLeidos = Auto::LeerAutos($archivo);
+if ($autosLeidos == []) {
+    echo "El archivo está vacio...\n";
+}else{
+    echo "Exito! El archivo ha sido leido exitósamente.\n";
+}
+
+echo "\nMostrando lo leido del archivo .csv: '$archivo'...\n";
+foreach ($autosLeidos as $autoLeido) {
+    Auto::MostrarAuto($autoLeido);
+    echo "\n";
+}
