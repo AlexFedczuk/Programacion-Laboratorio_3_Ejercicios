@@ -37,8 +37,8 @@ function runTests(): void {
 
     // Probar AltaGarage y LeerGarages
     echo "\nPrueba de AltaGarage y LeerGarages:\n";
-    $archivo = 'garage_test.csv';
-    $garage->AltaGarage($garage, $archivo);
+    $archivo = "archivo_de_garages.csv";
+    Garage::AltaGarage($garage, $archivo);
 
     $garagesLeidos = Garage::LeerGarages($archivo);
     foreach ($garagesLeidos as $garageLeido) {

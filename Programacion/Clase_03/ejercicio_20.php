@@ -100,7 +100,7 @@ class Garage {
         echo "Precio por Hora: $" . $this->GetPrecioPorHora() . "\n";
         echo "Autos en el Garage:\n";
         foreach ($this->GetAutos() as $auto) {
-            $auto->MostrarAuto();
+            Auto::MostrarAuto($auto);
             echo "\n";
         }
     }
@@ -175,9 +175,30 @@ class Garage {
 
         if ($file) {                        
             while (($datos = fgetcsv($file)) !== false) {
+                if (count($datos) < 2) {
+                    echo "Error: Línea del archivo CSV con datos insuficientes.\n";
+                    continue;
+                }
+
                 $razonSocial = $datos[0];
                 $precioPorHora = (float)$datos[1];
-                $autos = $datos[2];
+                $autos = [];
+
+                for ($i = 1; $i <= $precioPorHora; $i++) {
+                    // Verificar si hay suficientes datos para un auto
+                    if (isset($datos[$i + 4])) {
+                        $autos[] = new Auto(
+                            $datos[2],
+                            $datos[3],
+                            (float)$datos[4],
+                            DateTime::createFromFormat("d-m-Y", $datos[5])
+                        );
+                    }else {
+                        echo "Advertencia: Datos insuficientes para crear un auto completo en el archivo CSV.\n";
+                    }
+                }               
+
+                echo implode($autos);
 
                 $garages[] = new Garage($razonSocial, $precioPorHora, $autos);
             }
