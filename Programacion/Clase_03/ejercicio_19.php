@@ -62,25 +62,77 @@ class Auto {
         $this->_fecha = $fecha ?? new DateTime(); 
     }
 
+    public function GetColor(): string {
+        return $this->_color;
+    }
+
+    public function GetPrecio(): float{
+        return $this->_precio;
+    }
+
+    public function GetMarca(): string {
+        return $this->_marca;
+    }
+
+    public function GetFecha(): DateTime {
+        return $this->_fecha;
+    }
+
+    public function SetColor(string $color): bool {
+        $retorno = false;
+        if (is_string($color)) {
+            $this->_color = $color;
+            $retorno = true;
+        }
+        return $retorno;
+    }
+    
+    public function SetPrecio(float $precio): bool {
+        $retorno = false;
+        if (is_float($precio)) {
+            $this->_precio = $precio;
+            $retorno = true;
+        }
+        return $retorno;
+    }
+
+    public function SetMarca(string $marca): bool {
+        $retorno = false;
+        if (is_string($marca)) {
+            $this->_marca = $marca;
+            $retorno = true;
+        }
+        return $retorno;
+    }
+
+    public function SetFecha(DateTime $fecha): bool {
+        $retorno = false;
+        if ($fecha instanceof DateTime) {
+            $this->_fecha = $fecha;
+            $retorno = true;
+        }
+        return $retorno;
+    }
+
     public function AgregarImpuestos(float $impuesto) {
         $this->_precio += $impuesto;
     }
 
     public static function MostrarAuto(Auto $auto) {
-        echo "Marca: " . $auto->_marca . "\n";
-        echo "Color: " . $auto->_color . "\n";
-        echo "Precio: $" . $auto->_precio . "\n";
-        echo "Fecha: " . $auto->_fecha->format('Y-m-d') . "\n";
+        echo "Marca: " . $auto->GetMarca() . "\n";
+        echo "Color: " . $auto->GetColor() . "\n";
+        echo "Precio: $" . $auto->GetPrecio() . "\n";
+        echo "Fecha: " . $auto->GetFecha()->format('Y-m-d') . "\n";
     }
 
     public function Equals(Auto $otroAuto){
-        return $this->_marca == $otroAuto->_marca;
+        return $this->GetMarca() == $otroAuto->GetMarca();
     }
 
     public static function Add(Auto $auto1, Auto $auto2) {
         $retorno = 0.0;
-        if ($auto1->_marca == $auto2->_marca && $auto1->_color == $auto2->_color) {
-            $retorno = $auto1->_precio + $auto2->_precio;
+        if ($auto1->GetMarca() == $auto2->GetMarca() && $auto1->GetColor() == $auto2->GetColor()) {
+            $retorno = $auto1->GetPrecio() + $auto2->GetPrecio();
         }else{
             echo "Sólo si son de la misma marca y del mismo color se pueden sumar sus precios.\n";
         }
@@ -88,23 +140,27 @@ class Auto {
     }
 
     public static function AltaAuto(Auto $auto, string $archivo) {
+        $retorno = false;
         $file = fopen($archivo,"a");
 
         if ($file) {
             $datos = [
-                $auto->_marca,
-                $auto->_color,
-                $auto->_precio,
-                $auto->_fecha->format('d-m-Y')
+                $auto->GetMarca(),
+                $auto->GetColor(),
+                $auto->GetPrecio(),
+                $auto->GetFecha()->format('d-m-Y')
             ];
 
             fputcsv($file, $datos);
             fclose($file);
 
             echo "El auto ha sido guardado correctamente en el archivo: '$archivo'\n";
+            $retorno = true;
         }else {
             echo "Error: Hubo un error al intentar abrir el archivo: '$archivo'\n";
-        }   
+        }
+
+        return $retorno;
     }
 
     public static function LeerAutos(string $archivo) {
@@ -141,6 +197,18 @@ class Auto {
             echo "Error: La lista de autos está vacia.";
         }
 
+        return $retorno;
+    }
+
+    public static function ValidarArrayAutos(array $autos) {
+        $retorno = true;
+        foreach ($autos as $auto) {
+            if (!($auto instanceof Auto)) {
+                $retorno = false;
+                echo "Error: En el Constructor de Garage: Se deben cargar objetos de tipo 'Auto' en el array '_autos'.";
+                break;
+            }
+        }
         return $retorno;
     }
 }
