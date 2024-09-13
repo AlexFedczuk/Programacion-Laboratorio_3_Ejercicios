@@ -45,10 +45,9 @@ class Garage {
     private $_precioPorHora;
     private $_autos = [];
 
-    public function __construct(string $razonSocial, float $precioPorHora = 0.0, array $autos = null) {
+    public function __construct(string $razonSocial, float $precioPorHora = 0.0) {
         $this->_razonSocial = $razonSocial;
         $this->_precioPorHora = $precioPorHora;
-        $this->SetAutos($autos);
     }
 
     public function SetRazonSocial(string $razonSocial): bool {
@@ -69,20 +68,6 @@ class Garage {
         return $retorno;
     }
 
-    public function SetAutos(array $autos): bool {
-        $retorno = false;
-        if (Auto::ValidarArrayAutos($autos)) {
-            if ($autos === null) {
-                $this->_autos = [];
-                
-            }else {
-                $this->_autos = $autos;
-            }
-            $retorno = true;            
-        }
-        return $retorno;
-    }
-
     public function GetRazonSocial(): string {
         return $this->_razonSocial;
     }
@@ -98,10 +83,10 @@ class Garage {
     public function MostrarGarage(): void {
         echo "Razón Social: " . $this->GetRazonSocial() . "\n";
         echo "Precio por Hora: $" . $this->GetPrecioPorHora() . "\n";
-        echo "Autos en el Garage:\n";
+        echo "Autos en el Garage:\n\n";
         foreach ($this->GetAutos() as $auto) {
             Auto::MostrarAuto($auto);
-            echo "\n";
+            echo "-\n";
         }
     }
 
@@ -149,12 +134,10 @@ class Garage {
                 $garage->GetPrecioPorHora()
             ];
             foreach ($garage->GetAutos() as $auto) {
-                $datos[] = implode(",", [
-                    $auto->GetMarca(),
-                    $auto->GetColor(),
-                    $auto->GetPrecio(),
-                    $auto->GetFecha()->format('d-m-Y')
-                ]);
+                $datos[] = $auto->GetMarca();
+                $datos[] = $auto->GetColor();
+                $datos[] = $auto->GetPrecio();
+                $datos[] = $auto->GetFecha()->format('d-m-Y');
             }
 
             fputcsv($file, $datos);
@@ -169,47 +152,48 @@ class Garage {
         return $retorno;
     }
 
-    public static function LeerGarages(string $archivo) {
-        $garages = [] ;
-        $file = fopen($archivo,"r");
-
-        if ($file) {                        
-            while (($datos = fgetcsv($file)) !== false) {
-                if (count($datos) < 2) {
-                    echo "Error: Línea del archivo CSV con datos insuficientes.\n";
-                    continue;
-                }
-
-                $razonSocial = $datos[0];
-                $precioPorHora = (float)$datos[1];
-                $autos = [];
-
-                for ($i = 1; $i <= $precioPorHora; $i++) {
-                    // Verificar si hay suficientes datos para un auto
-                    if (isset($datos[$i + 4])) {
-                        $autos[] = new Auto(
-                            $datos[2],
-                            $datos[3],
-                            (float)$datos[4],
-                            DateTime::createFromFormat("d-m-Y", $datos[5])
-                        );
-                    }else {
-                        echo "Advertencia: Datos insuficientes para crear un auto completo en el archivo CSV.\n";
-                    }
-                }               
-
-                echo implode($autos);
-
-                $garages[] = new Garage($razonSocial, $precioPorHora, $autos);
-            }
-            echo "Éxito: Se pudo leer los datos del archivo: '$archivo'\n";
-            fclose($file);
-            echo "Se cerró el archivo: '$archivo' exitosamente.\n";
-
-        }else {
-            echo "Error: Hubo un error al intentar abrir el archivo: '$archivo'\n";
-        } 
+    public static function LeerGarages(string $archivo): array {
+        $garages = [];
         
+        if (file_exists($archivo)) {
+            $file = fopen($archivo, "r");
+    
+            if ($file) {
+                while (($data = fgetcsv($file)) !== false) {
+                    // Asumiendo que los primeros dos campos son los del garage
+                    $razonSocial = $data[0];
+                    $precioPorHora = floatval($data[1]);
+    
+                    // Crear un nuevo objeto Garage con la razón social y el precio por hora
+                    $garage = new Garage($razonSocial, $precioPorHora);
+    
+                    // Ahora vamos a leer los autos que siguen a partir de la posición 2 en adelante
+                    $i = 2;
+                    while ($i < count($data)) {
+                        $marca = $data[$i++];
+                        $color = $data[$i++];
+                        $precio = (float)$data[$i++];
+                        $fecha = DateTime::createFromFormat('d-m-Y', $data[$i++]);
+    
+                        // Creamos el auto con los datos leídos
+                        $auto = new Auto($marca, $color, $precio, $fecha);
+    
+                        // Agregamos el auto al garage
+                        $garage->Add($auto);
+                    }
+    
+                    // Agregamos el garage al array de garages
+                    $garages[] = $garage;
+                }
+    
+                fclose($file);
+            } else {
+                echo "Error: No se pudo abrir el archivo para lectura.\n";
+            }
+        } else {
+            echo "Error: El archivo no existe.\n";
+        }
+    
         return $garages;
     }
 
