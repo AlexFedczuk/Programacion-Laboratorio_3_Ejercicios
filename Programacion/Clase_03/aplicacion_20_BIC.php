@@ -16,7 +16,7 @@ if (isset($_POST["nombre"], $_POST["clave"], $_POST["mail"])) {
     $clave = $_POST["clave"];
     $mail = $_POST["mail"];
 
-    $usuario = new Usuario($nombre, $clave, $mail);
+    $usuario = new Usuario($clave, $mail, $nombre);
     $archivo = "archivo_de_usuario.csv";
 
     if($usuario->GuardarUsuario($archivo)) {

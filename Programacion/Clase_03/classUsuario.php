@@ -5,10 +5,10 @@ class Usuario {
     private $clave;
     private $mail;
     
-    public function __construct(string $nombre, string $clave, string $mail) {
-        $this->nombre = $nombre;
+    public function __construct(string $clave, string $mail, string $nombre = "") {       
         $this->clave = $clave;
         $this->mail = $mail;
+        $this->nombre = $nombre;
     }
 
     public function GetNombre(): string {
@@ -29,10 +29,10 @@ class Usuario {
         $file = fopen($archivo,"a");
 
         if ($file) {
-            $datosUsuario = [
-                $this->nombre,
+            $datosUsuario = [                
                 $this->clave,
-                $this->mail
+                $this->mail,
+                $this->nombre
             ];
 
             fputcsv( $file, $datosUsuario);
@@ -46,10 +46,10 @@ class Usuario {
         return $retorno;
     }
 
-    public function MostrarUsuario(): void{
-        echo "Nombre: $this->nombre\n";
+    public function MostrarUsuario(): void{        
         echo "Clave: $this->clave\n";
         echo "Mail: $this->mail\n";
+        echo "Nombre: $this->nombre\n";
     }
 
     public static function LeerUsuarioArchivoCSV(string $archivo): array {
@@ -73,9 +73,27 @@ class Usuario {
 
         $html .= "<li> Lista de Usuarios: </li>\n";
         foreach($usuarios as $usuario) {
-            $html .= "<li> Nombre: ".$usuario->GetNombre()." - Clave: ".$usuario->GetClave()." - Mail: ".$usuario->GetMail()."</li>\n";
+            $html .= "<li> Clave: ".$usuario->GetClave()." - Mail: ".$usuario->GetMail()." - Nombre: ".$usuario->GetNombre()."</li>\n";
         }
         $html .= "</lu>\n";        
         return $html;
+    }
+
+    public function Equals(Usuario $otroUsuario): bool {
+        return $this->GetClave() == $otroUsuario->GetClave() && $this->GetMail() == $otroUsuario->GetMail();
+    }
+
+    public static function VerificarUsuarioEnLista(array $listaUsuarios, Usuario $usuarioIngresado): bool {
+        foreach($listaUsuarios as $usuario) {
+            if($usuario->GetMail() == $usuarioIngresado->GetMail() && $usuario->GetClave() == $usuarioIngresado->GetClave()) {
+                echo "Verificado.\n";
+                return true;
+            }elseif ($usuario->GetMail() == $usuarioIngresado->GetMail() && $usuario->GetClave() != $usuarioIngresado->GetClave()) {
+                echo "Error en los datos.\n";
+                return true;
+            }
+        }
+        echo "Usuario no registrado.\n";
+        return false;
     }
 }
