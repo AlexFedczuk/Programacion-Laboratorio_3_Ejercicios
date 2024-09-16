@@ -35,8 +35,7 @@ function runTests(): void {
 
     // Probar ValidarArrayGarages y MostrarListadoGarages
     echo "\n*** Prueba de MostrarListadoGarages: ***\n";
-
-    Garage::MostrarListadoGarages([$garage]);
+    Garage::MostrarListadoGarages([$garage, $garagesLeidos]);
 }
 
 // Ejecutar pruebas

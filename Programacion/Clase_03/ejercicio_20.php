@@ -217,6 +217,7 @@ class Garage {
                 return false;
             }
         }
-        return false;
+        echo "Exito: El array CONTIENE objetos de tipo 'Garage' en el array.";
+        return true;
     }
 }
