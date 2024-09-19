@@ -28,9 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $usuario = new Usuario($nombre, $clave, $mail, $foto["name"]);
         
         $directorio = "Usuarios/usuarios.json";
-        if(Usuario::VerificarUsuarioEnLista(Usuario::CargarUsuarioDesdeJSON($directorio), $usuario)) {
+        if(Usuario::VerificarUsuarioEnLista(Usuario::CargarUsuarioDesdeJSON($directorio), $usuario) === false) {
             $directorio_de_fotos = "Fotos/";
             if ($usuario->SubirFoto($directorio_de_fotos, $foto)) { // <-- En esta linea del codigo está el problema!
+                
                 if ($usuario->GuardarUsuarioJSON($directorio)) {
                     echo "Exito! El usuario '".$usuario->GetNombre()."' ha sido registrado.\n";
                 } else {

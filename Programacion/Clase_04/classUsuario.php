@@ -149,12 +149,7 @@ class Usuario {
 
     public function SubirFoto(string $directorio, $foto): bool {
         $retorno = false;
-
-        // Se creará el directorio si no existe.
-        if (!file_exists($directorio)) {
-            mkdir($directorio, 0777, true);
-        }
-
+        
         $rutaArchivo = $directorio . basename($foto['name']);
         if (move_uploaded_file($foto['tmp_name'], $rutaArchivo)) {
             echo "Exito! La foto ha sido subida exitosamente.\n";
