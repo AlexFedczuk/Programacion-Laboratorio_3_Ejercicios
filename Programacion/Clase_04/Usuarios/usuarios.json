@@ -1,0 +1,18 @@
+[
+    {
+        "id": 3228,
+        "nombre": "alex",
+        "clave": "lalala123",
+        "mail": "alex@gmail.com",
+        "fechaRegistro": "19-09-2024 16:27:12",
+        "foto": "coco_volador.png"
+    },
+    {
+        "id": 2113,
+        "nombre": "fede",
+        "clave": "lalala123",
+        "mail": "alexfede@gmail.com",
+        "fechaRegistro": "19-09-2024 16:45:12",
+        "foto": "coco_volador.png"
+    }
+]
