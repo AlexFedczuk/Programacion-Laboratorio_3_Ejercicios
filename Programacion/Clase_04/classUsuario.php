@@ -27,7 +27,7 @@ class Usuario {
     }
 
     private function obtenerIdsExistentes() {
-        $usuarios = json_decode(file_get_contents("usuarios.json"), true);
+        $usuarios = json_decode(file_get_contents("Usuarios\usuarios.json"), true);
         $ids = [];
 
         if ($usuarios) {
@@ -42,6 +42,10 @@ class Usuario {
         $this->_id = $id;
     }
 
+    public function GetId(): int {
+        return $this->_id;
+    }
+
     public function GetNombre(): string {
         return $this->_nombre;
     }
@@ -54,14 +58,23 @@ class Usuario {
         return $this->_mail;
     }
 
-    public function MostrarUsuario(): void{        
-        echo "Clave: $this->_clave\n";
-        echo "Mail: $this->_mail\n";
-        echo "Nombre: $this->_nombre\n";
+    public function GetFecha(): string {
+        return $this->_fechaRegistro;
+    }
+    public function GetPathFoto() : string  {
+        return $this->_fotoPath;
+    }
+    public function MostrarUsuario(): void{
+        echo "Id: ".$this->GetId()."\n";
+        echo "Nombre: ".$this->GetNombre()."\n";      
+        echo "Clave: ".$this->GetClave()."\n";
+        echo "Mail: ".$this->GetMail()."\n";
+        echo "Mail: ".$this->GetFecha()."\n";
+        echo "Mail: ".$this->GetPathFoto()."\n\n";
     }
 
     public static function VerificarUsuarioEnLista(array $listaUsuarios, Usuario $nuevoUsuario): bool {
-        $retorno = false;
+        $retorno = false;        
 
         foreach($listaUsuarios as $usuario) {
             if ($usuario->GetMail() == $nuevoUsuario->GetMail() && $usuario->GetNombre() == $nuevoUsuario->GetNombre()) {
@@ -76,6 +89,8 @@ class Usuario {
                 echo "Error: El nombre de usuario '".$nuevoUsuario->GetNombre()."', ya existe en nuestro sistema.";
                 $retorno = true;
                 break;
+            }else {
+                echo "Exito! El nuevo usuario fue verificado y no está en nustro sitema.\n";
             }
         }
         return $retorno;
@@ -108,7 +123,7 @@ class Usuario {
         return $retorno;
     }
 
-    public function GuardarUsuarioDesdeJSON(string $archivoJson): array {
+    public static function CargarUsuarioDesdeJSON(string $archivoJson): array {
         $lista_usuarios_cargados = [];
 
         if (file_exists($archivoJson)) {
@@ -125,6 +140,7 @@ class Usuario {
                         $dato["id"]
                     );
                 }
+                $lista_usuarios_cargados = $usuarios;
             }            
         }
 

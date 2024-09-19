@@ -23,13 +23,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mail = $_POST["mail"] ?? "";
     $foto = $_FILES["foto"] ?? null;
 
+    
     if ($nombre && $clave && $mail && $foto && $foto["error"] === UPLOAD_ERR_OK) {
         $usuario = new Usuario($nombre, $clave, $mail, $foto["name"]);
-
-        if(Usuario::VerificarUsuarioEnLista($listaUsuarios, $usuario)) {
+        
+        $directorio = "Usuarios/usuarios.json";
+        if(Usuario::VerificarUsuarioEnLista(Usuario::CargarUsuarioDesdeJSON($directorio), $usuario)) {
             $directorio_de_fotos = "Fotos/";
-            if ($usuario->SubirFoto($directorio_de_fotos, $foto)) {
-                if ($usuario->GuardarUsuarioJSON("Usuarios/usuarios.json")) {
+            if ($usuario->SubirFoto($directorio_de_fotos, $foto)) { // <-- En esta linea del codigo está el problema!
+                if ($usuario->GuardarUsuarioJSON($directorio)) {
                     echo "Exito! El usuario '".$usuario->GetNombre()."' ha sido registrado.\n";
                 } else {
                     echo "Error: El usuario '".$usuario->GetNombre()."' NO ha sido registrado.\n";
