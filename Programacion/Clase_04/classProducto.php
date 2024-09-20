@@ -73,6 +73,14 @@ class Producto {
         return $this->_tipo;
     }
 
+    public function SetStock(int $cantidad): bool {
+        if($cantidad > -1){
+            $this->_stock = $cantidad;
+            return true;
+        }
+        return false;
+    }
+
     public function GetStock(): int {
         return $this->_stock;
     }
@@ -89,19 +97,15 @@ class Producto {
         echo "Precio: ".$this->GetPrecio()."\n";
     }
 
-    public static function VerificarProductoEnLista(array $listaProductos, Producto $nuevoProducto): bool {
-        $retorno = false;        
-
+    public static function VerificarProductoEnLista(array $listaProductos, Producto $nuevoProducto): bool {  
         foreach($listaProductos as $producto) {
-            if ($producto->GetCodigoBarra() === $nuevoProducto->GetCodigoBarra() || $producto->GetNombre() === $nuevoProducto->GetNombre()) {
-                echo "Error: El producto '".$nuevoProducto->GetNombre()."' con el código de barra: ".$nuevoProducto->GetCodigoBarra().", ya existen en nuestro sistema.";
-                $retorno = true;
-                break;
-            }else {
-                echo "Exito! El nuevo producto '".$nuevoProducto->GetNombre()."' fue verificado y no está en nustro sitema.\n";
+            if ($producto->GetCodigoBarra() === $nuevoProducto->GetCodigoBarra() && $producto->GetNombre() === $nuevoProducto->GetNombre()) {
+                echo "Aviso: El producto '".$nuevoProducto->GetNombre()."' con el código de barra: ".$nuevoProducto->GetCodigoBarra().", ya existen en nuestro sistema. Se le sumará al stock.\n";
+                return true;
             }
         }
-        return $retorno;
+        echo "Aviso: El producto '".$nuevoProducto->GetNombre()."' fue verificado y no está en nustro sitema. Se agregará a la lista de productos.\n";
+        return false;
     }
 
     public function GuardarProductoJSON(string $archivoJson): bool {
@@ -125,6 +129,42 @@ class Producto {
             $retorno = true;
         } else {
             echo "Error: No se pudo guardar en el archivo JSON: '$archivoJson'.\n";
+        }
+
+        return $retorno;
+    }
+
+    public function ActualizarStockProducto(string $archivoJson, Producto $productoIngresado): bool {
+        $retorno = false;
+
+        // Cargar la lista de productos del archivo JSON
+        $lista_de_productos = [];
+        if (file_exists($archivoJson)) {
+            $lista_de_productos = json_decode(file_get_contents($archivoJson), true) ?? [];
+        }
+
+        // Variable para verificar si el producto fue encontrado
+        $productoEncontrado = false;
+
+        // Buscar y actualizar el stock del producto existente
+        foreach ($lista_de_productos as &$producto) {
+            if ($producto['codigo_de_barra'] === $productoIngresado->GetCodigoBarra() && 
+                $producto['nombre'] === $productoIngresado->GetNombre()) {
+                $producto['stock'] += $productoIngresado->GetStock(); // Actualizamos el stock
+                $productoEncontrado = true; // Marcamos como encontrado
+                break; // Salimos del bucle
+            }
+        }
+
+        // Solo guardamos si el producto fue encontrado y actualizado
+        if ($productoEncontrado) {
+            if (file_put_contents($archivoJson, json_encode($lista_de_productos, JSON_PRETTY_PRINT))) {
+                $retorno = true;
+            } else {
+                echo "Error: No se pudo guardar en el archivo JSON: '$archivoJson'.\n";
+            }
+        } else {
+            echo "Error: Producto no encontrado en la lista para actualizar.\n";
         }
 
         return $retorno;

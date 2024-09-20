@@ -44,7 +44,7 @@
         "codigo_de_barra": "000145",
         "nombre": "Coca_Cola",
         "tipo": "Bebida",
-        "stock": 1000,
+        "stock": 1005,
         "precio": 20.3
     }
 ]
