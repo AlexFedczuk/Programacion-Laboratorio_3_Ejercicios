@@ -20,13 +20,11 @@ require "classProducto.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {    
     $codigo_de_barra = $_POST["codigo_de_barra"] ?? "";
-    $nombre = $_POST["nombre"] ?? "";
-    $tipo = $_POST["tipo"] ?? "";
-    $stock = $_POST["stock"] ?? null;
-    $precio = $_POST["precio"] ?? null;
+    $usuario_id = $_POST["usuario_id"] ?? null;
+    $cantidad_items = $_POST["cantidad_items"] ?? null;
 
     
-    if ($codigo_de_barra && $nombre && $tipo && $stock && $precio) {
+    if ($codigo_de_barra && $usuario_id && $cantidad_items) {
         $producto = new Producto($codigo_de_barra, $nombre, $tipo, $stock, $precio);
         $directorio = "Listas/productos.json";
         
