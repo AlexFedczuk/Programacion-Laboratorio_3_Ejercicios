@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1056,
+        "codigo_de_barra": 123456789012,
+        "nombre": "Café",
+        "tipo": "Bebida",
+        "stock": "100",
+        "precio": 250.50
+    },
+    {
+        "id": 2034,
+        "codigo_de_barra": 234567890123,
+        "nombre": "Azúcar",
+        "tipo": "Alimento",
+        "stock": "250",
+        "precio": 120.00
+    },
+    {
+        "id": 3099,
+        "codigo_de_barra": 345678901234,
+        "nombre": "Arroz",
+        "tipo": "Alimento",
+        "stock": "300",
+        "precio": 85.75
+    },
+    {
+        "id": 4122,
+        "codigo_de_barra": 456789012345,
+        "nombre": "Leche",
+        "tipo": "Bebida",
+        "stock": "150",
+        "precio": 180.99
+    },
+    {
+        "id": 5011,
+        "codigo_de_barra": 567890123456,
+        "nombre": "Harina",
+        "tipo": "Alimento",
+        "stock": "500",
+        "precio": 95.25
+    }
+]
