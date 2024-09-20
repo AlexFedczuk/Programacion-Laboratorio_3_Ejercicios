@@ -8,9 +8,9 @@ class Producto {
     private $_stock;
     private $_precio;
     
-    public function __construct(int $codigo_de_barra, string $nombre, string $tipo, int $stock, float $precio, int $id = null) {
+    public function __construct(string $codigo_de_barra, string $nombre, string $tipo, int $stock, float $precio, int $id = null) {
         $this->_id = $id === null ? $this->generarIdUnico() : $id;
-        $this->_codigo_de_barra = $codigo_de_barra;
+        $this->SetCodigoBarra($codigo_de_barra);
         $this->_nombre = $nombre;
         $this->_tipo = $tipo;
         $this->_stock = $stock;        
@@ -42,7 +42,26 @@ class Producto {
         return $this->_id;
     }
 
-    public function GetCodigoBarra(): int {
+    public function SetCodigoBarra(string $codigo_de_barra): bool {
+        $retorno = false;
+        if ($this->ValidarCodigoDeBarra($codigo_de_barra)) {
+            $this->_codigo_de_barra = $codigo_de_barra;
+            $retorno = true;
+        } else {
+            echo "Error: El código de barra no está compuesto de 6 cifras.";
+        }
+        return $retorno;
+    }
+
+    public function ValidarCodigoDeBarra(string $codigo_de_barra): bool {
+        if (preg_match('/^\d{6}$/', $codigo_de_barra)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public function GetCodigoBarra(): string {
         return $this->_codigo_de_barra;
     }
 
@@ -61,7 +80,7 @@ class Producto {
     public function GetPrecio(): float {
         return $this->_precio;
     }
-    public function MostrarUsuario(): void{
+    public function MostrarProducto(): void{
         echo "Id: ".$this->GetId()."\n";
         echo "Codigo de Barra: ".$this->GetCodigoBarra()."\n";
         echo "Nombre: ".$this->GetNombre()."\n";      
@@ -74,8 +93,8 @@ class Producto {
         $retorno = false;        
 
         foreach($listaProductos as $producto) {
-            if ($producto->GetCodigoBarra() == $nuevoProducto->GetCodigoBarra()) {
-                echo "Error: El producto '".$nuevoProducto->GetNombre()."' con el código de barra:".$nuevoProducto->GetNombre().", ya existen en nuestro sistema.";
+            if ($producto->GetCodigoBarra() === $nuevoProducto->GetCodigoBarra() || $producto->GetNombre() === $nuevoProducto->GetNombre()) {
+                echo "Error: El producto '".$nuevoProducto->GetNombre()."' con el código de barra: ".$nuevoProducto->GetCodigoBarra().", ya existen en nuestro sistema.";
                 $retorno = true;
                 break;
             }else {
@@ -95,7 +114,7 @@ class Producto {
 
         $productos[] = [
             'id' => $this->_id,
-            'codigo_de_barra' => $this->_nombre,
+            'codigo_de_barra' => $this->_codigo_de_barra,
             'nombre' => $this->_nombre,
             'tipo' => $this->_tipo,
             'stock' => $this->_stock,

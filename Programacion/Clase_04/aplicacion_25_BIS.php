@@ -17,7 +17,7 @@ Hacer los métodos necesarios en la clase
 require "classProducto.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {    
-    $codigo_de_barra = $_POST["codigo_de_barra"] ?? null;
+    $codigo_de_barra = $_POST["codigo_de_barra"] ?? "";
     $nombre = $_POST["nombre"] ?? "";
     $tipo = $_POST["tipo"] ?? "";
     $stock = $_POST["stock"] ?? null;
@@ -26,17 +26,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     if ($codigo_de_barra && $nombre && $tipo && $stock && $precio) {
         $producto = new Producto($codigo_de_barra, $nombre, $tipo, $stock, $precio);
+
+        $producto->MostrarProducto();
         
         $directorio = "Listas/productos.json";
         if(Producto::VerificarProductoEnLista(Producto::CargarProductoDesdeJSON($directorio), $producto) === false) {
-            if ($usuario->GuardarUsuarioJSON($directorio)) {
-                echo "Exito! El usuario '".$usuario->GetNombre()."' ha sido registrado.\n";
+            if ($producto->GuardarProductoJSON($directorio)) {
+                echo "Exito! El producto '".$producto->GetNombre()."' ha sido registrado.\n";
             } else {
-                echo "Error: El usuario '".$usuario->GetNombre()."' NO ha sido registrado.\n";
+                echo "Error: El producto '".$producto->GetNombre()."' NO ha sido registrado.\n";
             }
         }        
     } else {
-        echo "Error: Faltan datos para cargar un usuario.\n";
+        echo "Error: Faltan datos para cargar un producto.\n";
     }
 } else {
     echo "Error: Método incorrecto. Debes usar del tipo POST.\n";
