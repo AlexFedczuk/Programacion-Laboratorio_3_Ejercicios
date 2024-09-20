@@ -148,9 +148,7 @@ class Producto {
                 break;
             }
         }
-
-        // Solo guardamos si el producto fue encontrado y actualizado
-        
+                
         if (file_put_contents($archivoJson, json_encode($lista_de_productos, JSON_PRETTY_PRINT))) {
             $retorno = true;
         } else {
