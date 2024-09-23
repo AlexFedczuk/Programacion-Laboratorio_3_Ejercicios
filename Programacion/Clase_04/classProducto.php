@@ -182,4 +182,41 @@ class Producto {
 
         return $lista_productos_cargados;
     }
+
+    public static function BuscarProductoJSON(string $archivoJson, string $codigo_de_barra): int {
+        $retorno = false;
+
+        $lista = [];
+        if (file_exists($archivoJson)) {
+            $lista = json_decode(file_get_contents($archivoJson), true) ?? [];
+        }
+
+        foreach ($lista as $producto) {
+            if ($producto['codigo_de_barra'] === $codigo_de_barra) {
+                $retorno = true;
+            }
+        }
+
+        return $retorno;
+    }
+
+    public static function BuscarStockProductoJSON(string $archivoJson, string $codigo_de_barra, int $cantidad_items): bool {
+        $retorno = false;
+
+        $lista_de_productos = [];
+        if (file_exists($archivoJson)) {
+            $lista_de_productos = json_decode(file_get_contents($archivoJson), true) ?? [];
+        }
+
+        foreach ($lista_de_productos as &$producto) {
+            if ($producto['codigo_de_barra'] === $codigo_de_barra) {
+                if($producto['stock'] >= $cantidad_items){
+                    $retorno = true;
+                    break;
+                }                
+            }
+        }
+
+        return $retorno;
+    }
 }

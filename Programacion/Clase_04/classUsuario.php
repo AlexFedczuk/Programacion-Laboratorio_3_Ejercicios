@@ -9,7 +9,7 @@ class Usuario {
     private $_fotoPath;
     
     public function __construct(string $nombre, string $clave, string $mail, string $fotoPath = "", int $id = null) {
-        $this->_id = $id === null ? $this->generarIdUnico() : $id;
+        $this->_id = $id === null ? $this->GenerarIdUnico() : $id;
         $this->_nombre = $nombre;
         $this->_clave = $clave;
         $this->_mail = $mail;        
@@ -17,8 +17,8 @@ class Usuario {
         $this->_fotoPath = $fotoPath;
     }
 
-    private function generarIdUnico() {
-        $idsExistentes = $this->obtenerIdsExistentes();
+    private function GenerarIdUnico() {
+        $idsExistentes = $this->ObtenerIdsExistentes();
         do {
             $idGnerado = rand(1, 10000);
         } while (in_array($idGnerado, $idsExistentes));
@@ -26,8 +26,8 @@ class Usuario {
         return $idGnerado;
     }
 
-    private function obtenerIdsExistentes() {
-        $usuarios = json_decode(file_get_contents("Usuarios\usuarios.json"), true);
+    private function ObtenerIdsExistentes() {
+        $usuarios = json_decode(file_get_contents("Listas\usuarios.json"), true);
         $ids = [];
 
         if ($usuarios) {
@@ -156,6 +156,23 @@ class Usuario {
             $retorno = true;
         } else {
             echo "Error: No se ha podido subir la foto.\n";
+        }
+
+        return $retorno;
+    }
+
+    public static function BuscarUsuarioJSON(string $archivoJson, int $usuario_id): int {
+        $retorno = false;
+
+        $lista_de_usuarios = [];
+        if (file_exists($archivoJson)) {
+            $lista_de_usuarios = json_decode(file_get_contents($archivoJson), true) ?? [];
+        }
+
+        foreach ($lista_de_usuarios as $usuario) {
+            if ($usuario['id'] === $usuario_id) {
+                $retorno = true;
+            }
         }
 
         return $retorno;

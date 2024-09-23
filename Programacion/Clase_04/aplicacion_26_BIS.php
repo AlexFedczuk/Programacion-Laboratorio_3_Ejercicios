@@ -16,7 +16,9 @@ Retorna un :
 “no se pudo hacer“si no se pudo hacer
 Hacer los métodos necesaris en las clases
 */
+require "classUsuario.php";
 require "classProducto.php";
+require "classVenta.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {    
     $codigo_de_barra = $_POST["codigo_de_barra"] ?? "";
@@ -24,22 +26,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cantidad_items = $_POST["cantidad_items"] ?? null;
 
     
-    if ($codigo_de_barra && $usuario_id && $cantidad_items) {
-        $producto = new Producto($codigo_de_barra, $nombre, $tipo, $stock, $precio);
-        $directorio = "Listas/productos.json";
-        
-        if (Producto::VerificarProductoEnLista(Producto::CargarProductoDesdeJSON($directorio), $producto)) {
-            if ($producto->ActualizarStockProducto($directorio, $producto)) {
-                echo "Exito! El producto '".$producto->GetNombre()."' ha sido actualizado.\n";
+    if ($codigo_de_barra && $usuario_id && $cantidad_items) {        
+        $directorio_usuarios = "Listas/usuarios.json";
+        $directorio_productos = "Listas/productos.json";
+        $directorio_ventas = "Listas/productos.json";
+
+        if (Venta::VerificarPosibleVenta($directorio_usuarios, $directorio_productos, $usuario_id, $codigo_de_barra, $cantidad_items)){
+            $venta = new Venta($codigo_de_barra, $usuario_id, $cantidad_items);
+
+            if($venta->GuardarVentaJSON($directorio_ventas)){
+                echo "Exito! Venta realizada.\n";
+            }else{
+                echo "Error: No se pudo hacer.\n";
             }
-        } else {
-            if ($producto->GuardarProductoJSON($directorio)) {
-                echo "Exito! El producto '".$producto->GetNombre()."' se ha cargado a la lista.\n";
-            }            
-        }      
+        }
     } else {
-        echo "Error: Faltan datos para cargar un producto.\n";        
+        echo "Error: Faltan datos.\n";
     }
 } else {
-    echo "Error: Método incorrecto. Debes usar del tipo POST.\n";
+    echo "Error: Metodo incorrecto, se debe utilizar el tipo POST.\n";
 }
