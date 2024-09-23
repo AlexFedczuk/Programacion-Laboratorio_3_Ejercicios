@@ -25,7 +25,7 @@ class Venta {
     }
 
     private function ObtenerIdsExistentes() {
-        $usuarios = json_decode(file_get_contents("Listas\ventas.json"), true);
+        $usuarios = json_decode(file_get_contents("Listas/usuarios.json"), true);
         $ids = [];
 
         if ($usuarios) {
@@ -34,6 +34,14 @@ class Venta {
             }
         }
         return $ids;
+    }
+
+    public function GetCodigoDeBarra(): string {
+        return $this->_codigo_de_barra;
+    }
+
+    public function GetCantidadItems(): int {
+        return $this->_cantidad_de_items;
     }
 
     public static function VerificarPosibleVenta(string $directorio_usuarios, string $directorio_productos, int $usuario_id, string $codigo_de_barra, int $cantidad_items): bool {
@@ -55,7 +63,17 @@ class Venta {
         return $retorno;
     }
 
-    public function GuardarVentaJSON(string $archivoJson): bool {
+    public static function RealizarVenta(string $directorio_ventas, string $directorio_productos, Venta $venta): bool{
+        $retorno = false;
+        if(Venta::GuardarVentaJSON($directorio_ventas, $venta)){
+            Producto::ActualizarStockProductoJSON($directorio_productos, $venta->GetCodigoDeBarra(), -$venta->GetCantidadItems());
+            $retorno = true;
+        }
+
+        return $retorno;
+    }
+
+    public static function GuardarVentaJSON(string $archivoJson, Venta $venta): bool {
         $retorno = false;
 
         $lista = [];
@@ -64,10 +82,10 @@ class Venta {
         }
 
         $lista[] = [
-            'id' => $this->_id,
-            'codigo_de_barra' => $this->_codigo_de_barra,
-            'usuario_id' => $this->_usuario_id,
-            'cantidad_de_items' => $this->_cantidad_de_items
+            'id' => $venta->_id,
+            'codigo_de_barra' => $venta->_codigo_de_barra,
+            'usuario_id' => $venta->_usuario_id,
+            'cantidad_de_items' => $venta->_cantidad_de_items
         ];
 
         if (file_put_contents($archivoJson, json_encode($lista, JSON_PRETTY_PRINT))) {

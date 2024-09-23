@@ -16,8 +16,6 @@ Retorna un :
 “no se pudo hacer“si no se pudo hacer
 Hacer los métodos necesaris en las clases
 */
-require "classUsuario.php";
-require "classProducto.php";
 require "classVenta.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {    
@@ -29,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($codigo_de_barra && $usuario_id && $cantidad_items) {        
         $directorio_usuarios = "Listas/usuarios.json";
         $directorio_productos = "Listas/productos.json";
-        $directorio_ventas = "Listas/productos.json";
+        $directorio_ventas = "Listas/ventas.json";
 
         if (Venta::VerificarPosibleVenta($directorio_usuarios, $directorio_productos, $usuario_id, $codigo_de_barra, $cantidad_items)){
             $venta = new Venta($codigo_de_barra, $usuario_id, $cantidad_items);
 
-            if($venta->GuardarVentaJSON($directorio_ventas)){
+            if(Venta::RealizarVenta($directorio_ventas, $directorio_productos, $venta)){
                 echo "Exito! Venta realizada.\n";
             }else{
                 echo "Error: No se pudo hacer.\n";

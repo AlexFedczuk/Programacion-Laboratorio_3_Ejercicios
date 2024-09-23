@@ -158,6 +158,30 @@ class Producto {
         return $retorno;
     }
 
+    public static function ActualizarStockProductoJSON(string $archivoJson, string $codigo_de_barra, int $cantidad): bool {
+        $retorno = false;
+
+        $lista = [];
+        if (file_exists($archivoJson)) {
+            $lista = json_decode(file_get_contents($archivoJson), true) ?? [];
+        }
+
+        foreach ($lista as &$producto) {
+            if ($producto['codigo_de_barra'] === $codigo_de_barra) {
+                $producto['stock'] += $cantidad; 
+                break;
+            }
+        }
+                
+        if (file_put_contents($archivoJson, json_encode($lista, JSON_PRETTY_PRINT))) {
+            $retorno = true;
+        } else {
+            echo "Error: No se pudo guardar en el archivo JSON: '$archivoJson'.\n";
+        }
+
+        return $retorno;
+    }
+
     public static function CargarProductoDesdeJSON(string $archivoJson): array {
         $lista_productos_cargados = [];
 
