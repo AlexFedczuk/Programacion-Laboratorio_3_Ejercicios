@@ -10,5 +10,11 @@
         "codigo_de_barra": "000145",
         "usuario_id": 3228,
         "cantidad_de_items": 20
+    },
+    {
+        "id": 1723,
+        "codigo_de_barra": "000145",
+        "usuario_id": 3228,
+        "cantidad_de_items": 900
     }
 ]
