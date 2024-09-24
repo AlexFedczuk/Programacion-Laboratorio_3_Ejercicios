@@ -1,4 +1,6 @@
-class Empleado extends Persona {
+import { Persona } from './classPersona.js';
+
+export class Cliente extends Persona {
     constructor(id, nombre, apellido, edad, compras, telefono){
         super(id, nombre, apellido, edad)
 

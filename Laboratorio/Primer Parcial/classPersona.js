@@ -1,4 +1,4 @@
-class Persona {
+export class Persona {
     constructor(id, nombre, apellido, edad){
         if(!Number.isInteger(id) || id <= 0){
             throw new Error("Error: El ID debe ser un numero entero y positivo.");
