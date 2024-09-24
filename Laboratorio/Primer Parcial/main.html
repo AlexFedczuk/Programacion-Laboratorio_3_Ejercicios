@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Practica de PP de Lab. 3</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
+
 <body>
     <script type="module" src="main.js"></script>
     <form>
@@ -18,7 +20,7 @@
         </div>
 
         <div>
-            <label>Calcular Edad Promedio: 
+            <label>Calcular Edad Promedio:
                 <input type="text" promedio="promedio">
                 <button type="button">Calcular</button>
             </label>
@@ -51,27 +53,22 @@
             <label for="telefono">Telefono</label>
         </div>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Sueldo</th>
-                <th>Ventas</th>
-                <th>Compras</th>
-                <th>Telefono</th>
-            </tr>
-            <tr>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-            </tr>
+        <table id="tablaPersonas">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Sueldo</th>
+                    <th>Ventas</th>
+                    <th>Compras</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas dinámicas se insertarán aquí -->
+            </tbody>
         </table>
         <button type="button">Agregar</button>
     </form>
@@ -81,9 +78,11 @@
         <input type="text" id="id">
         <label for="tipo">Tipo:</label>
         <select id="tipo">
-            </select>
+        </select>
         <button type="submit">Aceptar</button>
         <button type="reset">Cancelar</button>
     </form>
+    <script type="module" src="main.js"></script>
 </body>
+
 </html>
