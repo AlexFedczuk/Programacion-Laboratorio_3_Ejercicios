@@ -1,11 +1,89 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Practica de PP de Lab. 3</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <script type="module" src="main.js"></script>
+    <form>
+        <div>Form Datos</div>
+        <div>
+            <label for="filtro">Filtrar por:</label>
+            <select id="filtro">
+                <option value="todos">Todos</option>
+                <option value="todos">Empleados</option>
+                <option value="todos">Clientes</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Calcular Edad Promedio: 
+                <input type="text" promedio="promedio">
+                <button type="button">Calcular</button>
+            </label>
+        </div>
+
+        <div>Mostrar Columnas:</div>
+        <div>
+            <input type="checkbox" id="id">
+            <label for="id">ID</label>
+
+            <input type="checkbox" id="nombre">
+            <label for="nombre">Nombre</label>
+
+            <input type="checkbox" id="apellido">
+            <label for="apellido">Apellido</label>
+
+            <input type="checkbox" id="edad">
+            <label for="edad">Edad</label>
+
+            <input type="checkbox" id="sueldo">
+            <label for="sueldo">Sueldo</label>
+
+            <input type="checkbox" id="ventas">
+            <label for="ventas">Ventas</label>
+
+            <input type="checkbox" id="compras">
+            <label for="compras">Compras</label>
+
+            <input type="checkbox" id="telefono">
+            <label for="telefono">Telefono</label>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Edad</th>
+                <th>Sueldo</th>
+                <th>Ventas</th>
+                <th>Compras</th>
+                <th>Telefono</th>
+            </tr>
+            <tr>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+            </tr>
+        </table>
+        <button type="button">Agregar</button>
+    </form>
+
+    <form>
+        <label for="id">Id:</label>
+        <input type="text" id="id">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo">
+            </select>
+        <button type="submit">Aceptar</button>
+        <button type="reset">Cancelar</button>
+    </form>
 </body>
 </html>
