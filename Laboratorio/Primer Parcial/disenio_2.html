@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario ABM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            border: 2px solid black;
+            width: 300px;
+            padding: 10px;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .button-row {
+            text-align: center;
+            margin-top: 15px;
+        }
+        input[type="button"] {
+            padding: 5px 15px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Formulario ABM</h1>
+        <label for="id">Id:</label>
+        <input type="text" id="id" name="id">
+
+        <label for="atributo1">Atributo1:</label>
+        <input type="text" id="atributo1" name="atributo1">
+
+        <label for="atributo2">Atributo2:</label>
+        <input type="text" id="atributo2" name="atributo2">
+
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+            <option value="Tipo1">Tipo1</option>
+        </select>
+
+        <label for="atributo3">Atributo3:</label>
+        <input type="text" id="atributo3" name="atributo3">
+
+        <div class="button-row">
+            <input type="button" value="Aceptar">
+            <input type="button" value="Cancelar">
+        </div>
+    </div>
+
+</body>
+</html>
