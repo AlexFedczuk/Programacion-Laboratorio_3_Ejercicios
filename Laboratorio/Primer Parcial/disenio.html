@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="checkbox"] {
+            margin: 0 5px;
+        }
+        .filter-section {
+            border: 2px solid black;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-row label {
+            margin-right: 10px;
+        }
+        .form-row input[type="text"], 
+        .form-row select, 
+        .form-row input[type="button"] {
+            margin-right: 15px;
+        }
+        .form-row input[type="button"] {
+            padding: 3px 8px;
+        }
+        .table-container {
+            border: 2px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="filter-section">
+        <div class="form-row">
+            <label for="filter">Filtrar Por:</label>
+            <select id="filter">
+                <option value="Todos">Todos</option>
+            </select>
+
+            <label for="promedio">Calcular Edad Promedio:</label>
+            <input type="text" id="promedio" disabled>
+
+            <input type="button" value="Calcular">
+        </div>
+
+        <div class="form-row">
+            <label>Mostrar Columnas:</label>
+            <input type="checkbox" checked>ID
+            <input type="checkbox" checked>Nombre
+            <input type="checkbox" checked>Apellido
+            <input type="checkbox" checked>Edad
+            <input type="checkbox" checked>Equipo
+            <input type="checkbox" checked>Posicion
+            <input type="checkbox" checked>CantGoles
+            <input type="checkbox" checked>Titulo
+            <input type="checkbox" checked>Facultad
+            <input type="checkbox" checked>AñoGrad
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Equipo</th>
+                    <th>Posicion</th>
+                    <th>CantGoles</th>
+                    <th>Titulo</th>
+                    <th>Facultad</th>
+                    <th>AñoGrad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="button" value="Agregar">
+    </div>
+
+</body>
+</html>
