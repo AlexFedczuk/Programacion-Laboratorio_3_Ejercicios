@@ -1,5 +1,3 @@
-Primero necesito que me expliqes que hace esto:
-
 /********************CREACIÓN DE TABLAS********************/
 
 -- Alumno: Alejo Martin Carmona.

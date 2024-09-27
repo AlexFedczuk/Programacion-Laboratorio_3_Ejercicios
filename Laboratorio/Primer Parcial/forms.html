@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+    <link rel="stylesheet" href="estilo_forms.css">
+</head>
+<body>
+    <form class="form-datos">
+        <div class="filter-section">
+            <div class="form-row">
+                <label for="filter">Filtrar Por:</label>
+                <select id="filter">
+                    <option value="Todos">Todos</option>
+                </select>
+    
+                <label for="promedio">Calcular Edad Promedio:</label>
+                <input type="text" id="promedio" disabled>
+    
+                <input type="button" value="Calcular">
+            </div>
+    
+            <div class="form-row">
+                <label>Mostrar Columnas:</label>
+                <input type="checkbox" checked>ID
+                <input type="checkbox" checked>Nombre
+                <input type="checkbox" checked>Apellido
+                <input type="checkbox" checked>Edad
+                <input type="checkbox" checked>Equipo
+                <input type="checkbox" checked>Posicion
+                <input type="checkbox" checked>CantGoles
+                <input type="checkbox" checked>Titulo
+                <input type="checkbox" checked>Facultad
+                <input type="checkbox" checked>AñoGrad
+            </div>
+        </div>
+    
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Edad</th>
+                        <th>Equipo</th>
+                        <th>Posicion</th>
+                        <th>CantGoles</th>
+                        <th>Titulo</th>
+                        <th>Facultad</th>
+                        <th>AñoGrad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="button" value="Agregar">
+        </div>
+    </form>
+
+    <form class="form-abm">
+        <div class="container">
+            <h1>Formulario ABM</h1>
+            <label for="id">Id:</label>
+            <input type="text" id="id" name="id">
+    
+            <label for="atributo1">Atributo1:</label>
+            <input type="text" id="atributo1" name="atributo1">
+    
+            <label for="atributo2">Atributo2:</label>
+            <input type="text" id="atributo2" name="atributo2">
+    
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo">
+                <option value="Tipo1">Tipo1</option>
+            </select>
+    
+            <label for="atributo3">Atributo3:</label>
+            <input type="text" id="atributo3" name="atributo3">
+    
+            <div class="button-row">
+                <input type="button" value="Aceptar">
+                <input type="button" value="Cancelar">
+            </div>
+        </div>
+    </form>
+</body>
+</html>

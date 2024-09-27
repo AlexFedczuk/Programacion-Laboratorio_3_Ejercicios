@@ -1,0 +1,84 @@
+/* El estilo del formulario "Form Datos".*/
+.form-datos {
+    font-family: Arial, sans-serif;
+}
+
+.form-datos table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.form-datos th, 
+.form-datos td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.form-datos th {
+    background-color: #f2f2f2;
+}
+
+.form-datos input[type="checkbox"] {
+    margin: 0 5px;
+}
+
+.form-datos {
+    border: 2px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.form-datos .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-datos .form-row label {
+    margin-right: 10px;
+}
+
+.form-datos .form-row input[type="text"], 
+.form-datos .form-row select, 
+.form-datos .form-row input[type="button"] {
+    margin-right: 15px;
+}
+
+.form-datos .form-row input[type="button"] {
+    padding: 3px 8px;
+}
+
+/* El estilo del formulario "Form ABM".*/
+.form-abm body {
+    font-family: Arial, sans-serif;
+}
+.form-abm .container {
+    border: 2px solid black;
+    width: 300px;
+    padding: 10px;
+    margin: 20px;
+}
+.form-abm h1 {
+    font-size: 24px;
+    text-align: center;
+}
+.form-abm label {
+    display: block;
+    margin-top: 10px;
+}
+.form-abm input[type="text"], select {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+.form-abm .button-row {
+    text-align: center;
+    margin-top: 15px;
+}
+.form-abm input[type="button"] {
+    padding: 5px 15px;
+    margin: 0 10px;
+}
