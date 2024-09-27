@@ -19,20 +19,21 @@
             <div>
                 <label for="promedio">Calcular Edad Promedio:</label>
                 <input type="text" id="promedio" disabled>
-    
-                <input type="button" value="Calcular">
+
+                <!-- Aquí agregué el ID "calcular-btn" al botón -->
+                <input type="button" value="Calcular" id="calcular-btn">
             </div>
     
             <label>Mostrar Columnas:</label>
             <div class="form-row">                
-                <input type="checkbox" id="idPersona" checked>ID
-                <input type="checkbox" id="nombrePersona" checked>Nombre
-                <input type="checkbox" id="apellidoPersona" checked>Apellido
-                <input type="checkbox" id="edadPersona" checked>Edad
-                <input type="checkbox" id="sueldoPersona" checked>Sueldo
-                <input type="checkbox" id="ventasPersona" checked>Ventas
-                <input type="checkbox" id="comprasPersona" checked>Compras
-                <input type="checkbox" id="telefonoPersona" checked>Teléfono
+                <input type="checkbox" id="checkbox-id" checked>ID
+                <input type="checkbox" id="checkbox-nombre" checked>Nombre
+                <input type="checkbox" id="checkbox-apellido" checked>Apellido
+                <input type="checkbox" id="checkbox-edad" checked>Edad
+                <input type="checkbox" id="checkbox-sueldo" checked>Sueldo
+                <input type="checkbox" id="checkbox-ventas" checked>Ventas
+                <input type="checkbox" id="checkbox-compras" checked>Compras
+                <input type="checkbox" id="checkbox-telefono" checked>Teléfono
             </div>
         </div>
     
@@ -40,18 +41,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Edad</th>
-                        <th>Sueldo</th>
-                        <th>Ventas</th>
-                        <th>Compras</th>
-                        <th>Teléfono</th>
+                        <th data-column="id">ID</th>
+                        <th data-column="nombre">Nombre</th>
+                        <th data-column="apellido">Apellido</th>
+                        <th data-column="edad">Edad</th>
+                        <th data-column="sueldo">Sueldo</th>
+                        <th data-column="ventas">Ventas</th>
+                        <th data-column="compras">Compras</th>
+                        <th data-column="telefono">Teléfono</th>
                     </tr>
                 </thead>
                 <tbody id="data-table-body">
-                    <!-- Las filas se generarán aquí -->
+                    <!-- Las filas se generarán dinamicamente aquí... -->
                 </tbody>
             </table>
             <input type="button" value="Agregar">
@@ -84,47 +85,6 @@
             </div>
         </div>
     </form>
-    <script>
-        const data = [
-            {"id": 1, "nombre": "Marcelo", "apellido": "Luque", "edad": 45, "ventas": 15000, "sueldo": 2000},
-            {"id": 2, "nombre": "Ramiro", "apellido": "Escobar", "edad": 35, "ventas": 6000, "sueldo": 1000},
-            {"id": 3, "nombre": "Facundo", "apellido": "Cairo", "edad": 30, "ventas": 500, "sueldo": 15000},
-            {"id": 4, "nombre": "Fernando", "apellido": "Nieto", "edad": 18, "compras": 8000, "telefono": "152111131"},
-            {"id": 5, "nombre": "Manuel", "apellido": "Loza", "edad": 20, "compras": 50000, "telefono": "42040077"},
-            {"id": 666, "nombre": "Nicolas", "apellido": "Serrano", "edad": 23, "compras": 7000, "telefono": "1813181563"}
-        ];
-    
-        // Función para cargar la tabla
-        function loadTableData() {
-            const tableBody = document.getElementById("data-table-body");
-            tableBody.innerHTML = ""; // Limpiar la tabla antes de llenarla
-            
-            data.forEach(item => {
-                let ventas = item.ventas !== undefined ? item.ventas : "--";
-                let compras = item.compras !== undefined ? item.compras : "--";
-                let sueldo = item.sueldo !== undefined ? item.sueldo : "--";
-                let telefono = item.telefono !== undefined ? item.telefono : "--";
-    
-                // Crear una fila
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${item.id}</td>
-                    <td>${item.nombre}</td>
-                    <td>${item.apellido}</td>
-                    <td>${item.edad}</td>
-                    <td>${sueldo}</td>
-                    <td>${ventas}</td>
-                    <td>${compras}</td>
-                    <td>${telefono}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-    
-        // Cargar los datos cuando se cargue la página
-        window.onload = function() {
-            loadTableData();
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
