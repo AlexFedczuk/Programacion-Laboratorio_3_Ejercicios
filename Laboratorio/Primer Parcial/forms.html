@@ -25,16 +25,14 @@
     
             <label>Mostrar Columnas:</label>
             <div class="form-row">                
-                <input type="checkbox" checked>ID
-                <input type="checkbox" checked>Nombre
-                <input type="checkbox" checked>Apellido
-                <input type="checkbox" checked>Edad
-                <input type="checkbox" checked>Equipo
-                <input type="checkbox" checked>Posicion
-                <input type="checkbox" checked>CantGoles
-                <input type="checkbox" checked>Titulo
-                <input type="checkbox" checked>Facultad
-                <input type="checkbox" checked>AñoGrad
+                <input type="checkbox" id="idPersona" checked>ID
+                <input type="checkbox" id="nombrePersona" checked>Nombre
+                <input type="checkbox" id="apellidoPersona" checked>Apellido
+                <input type="checkbox" id="edadPersona" checked>Edad
+                <input type="checkbox" id="sueldoPersona" checked>Sueldo
+                <input type="checkbox" id="ventasPersona" checked>Ventas
+                <input type="checkbox" id="comprasPersona" checked>Compras
+                <input type="checkbox" id="telefonoPersona" checked>Teléfono
             </div>
         </div>
     
@@ -46,27 +44,14 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Edad</th>
-                        <th>Equipo</th>
-                        <th>Posicion</th>
-                        <th>CantGoles</th>
-                        <th>Titulo</th>
-                        <th>Facultad</th>
-                        <th>AñoGrad</th>
+                        <th>Sueldo</th>
+                        <th>Ventas</th>
+                        <th>Compras</th>
+                        <th>Teléfono</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                    </tr>
+                <tbody id="data-table-body">
+                    <!-- Las filas se generarán aquí -->
                 </tbody>
             </table>
             <input type="button" value="Agregar">
@@ -99,5 +84,47 @@
             </div>
         </div>
     </form>
+    <script>
+        const data = [
+            {"id": 1, "nombre": "Marcelo", "apellido": "Luque", "edad": 45, "ventas": 15000, "sueldo": 2000},
+            {"id": 2, "nombre": "Ramiro", "apellido": "Escobar", "edad": 35, "ventas": 6000, "sueldo": 1000},
+            {"id": 3, "nombre": "Facundo", "apellido": "Cairo", "edad": 30, "ventas": 500, "sueldo": 15000},
+            {"id": 4, "nombre": "Fernando", "apellido": "Nieto", "edad": 18, "compras": 8000, "telefono": "152111131"},
+            {"id": 5, "nombre": "Manuel", "apellido": "Loza", "edad": 20, "compras": 50000, "telefono": "42040077"},
+            {"id": 666, "nombre": "Nicolas", "apellido": "Serrano", "edad": 23, "compras": 7000, "telefono": "1813181563"}
+        ];
+    
+        // Función para cargar la tabla
+        function loadTableData() {
+            const tableBody = document.getElementById("data-table-body");
+            tableBody.innerHTML = ""; // Limpiar la tabla antes de llenarla
+            
+            data.forEach(item => {
+                let ventas = item.ventas !== undefined ? item.ventas : "--";
+                let compras = item.compras !== undefined ? item.compras : "--";
+                let sueldo = item.sueldo !== undefined ? item.sueldo : "--";
+                let telefono = item.telefono !== undefined ? item.telefono : "--";
+    
+                // Crear una fila
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.nombre}</td>
+                    <td>${item.apellido}</td>
+                    <td>${item.edad}</td>
+                    <td>${sueldo}</td>
+                    <td>${ventas}</td>
+                    <td>${compras}</td>
+                    <td>${telefono}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    
+        // Cargar los datos cuando se cargue la página
+        window.onload = function() {
+            loadTableData();
+        }
+    </script>
 </body>
 </html>
