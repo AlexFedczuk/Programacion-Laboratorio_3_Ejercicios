@@ -7,86 +7,87 @@
     <link rel="stylesheet" href="estilo_forms.css">
 </head>
 <body>
-    <form class="form-datos">
-        <div class="filter-section">
-            <label>Form Datos</label>
-            <div class="form-row">
-                <label for="filter">Filtrar Por:</label>
-                <select id="filter" onchange="filtrarDatos()">
-                    <option value="Todos">Todos</option>
-                    <option value="Empleados">Empleados</option>
-                    <option value="Clientes">Clientes</option>
-                </select> 
-            </div>
-            <div>
-                <label for="promedio">Calcular Edad Promedio:</label>
-                <input type="text" id="promedio" disabled>
-                
-                <!-- Aquí agregué el ID "calcular-btn" al botón -->
-                <input type="button" value="Calcular" id="calcular-btn" onclick="calcularEdadPromedio()">
-            </div>
-    
-            <label>Mostrar Columnas:</label>
-            <div class="form-row">                
-                <input type="checkbox" id="checkbox-id" onchange="filtrarColumnas()" checked>ID
-                <input type="checkbox" id="checkbox-nombre" onchange="filtrarColumnas()" checked>Nombre
-                <input type="checkbox" id="checkbox-apellido" onchange="filtrarColumnas()" checked>Apellido
-                <input type="checkbox" id="checkbox-edad" onchange="filtrarColumnas()" checked>Edad
-                <input type="checkbox" id="checkbox-sueldo" onchange="filtrarColumnas()" checked>Sueldo
-                <input type="checkbox" id="checkbox-ventas" onchange="filtrarColumnas()" checked>Ventas
-                <input type="checkbox" id="checkbox-compras" onchange="filtrarColumnas()" checked>Compras
-                <input type="checkbox" id="checkbox-telefono" onchange="filtrarColumnas()" checked>Teléfono
-            </div>
-        </div>
-    
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th data-column="id">ID</th>
-                        <th data-column="nombre">Nombre</th>
-                        <th data-column="apellido">Apellido</th>
-                        <th data-column="edad">Edad</th>
-                        <th data-column="sueldo">Sueldo</th>
-                        <th data-column="ventas">Ventas</th>
-                        <th data-column="compras">Compras</th>
-                        <th data-column="telefono">Teléfono</th>
-                    </tr>
-                </thead>
-                <tbody id="data-table-body">
-                    <!-- Las filas se generarán dinamicamente aquí... -->
-                </tbody>
-            </table>
-            <input type="button" value="Agregar">
-        </div>
-    </form>
+    <div id="form-container">
+        <form class="form-datos">
+            <div class="filter-section">
+                <label>Form Datos</label>
+                <div class="form-row">
+                    <label for="filter">Filtrar Por:</label>
+                    <select id="filter" onchange="filtrarDatos()">
+                        <option value="Todos">Todos</option>
+                        <option value="Empleados">Empleados</option>
+                        <option value="Clientes">Clientes</option>
+                    </select> 
+                </div>
+                <div>
+                    <label for="promedio">Calcular Edad Promedio:</label>
+                    <input type="text" id="promedio" disabled>
+                    <input type="button" value="Calcular" id="calcular-btn" onclick="calcularEdadPromedio()">
+                </div>
 
-    <form class="form-abm">
-        <div class="container">
-            <h1>Formulario ABM</h1>
-            <label for="id">Id:</label>
-            <input type="text" id="id" name="id">
-    
-            <label for="atributo1">Atributo1:</label>
-            <input type="text" id="atributo1" name="atributo1">
-    
-            <label for="atributo2">Atributo2:</label>
-            <input type="text" id="atributo2" name="atributo2">
-    
-            <label for="tipo">Tipo:</label>
-            <select id="tipo" name="tipo">
-                <option value="Tipo1">Tipo1</option>
-            </select>
-    
-            <label for="atributo3">Atributo3:</label>
-            <input type="text" id="atributo3" name="atributo3">
-    
-            <div class="button-row">
-                <input type="button" value="Aceptar">
-                <input type="button" value="Cancelar">
+                <label>Mostrar Columnas:</label>
+                <div class="form-row">                
+                    <input type="checkbox" id="checkbox-id" onchange="filtrarColumnas()" checked>ID
+                    <input type="checkbox" id="checkbox-nombre" onchange="filtrarColumnas()" checked>Nombre
+                    <input type="checkbox" id="checkbox-apellido" onchange="filtrarColumnas()" checked>Apellido
+                    <input type="checkbox" id="checkbox-edad" onchange="filtrarColumnas()" checked>Edad
+                    <input type="checkbox" id="checkbox-sueldo" onchange="filtrarColumnas()" checked>Sueldo
+                    <input type="checkbox" id="checkbox-ventas" onchange="filtrarColumnas()" checked>Ventas
+                    <input type="checkbox" id="checkbox-compras" onchange="filtrarColumnas()" checked>Compras
+                    <input type="checkbox" id="checkbox-telefono" onchange="filtrarColumnas()" checked>Teléfono
+                </div>
             </div>
-        </div>
-    </form>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-column="id">ID</th>
+                            <th data-column="nombre">Nombre</th>
+                            <th data-column="apellido">Apellido</th>
+                            <th data-column="edad">Edad</th>
+                            <th data-column="sueldo">Sueldo</th>
+                            <th data-column="ventas">Ventas</th>
+                            <th data-column="compras">Compras</th>
+                            <th data-column="telefono">Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <!-- Las filas se generarán dinámicamente aquí... -->
+                    </tbody>
+                </table>
+                <input type="button" value="Agregar" onclick="mostrarABM()">
+            </div>
+        </form>
+
+        <form class="form-abm" style="display: none;">
+            <div class="container">
+                <h1>Formulario ABM</h1>
+                <label for="id">Id:</label>
+                <input type="text" id="id" name="id">
+
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre">
+
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido">  
+
+                <label for="edad">Edad:</label>
+                <input type="text" id="edad" name="edad">
+
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" name="tipo">
+                    <option value="empleado">Empleado</option>
+                    <option value="cliente">Cliente</option>
+                </select>
+
+                <div class="button-row">
+                    <input type="button" value="Aceptar" onclick="guardarDatos()">
+                    <input type="button" value="Cancelar" onclick="ocultarABM()">
+                </div>
+            </div>
+        </form>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

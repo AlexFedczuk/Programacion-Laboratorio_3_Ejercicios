@@ -176,3 +176,67 @@ function loadTableData() {
 window.onload = function() {
     loadTableData();
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    const dataTableBody = document.getElementById('data-table-body');
+    const formDatos = document.querySelector('.form-datos');
+    const formABM = document.querySelector('.form-abm');
+    const aceptarBtn = formABM.querySelector('input[value="Aceptar"]');
+    const cancelarBtn = formABM.querySelector('input[value="Cancelar"]');
+
+    // Evento para cada fila de la tabla
+    dataTableBody.addEventListener('dblclick', function(e) {
+        const row = e.target.closest('tr');
+        if (row) {
+            const cells = row.querySelectorAll('td');
+            const data = Array.from(cells).map(cell => cell.textContent);
+
+            // Rellenar el formulario ABM con los datos de la fila
+            document.getElementById('id').value = data[0]; // ID
+            document.getElementById('atributo1').value = data[1]; // Nombre
+            document.getElementById('atributo2').value = data[2]; // Apellido
+            document.getElementById('atributo3').value = data[3]; // Edad (u otro)
+
+            // Ocultar el Form Datos y mostrar el Formulario ABM
+            formDatos.style.display = 'none';
+            formABM.style.display = 'block';
+
+            // Ocultar botones (puedes personalizar cuál ocultar)
+            aceptarBtn.style.display = 'inline';
+            cancelarBtn.style.display = 'inline';
+        }
+    });
+
+    // Evento para el botón "Agregar"
+    document.querySelector('input[value="Agregar"]').addEventListener('click', function() {
+        // Limpiar el formulario ABM
+        document.getElementById('id').value = '';
+        document.getElementById('atributo1').value = '';
+        document.getElementById('atributo2').value = '';
+        document.getElementById('atributo3').value = '';
+
+        // Ocultar el Form Datos y mostrar el Formulario ABM
+        formDatos.style.display = 'none';
+        formABM.style.display = 'block';
+
+        // Mostrar botones para agregar
+        aceptarBtn.style.display = 'inline';
+        cancelarBtn.style.display = 'inline';
+    });
+
+    // Evento para el botón "Cancelar"
+    cancelarBtn.addEventListener('click', function() {
+        formABM.style.display = 'none';
+        formDatos.style.display = 'block';
+    });
+});
+
+function mostrarABM() {
+    document.querySelector('.form-datos').style.display = 'none';
+    document.querySelector('.form-abm').style.display = 'block';
+}
+
+function ocultarABM() {
+    document.querySelector('.form-abm').style.display = 'none';
+    document.querySelector('.form-datos').style.display = 'block';
+}
