@@ -12,28 +12,30 @@
             <label>Form Datos</label>
             <div class="form-row">
                 <label for="filter">Filtrar Por:</label>
-                <select id="filter">
+                <select id="filter" onchange="filtrarDatos()">
                     <option value="Todos">Todos</option>
-                </select>  
+                    <option value="Empleados">Empleados</option>
+                    <option value="Clientes">Clientes</option>
+                </select> 
             </div>
             <div>
                 <label for="promedio">Calcular Edad Promedio:</label>
                 <input type="text" id="promedio" disabled>
-
+                
                 <!-- Aquí agregué el ID "calcular-btn" al botón -->
-                <input type="button" value="Calcular" id="calcular-btn">
+                <input type="button" value="Calcular" id="calcular-btn" onclick="calcularEdadPromedio()">
             </div>
     
             <label>Mostrar Columnas:</label>
             <div class="form-row">                
-                <input type="checkbox" id="checkbox-id" onchange="filtrarColumnas()";>ID
-                <input type="checkbox" id="checkbox-nombre" onchange="filtrarColumnas()";>Nombre
-                <input type="checkbox" id="checkbox-apellido" onchange="filtrarColumnas()";>Apellido
-                <input type="checkbox" id="checkbox-edad" onchange="filtrarColumnas()";>Edad
-                <input type="checkbox" id="checkbox-sueldo" onchange="filtrarColumnas()";>Sueldo
-                <input type="checkbox" id="checkbox-ventas" onchange="filtrarColumnas()";>Ventas
-                <input type="checkbox" id="checkbox-compras" onchange="filtrarColumnas()";>Compras
-                <input type="checkbox" id="checkbox-telefono" onchange="filtrarColumnas()";>Teléfono
+                <input type="checkbox" id="checkbox-id" onchange="filtrarColumnas()" checked>ID
+                <input type="checkbox" id="checkbox-nombre" onchange="filtrarColumnas()" checked>Nombre
+                <input type="checkbox" id="checkbox-apellido" onchange="filtrarColumnas()" checked>Apellido
+                <input type="checkbox" id="checkbox-edad" onchange="filtrarColumnas()" checked>Edad
+                <input type="checkbox" id="checkbox-sueldo" onchange="filtrarColumnas()" checked>Sueldo
+                <input type="checkbox" id="checkbox-ventas" onchange="filtrarColumnas()" checked>Ventas
+                <input type="checkbox" id="checkbox-compras" onchange="filtrarColumnas()" checked>Compras
+                <input type="checkbox" id="checkbox-telefono" onchange="filtrarColumnas()" checked>Teléfono
             </div>
         </div>
     
