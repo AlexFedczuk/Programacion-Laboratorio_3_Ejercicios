@@ -34,19 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "ADVERTENCIA: El archivo '$jsonFile' no existe. Se ha creado un listado de helados vacio.\n";        
     }
 
+    // Aca se da ALTA o ACTUALIZACION/MODIFICACION.
     if($lista_helados === [] || !Helado::VerificarExistenciaHelado($lista_helados, $helado_ingresado)){
         // Si el helado NO EXISTE en la lista, se da de ALTA.
         $id = Helado::GenerarID($lista_helados);
         $helado_ingresado->setId($id);
         $lista_helados = Helado::Alta($lista_helados, $helado_ingresado);
     }else{
-        // Si el helado EXISTE en la lista, se ACTUALIZA.
+        // Si el helado EXISTE en la lista, se ACTUALIZA/MODIFICA.
         Helado::ActualizarHelado($lista_helados, $helado_ingresado);
-    }
-
-    // Verificar existencia del directorio de imagenes
-    if (!is_dir($imageDir)) {
-        mkdir($imageDir, 0777, true);
     }
 
     // Guardar la imagen en el directorio de imágenes

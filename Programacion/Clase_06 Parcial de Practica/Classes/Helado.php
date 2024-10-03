@@ -68,14 +68,18 @@ class Helado{
     }
 
     public static function GuardarImagenHelado(Helado $helado, string $imageDir): bool{
-        $imagenNombre = $helado->getSabor() . '_' . $helado->getTipo() . '.jpg';
-        $imagenPath = $imageDir . $imagenNombre;
+        if (!is_dir($imageDir)) {
+            mkdir($imageDir, 0777, true);
 
-        if (move_uploaded_file($helado->getImagenPath(), $imagenPath)) {
-            return true;
-        } else {
-            return false;
-        }
+            $imagenNombre = $helado->getSabor() . '_' . $helado->getTipo() . '.jpg';
+            $imagenPath = $imageDir . $imagenNombre;
+
+            if (move_uploaded_file($helado->getImagenPath(), $imagenPath)) {
+                return true;
+            } else {
+                return false;
+            }
+        }        
     }
 
     public static function GenerarID(array $lista): int{
