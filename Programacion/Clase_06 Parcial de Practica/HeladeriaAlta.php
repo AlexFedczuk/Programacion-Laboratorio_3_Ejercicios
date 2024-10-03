@@ -13,27 +13,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo = $_POST['tipo'];
     $vaso = $_POST['vaso'];
     $stock = $_POST['stock'];
+    $imagen = $_FILES['imagen'];
+
+    if (empty($sabor) || empty($precio) || empty($tipo) || empty($vaso) || empty($stock) || empty($imagen)) {
+        echo json_encode(['error' => 'ERROR: Faltan datos obligatorios o la imagen.']);
+        exit;
+    }
     
-    if (!in_array($tipo, ['Agua', 'Crema']) || !in_array($vaso, ['Cucurucho', 'Plastico'])) {
+    // Verificar si se han ingresado tipo y vaso valido.
+    $tipos_validos = ['Agua', 'Crema'];
+    $vasos_validos = ['Cucurucho', 'Plastico'];
+    if (!Helado::VerificarTipo($tipo, $tipos_validos) || !Helado::VerificarVaso($vaso, $vasos_validos)) {
         echo json_encode(['error' => 'ERROR: Tipo o Vaso invalido']);
         exit;
     }
 
-    // Verificar si se ha subido una imagen
-    if (isset($_FILES['imagen'])) {
-        $imagen = $_FILES['imagen'];
-        $imagenNombre = $sabor . '_' . $tipo . '.jpg';
-        $imagenPath = $imageDir . $imagenNombre;
-
-        // Guardar la imagen en el directorio de imágenes
-        if (move_uploaded_file($imagen['tmp_name'], $imagenPath)) {
-            echo "Imagen subida con exito.\n";
-        } else {
-            echo json_encode(['error' => 'ERROR: Error al subir la imagen']);
-            exit;
-        }
-    } else {
-        echo json_encode(['error' => 'ERROR: Imagen no proporcionada']);
+    // Guardar la imagen en el directorio de imágenes
+    if(Helado::GuardarImagen($imagen, $sabor, $tipo, $imageDir)) {
+        echo json_encode(['succes' => 'Imagen subida con exito.']);
+    }else{
+        echo json_encode(['error' => 'ERROR: Error al subir la imagen']);
         exit;
     }
 
@@ -43,18 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data = [];
     }
 
-    // Emular ID autoincremental
-    $newId = count($data) > 0 ? end($data)['id'] + 1 : 1;
+    $id = Helado::GenerarID($data);
 
     // Verificar si el helado ya existe, chequeando que sea el mismo sabor y tipo
-    $found = false;
-    foreach ($data as &$item) {
-        if ($item['sabor'] == $sabor && $item['tipo'] == $tipo) {
-            $item['precio'] = $precio;
-            $item['stock'] += $stock;
-            $found = true;
-            break;
-        }
+    if(Helado::VerificarExistenciaHelado($data, $sabor, $tipo)){
+        Helado::ActualizarHelado($data, $sabor, $tipo, $precio, $stock);
     }
 
     // Si no se encontró el helado, creamos uno nuevo
