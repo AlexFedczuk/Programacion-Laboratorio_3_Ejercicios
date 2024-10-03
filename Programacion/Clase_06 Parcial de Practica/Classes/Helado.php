@@ -132,4 +132,30 @@ class Helado{
 
         return $lista;
     }
+
+    public static function VerificarExistenciaSaborYTipo(array $lista_helados, string $sabor_ingresado, string $tipo_ingresado): void {
+        $saborEncontrado = false;
+        $tipoEncontrado = false;
+
+        foreach($lista_helados as $helado) {
+            if ($helado['sabor'] == $sabor_ingresado) {
+                $saborEncontrado = true;
+                if ($helado['tipo'] == $tipo_ingresado) {
+                    // Si coinciden el sabor y el tipo, retornamos "existe"
+                    // $tipoEncontrado = true; Lo comento porque termina siendo redundante, ya que si existe, no va a ser necesario cambiar el estado de la variable.
+                    echo json_encode(['message' => 'existe']);
+                    exit;
+                }
+            }
+        }
+
+        // Si no encontramos el sabor y tipo juntos, informamos el resultado
+        if (!$saborEncontrado) {
+            echo json_encode(['message' => 'El sabor no existe']);
+        } elseif ($saborEncontrado && !$tipoEncontrado) {
+            echo json_encode(['message' => 'El tipo no coincide con el sabor']);
+        }
+    }
+
+    
 }
