@@ -1,6 +1,7 @@
 <?php
 
 class Helado{
+    private $id;
     private $sabor;
     private $precio;
     private $tipo;
@@ -8,7 +9,8 @@ class Helado{
     private $stock;
     private $imagen_path;
 
-    public function __construct(string $sabor, float $precio, string $tipo, string $vaso, int $stock, string $imagen_path = ""){
+    public function __construct(string $sabor, float $precio, string $tipo, string $vaso, int $stock, string $imagen_path, int $id = null){
+        $this->$id = $id;
         $this->$sabor = $sabor;
         $this->$precio = $precio;
         $this->$tipo = $tipo;
@@ -17,8 +19,36 @@ class Helado{
         $this->$imagen_path = $imagen_path;
     }
 
-    public function SetImagenPath(string $imagen_path): void{
-        $this->imagen_path = $imagen_path;
+    public function getId(): int {
+        return $this->id;
+    }
+
+    public function setId(int $id): void {
+        $this->id = $id;
+    }
+
+    public function getSabor(): string {
+        return $this->sabor;
+    }
+
+    public function getPrecio(): float {
+        return $this->precio;
+    }
+
+    public function getTipo(): string {
+        return $this->tipo;
+    }
+
+    public function getVaso(): string {
+        return $this->vaso;
+    }
+
+    public function getStock(): int {
+        return $this->stock;
+    }
+
+    public function getImagenPath(): string{
+        return $this->imagen_path;
     }
 
     public static function VerificarTipo(string $tipo, array $tipos_validos): bool{
@@ -37,12 +67,11 @@ class Helado{
         }
     }
 
-    public static function GuardarImagen($imagen, string $sabor, string $tipo, string $imageDir): bool{
-        $imagenNombre = $sabor . '_' . $tipo . '.jpg';
+    public static function GuardarImagenHelado(Helado $helado, string $imageDir): bool{
+        $imagenNombre = $helado->getSabor() . '_' . $helado->getTipo() . '.jpg';
         $imagenPath = $imageDir . $imagenNombre;
 
-        // Guardar la imagen en el directorio de imágenes
-        if (move_uploaded_file($imagen['tmp_name'], $imagenPath)) {
+        if (move_uploaded_file($helado->getImagenPath(), $imagenPath)) {
             return true;
         } else {
             return false;
@@ -59,10 +88,10 @@ class Helado{
         return $id;
     }
 
-    public static function VerificarExistenciaHelado(array $lista, string $sabor, string $tipo): bool{
+    public static function VerificarExistenciaHelado(array $lista, Helado $helado): bool{
         $result = false;
         foreach ($lista as &$item) {
-            if ($item['sabor'] == $sabor && $item['tipo'] == $tipo) {
+            if ($item['sabor'] == $helado->getSabor() && $item['tipo'] == $helado->getTipo()) {
                 $result = true;
                 break;
             }
@@ -71,17 +100,32 @@ class Helado{
         return $result;
     }
 
-    public static function ActualizarHelado(array $lista, string $sabor, string $tipo, string $precio, string $stock): bool{
+    public static function ActualizarHelado(array $lista, Helado $helado): bool{
         $result = false;
         foreach ($lista as &$item) {
-            if ($item['sabor'] == $sabor && $item['tipo'] == $tipo) {
-                $item['precio'] = $precio;
-                $item['stock'] += $stock;
+            if ($item['sabor'] == $helado->getSabor() && $item['tipo'] == $helado->getTipo()) {
+                $item['precio'] = $helado->getPrecio();
+                $item['stock'] += $helado->getStock();
                 $result = true;
                 break;
             }
         }
 
         return $result;
+    }
+
+    public static function Alta(array $lista, Helado $helado): array{
+        $helado = [
+            'id' => $helado->getId(),
+            'sabor' => $helado->getSabor(),
+            'precio' => $helado->getPrecio(),
+            'tipo' => $helado->getTipo(),
+            'vaso' => $helado->getVaso(),
+            'stock' => $helado->getStock(),
+            'imagen' => $helado->getImagenPath()
+        ];
+        $lista[] = $helado;
+
+        return $lista;
     }
 }

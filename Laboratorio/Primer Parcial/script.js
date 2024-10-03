@@ -1,242 +1,163 @@
-const data = [
-    {"id": 1, "nombre": "Marcelo", "apellido": "Luque", "edad": 45, "ventas": 15000, "sueldo": 2000},
-    {"id": 2, "nombre": "Ramiro", "apellido": "Escobar", "edad": 35, "ventas": 6000, "sueldo": 1000},
-    {"id": 3, "nombre": "Facundo", "apellido": "Cairo", "edad": 30, "ventas": 500, "sueldo": 15000},
-    {"id": 4, "nombre": "Fernando", "apellido": "Nieto", "edad": 18, "compras": 8000, "telefono": "152111131"},
-    {"id": 5, "nombre": "Manuel", "apellido": "Loza", "edad": 20, "compras": 50000, "telefono": "42040077"},
-    {"id": 666, "nombre": "Nicolas", "apellido": "Serrano", "edad": 23, "compras": 7000, "telefono": "1813181563"}
-];
+import { Terrestre } from './classTerrestre.js';
+import { Aereo } from './classAereo.js';
 
-function filtrarDatos() {
-    const filterValue = document.getElementById("filter").value;
-    const tableBody = document.getElementById("data-table-body");
-    tableBody.innerHTML = ""; // Limpiar la tabla antes de llenarla
+document.addEventListener('DOMContentLoaded', () => {
+    const jsonString = '[{"id":14, "modelo":"Ferrari F100", "anoFab":1998, "velMax":400, "cantPue":2, "cantRue":4},{"id":51, "modelo":"Dodge Viper", "anoFab":1991, "velMax":266, "cantPue":2, "cantRue":4},{"id":67, "modelo":"Boeing CH-47 Chinook", "anoFab":1962, "velMax":302, "altMax":6, "autonomia":1200},{"id":666, "modelo":"Aprilia RSV 1000 R", "anoFab":2004, "velMax":280, "cantPue":0, "cantRue":2},{"id":872, "modelo":"Boeing 747-400", "anoFab":1989, "velMax":988, "altMax":13, "autonomia":13450},{"id":742, "modelo":"Cessna CH-1 SkyhookR", "anoFab":1953, "velMax":174, "altMax":3, "autonomia":870}]';
+    const vehiculosData = JSON.parse(jsonString);
+    const vehiculos = [];
 
-    const filteredData = data.filter(item => {
-        if (filterValue === "Todos") return true;
-        if (filterValue === "Empleados") return item.sueldo !== undefined; // Cambia la condición según tus datos
-        if (filterValue === "Clientes") return item.telefono !== undefined; // Cambia la condición según tus datos
+    vehiculosData.forEach(data => {
+        try {
+            if (data.altMax !== undefined && data.autonomia !== undefined) {
+                const aereo = new Aereo(data.id, data.modelo, data.anoFab, data.velMax, data.altMax, data.autonomia);
+                vehiculos.push(aereo);
+            } else if (data.cantPue !== undefined && data.cantRue !== undefined) {
+                const terrestre = new Terrestre(data.id, data.modelo, data.anoFab, data.velMax, data.cantPue, data.cantRue);
+                vehiculos.push(terrestre);
+            }
+        } catch (error) {
+            console.error(`Error: Hubo un problema al crear vehículo: ${error.message}`);
+        }
     });
 
-    filteredData.forEach(item => {
-        const row = document.createElement("tr");
-        if (item.sueldo !== undefined) {
+    const dataTableBody = document.querySelector('#data-table tbody');
+
+    function mostrarDatos(vehiculosFiltrados) {
+        dataTableBody.innerHTML = '';
+
+        vehiculosFiltrados.forEach(vehiculo => {
+            const row = document.createElement('tr');
             row.innerHTML = `
-                <td data-column="id">${item.id}</td>
-                <td data-column="nombre">${item.nombre}</td>
-                <td data-column="apellido">${item.apellido}</td>
-                <td data-column="edad">${item.edad}</td>
-                <td data-column="sueldo">${item.sueldo}</td>
-                <td data-column="ventas">${item.ventas}</td>
+                <td>${vehiculo.id}</td>
+                <td>${vehiculo.modelo}</td>
+                <td>${vehiculo.anoFab}</td>
+                <td>${vehiculo.velMax}</td>
+                <td>${vehiculo.altMax !== undefined ? vehiculo.altMax : '--'}</td>
+                <td>${vehiculo.autonomia !== undefined ? vehiculo.autonomia : '--'}</td>
+                <td>${vehiculo.cantPue !== undefined ? vehiculo.cantPue : '--'}</td>
+                <td>${vehiculo.cantRue !== undefined ? vehiculo.cantRue : '--'}</td>
             `;
+
+            // Agregar evento de doble clic en la fila de la tabla
+            row.addEventListener('dblclick', () => {
+                cargarDatosEnFormulario(vehiculo);
+                mostrarFormulario('formABM');
+            });
+
+            dataTableBody.appendChild(row);
+        });
+
+        // Inicializar el campo de promedio vacío al cargar
+        document.getElementById('promedioVelocidad').value = '';
+    }
+
+    function cargarDatosEnFormulario(vehiculo) {
+        document.getElementById('modelo').value = vehiculo.modelo;
+        document.getElementById('anoFab').value = vehiculo.anoFab;
+        document.getElementById('velMax').value = vehiculo.velMax;
+
+        // Cargar propiedades específicas según el tipo de vehículo
+        if (vehiculo instanceof Aereo) {
+            document.getElementById('altMax').value = vehiculo.altMax;
+            document.getElementById('autonomia').value = vehiculo.autonomia;
+            document.getElementById('cantPue').value = '';
+            document.getElementById('cantRue').value = '';
+        } else if (vehiculo instanceof Terrestre) {
+            document.getElementById('cantPue').value = vehiculo.cantPue;
+            document.getElementById('cantRue').value = vehiculo.cantRue;
+            document.getElementById('altMax').value = '';
+            document.getElementById('autonomia').value = '';
+        }
+
+        // Ocultar el botón "Agregar"
+        document.getElementById('agregarBtn').style.display = 'none';
+    }
+
+    function mostrarFormulario(formularioId) {
+        document.getElementById('formABM').style.display = formularioId === 'formABM' ? 'block' : 'none';
+        document.getElementById('formDatos').style.display = formularioId === 'formDatos' ? 'block' : 'none';
+    }
+
+    function filtrarDatos(tipo) {
+        let vehiculosFiltrados;
+        if (tipo === 'Todos') {
+            vehiculosFiltrados = vehiculos;
         } else {
-            row.innerHTML = `
-                <td data-column="id">${item.id}</td>
-                <td data-column="nombre">${item.nombre}</td>
-                <td data-column="apellido">${item.apellido}</td>
-                <td data-column="edad">${item.edad}</td>
-                <td data-column="compras">${item.compras}</td>
-                <td data-column="telefono">${item.telefono}</td>
-            `;
+            vehiculosFiltrados = vehiculos.filter(vehiculo => {
+                if (tipo === 'Terrestres') {
+                    return vehiculo instanceof Terrestre;
+                } else if (tipo === 'Aereos') {
+                    return vehiculo instanceof Aereo;
+                }
+                return false;
+            });
         }
+        mostrarDatos(vehiculosFiltrados);
+    }
+
+    document.getElementById('filtro').addEventListener('change', (event) => {
+        filtrarDatos(event.target.value);
+    });
+
+    // Función para ordenar la tabla
+    function ordenarTabla(index) {
+        const ordenado = vehiculos.map(vehiculo => ({ ...vehiculo })) // Copia los objetos
+            .sort((a, b) => {
+                const aValue = Object.values(a)[index];
+                const bValue = Object.values(b)[index];
+
+                // Manejo de valores no definidos
+                if (aValue === undefined) return 1;
+                if (bValue === undefined) return -1;
+                
+                // Comparación
+                return aValue > bValue ? 1 : -1;
+            });
+        vehiculos.length = 0; // Limpiar el array original
+        vehiculos.push(...ordenado); // Copiar los vehículos ordenados al array original
+        mostrarDatos(vehiculos); // Actualizar la tabla
+    }
+
+    // Evento para los encabezados de la tabla
+    document.querySelectorAll('#data-table th').forEach((header, index) => {
+        header.addEventListener('click', () => ordenarTabla(index));
+    });
+
+    // Mostrar todos los datos al cargar la página
+    mostrarDatos(vehiculos);
+
+    document.getElementById('calcularBtn').addEventListener('click', () => {
+        const selectedFilter = document.getElementById('filtro').value;
+        const filteredVehiculos = vehiculos.filter(vehiculo => {
+            if (selectedFilter === 'Todos') return true;
+            if (selectedFilter === 'Terrestres' && vehiculo instanceof Terrestre) return true;
+            if (selectedFilter === 'Aereos' && vehiculo instanceof Aereo) return true;
+            return false;
+        });
+
+        // Extraer las velocidades máximas de los vehículos filtrados
+        const velocidadesMaximas = filteredVehiculos.map(vehiculo => vehiculo.velMax);
+
+        // Calcular la suma de las velocidades máximas
+        const sumaVelocidades = velocidadesMaximas.reduce((acc, velocidad) => acc + velocidad, 0);
+
+        // Calcular el promedio
+        const promedioVelocidad = filteredVehiculos.length > 0 ? (sumaVelocidades / filteredVehiculos.length).toFixed(2) : 0;
+
+        // Mostrar el promedio solo en el input al hacer clic en calcular
+        document.getElementById('promedioVelocidad').value = promedioVelocidad;
+    });
+
+    function limpiarFormulario() {
+        document.getElementById('modelo').value = '';
+        document.getElementById('anoFab').value = '';
+        document.getElementById('velMax').value = '';
+        document.getElementById('altMax').value = ''; // Campo para Aereo
+        document.getElementById('autonomia').value = ''; // Campo para Aereo
+        document.getElementById('cantPue').value = ''; // Campo para Terrestre
+        document.getElementById('cantRue').value = ''; // Campo para Terrestre
         
-        tableBody.appendChild(row);
-    });
-}
-
-// Función para filtrar columnas según los checkboxes
-function filtrarColumnas() {
-    // Obtenemos los estados de los checkboxes
-    const mostrarId = document.querySelector('#checkbox-id').checked;
-    const mostrarNombre = document.querySelector('#checkbox-nombre').checked;
-    const mostrarApellido = document.querySelector('#checkbox-apellido').checked;
-    const mostrarEdad = document.querySelector('#checkbox-edad').checked;
-    const mostrarSueldo = document.querySelector('#checkbox-sueldo').checked;
-    const mostrarVentas = document.querySelector('#checkbox-ventas').checked;
-    const mostrarCompras = document.querySelector('#checkbox-compras').checked;
-    const mostrarTelefono = document.querySelector('#checkbox-telefono').checked;
-
-    // Obtener todas las celdas del encabezado (th) y las filas (td)
-    const ths = document.querySelectorAll('th');
-    const tds = document.querySelectorAll('td');
-
-    // Mostrar u ocultar según el checkbox
-    ths.forEach(th => {
-        switch (th.getAttribute('data-column')) {
-            case 'id':
-                th.style.display = mostrarId ? '' : 'none';
-                break;
-            case 'nombre':
-                th.style.display = mostrarNombre ? '' : 'none';
-                break;
-            case 'apellido':
-                th.style.display = mostrarApellido ? '' : 'none';
-                break;
-            case 'edad':
-                th.style.display = mostrarEdad ? '' : 'none';
-                break;
-            case 'sueldo':
-                th.style.display = mostrarSueldo ? '' : 'none';
-                break;
-            case 'ventas':
-                th.style.display = mostrarVentas ? '' : 'none';
-                break;
-            case 'compras':
-                th.style.display = mostrarCompras ? '' : 'none';
-                break;
-            case 'telefono':
-                th.style.display = mostrarTelefono ? '' : 'none';
-                break;
-        }
-    });
-
-    // Lo mismo para las celdas de las filas (td)
-    tds.forEach(td => {
-        switch (td.getAttribute('data-column')) {
-            case 'id':
-                td.style.display = mostrarId ? '' : 'none';
-                break;
-            case 'nombre':
-                td.style.display = mostrarNombre ? '' : 'none';
-                break;
-            case 'apellido':
-                td.style.display = mostrarApellido ? '' : 'none';
-                break;
-            case 'edad':
-                td.style.display = mostrarEdad ? '' : 'none';
-                break;
-            case 'sueldo':
-                td.style.display = mostrarSueldo ? '' : 'none';
-                break;
-            case 'ventas':
-                td.style.display = mostrarVentas ? '' : 'none';
-                break;
-            case 'compras':
-                td.style.display = mostrarCompras ? '' : 'none';
-                break;
-            case 'telefono':
-                td.style.display = mostrarTelefono ? '' : 'none';
-                break;
-        }
-    });
-}
-
-function calcularEdadPromedio() {
-    // Obtén las filas de la tabla
-    const rows = document.querySelectorAll("#data-table-body tr");
-    let totalEdad = 0;
-    let count = 0;
-
-    // Recorre las filas para calcular la edad promedio
-    rows.forEach(row => {
-        const edad = parseInt(row.cells[3].innerText); // Asumiendo que la edad está en la cuarta columna (índice 3)
-        if (!isNaN(edad)) {
-            totalEdad += edad;
-            count++;
-        }
-    });
-
-    // Calcula la edad promedio
-    const promedio = count > 0 ? (totalEdad / count).toFixed(2) : 0;
-
-    // Muestra el resultado en el input correspondiente
-    document.getElementById("promedio").value = promedio;
-}
-
-// Función para cargar la tabla con los datos
-function loadTableData() {
-    const tableBody = document.getElementById("data-table-body");
-    tableBody.innerHTML = ""; // Limpiar la tabla antes de llenarla
-    
-    data.forEach(item => {
-        let ventas = item.ventas !== undefined ? item.ventas : "--";
-        let compras = item.compras !== undefined ? item.compras : "--";
-        let sueldo = item.sueldo !== undefined ? item.sueldo : "--";
-        let telefono = item.telefono !== undefined ? item.telefono : "--";
-
-        // Crear una fila
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td data-column="id">${item.id}</td>
-            <td data-column="nombre">${item.nombre}</td>
-            <td data-column="apellido">${item.apellido}</td>
-            <td data-column="edad">${item.edad}</td>
-            <td data-column="sueldo">${sueldo}</td>
-            <td data-column="ventas">${ventas}</td>
-            <td data-column="compras">${compras}</td>
-            <td data-column="telefono">${telefono}</td>
-        `;
-        tableBody.appendChild(row);
-    });
-
-    filtrarDatos();
-    filtrarColumnas(); // Aseguramos que las columnas se filtren al cargar los datos    
-}
-
-window.onload = function() {
-    loadTableData();
-};
-
-document.addEventListener("DOMContentLoaded", function() {
-    const dataTableBody = document.getElementById('data-table-body');
-    const formDatos = document.querySelector('.form-datos');
-    const formABM = document.querySelector('.form-abm');
-    const aceptarBtn = formABM.querySelector('input[value="Aceptar"]');
-    const cancelarBtn = formABM.querySelector('input[value="Cancelar"]');
-
-    // Evento para cada fila de la tabla
-    dataTableBody.addEventListener('dblclick', function(e) {
-        const row = e.target.closest('tr');
-        if (row) {
-            const cells = row.querySelectorAll('td');
-            const data = Array.from(cells).map(cell => cell.textContent);
-
-            // Rellenar el formulario ABM con los datos de la fila
-            document.getElementById('id').value = data[0]; // ID
-            document.getElementById('atributo1').value = data[1]; // Nombre
-            document.getElementById('atributo2').value = data[2]; // Apellido
-            document.getElementById('atributo3').value = data[3]; // Edad (u otro)
-
-            // Ocultar el Form Datos y mostrar el Formulario ABM
-            formDatos.style.display = 'none';
-            formABM.style.display = 'block';
-
-            // Ocultar botones (puedes personalizar cuál ocultar)
-            aceptarBtn.style.display = 'inline';
-            cancelarBtn.style.display = 'inline';
-        }
-    });
-
-    // Evento para el botón "Agregar"
-    document.querySelector('input[value="Agregar"]').addEventListener('click', function() {
-        // Limpiar el formulario ABM
-        document.getElementById('id').value = '';
-        document.getElementById('atributo1').value = '';
-        document.getElementById('atributo2').value = '';
-        document.getElementById('atributo3').value = '';
-
-        // Ocultar el Form Datos y mostrar el Formulario ABM
-        formDatos.style.display = 'none';
-        formABM.style.display = 'block';
-
-        // Mostrar botones para agregar
-        aceptarBtn.style.display = 'inline';
-        cancelarBtn.style.display = 'inline';
-    });
-
-    // Evento para el botón "Cancelar"
-    cancelarBtn.addEventListener('click', function() {
-        formABM.style.display = 'none';
-        formDatos.style.display = 'block';
-    });
+        // Mostrar el botón "Agregar" al limpiar el formulario
+        document.getElementById('agregarBtn').style.display = 'block';
+    }
 });
-
-function mostrarABM() {
-    document.querySelector('.form-datos').style.display = 'none';
-    document.querySelector('.form-abm').style.display = 'block';
-}
-
-function ocultarABM() {
-    document.querySelector('.form-abm').style.display = 'none';
-    document.querySelector('.form-datos').style.display = 'block';
-}

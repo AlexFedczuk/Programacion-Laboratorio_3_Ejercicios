@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+label {
+    width: 30%;
+    margin-right: 10px;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+    width: 65%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+.filter-container {
+    margin-bottom: 20px;
+}
+
+.filter-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+table {
+    width: 100%; /* Ocupa el ancho total */
+    border-collapse: collapse; /* Elimina el espacio entre las celdas */
+    margin-top: 20px; /* Margen superior */
+}
+
+th, td {
+    border: 1px solid #ccc; /* Bordes alrededor de las celdas */
+    padding: 8px; /* Espaciado interno */
+    text-align: left; /* Alineación de texto a la izquierda */
+}
+
+th {
+    background-color: #f2f2f2; /* Color de fondo para los encabezados */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Color de fondo para filas pares */
+}
+
+tr:hover {
+    background-color: #e0e0e0; /* Color al pasar el mouse sobre la fila */
+}

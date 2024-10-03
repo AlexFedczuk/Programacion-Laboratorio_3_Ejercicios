@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios de Vehículos</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <h1>Registro de Vehículos</h1>
+
+    <div class="form-container filter-container" id="formDatos">
+        <h2>Form Datos</h2>
+
+        <label for="filtro">Filtrar Por:</label>
+        <select id="filtro" aria-label="Filtrar por tipo de vehículo"> 
+            <option value="Todos">Todos</option>
+            <option value="Aereos">Aéreos</option> 
+            <option value="Terrestres">Terrestres</option>
+        </select> 
+
+        <div>
+            <p>Selecciona los campos a mostrar:</p> 
+            <label><input type="checkbox" checked> ID</label>
+            <label><input type="checkbox" checked> Modelo</label>
+            <label><input type="checkbox" checked> Año Fabricación</label>
+            <label><input type="checkbox" checked> Velocidad Máxima</label>
+            <label><input type="checkbox" checked> Altura Máxima</label>
+            <label><input type="checkbox" checked> Autonomía</label>
+            <label><input type="checkbox" checked> Cantidad Puertas</label>
+            <label><input type="checkbox" checked> Cantidad Ruedas</label>
+        </div>
+        
+        <div>
+            <label for="promedioVelocidad">Promedio Velocidad Máxima:</label>
+            <input type="text" id="promedioVelocidad" placeholder="calcular" style="width: 20%;" readonly>
+            <button type="button" id="calcularBtn">Calcular</button>
+        </div>
+
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Modelo</th>
+                    <th>Año Fab.</th>
+                    <th>Vel. Max</th>
+                    <th>Alt. Max</th>
+                    <th>Autonomía</th>
+                    <th>Cant. Puertas</th>
+                    <th>Cant. Ruedas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- La tabla de datos se genera acá. -->
+            </tbody>
+        </table>
+        <input type="button" value="Agregar Vehículo" id="agregarVehiculoBtn">
+    </div>
+
+    <div class="form-container" id="formABM" style="display: none;">
+        <h2>Form ABM</h2>
+        <form id="aereoForm">
+            <div class="form-group">
+                <label for="id">ID:</label>
+                <input type="number" id="id" name="id" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="modelo">Modelo:</label>
+                <input type="text" id="modelo" name="modelo" required>
+            </div>
+            <div class="form-group">
+                <label for="anoFab">Año Fabricación:</label>
+                <input type="number" id="anoFab" name="anoFab" required>
+            </div>
+            <div class="form-group">
+                <label for="velMax">Velocidad Máxima:</label>
+                <input type="number" id="velMax" name="velMax" required>
+            </div>
+            <div class="form-group">
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" name="tipo" required onchange="toggleFields()">
+                    <option value="Aereo">Aéreo</option>
+                    <option value="Terrestre">Terrestre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="altMax">Altura Máxima:</label>
+                <input type="number" id="altMax" name="altMax" placeholder="Solo Aéreos">
+            </div>
+            <div class="form-group">
+                <label for="autonomia">Autonomía:</label>
+                <input type="number" id="autonomia" name="autonomia" placeholder="Solo Aéreos">
+            </div>
+            <div class="form-group">
+                <label for="cantPue">Cantidad Puertas:</label>
+                <input type="number" id="cantPue" name="cantPue" placeholder="Solo Terrestres">
+            </div>
+            <div class="form-group">
+                <label for="cantRue">Cantidad Ruedas:</label>
+                <input type="number" id="cantRue" name="cantRue" placeholder="Solo Terrestres">
+            </div>
+            <div class="form-group">
+                <button type="submit" id="agregarFormularioBtn">Agregar</button>
+                <button type="button" id="modificarFormularioBtn">Modificar</button>
+                <button type="button" id="eliminarFormularioBtn">Eliminar</button>
+                <button type="button" id="cancelarFormularioBtn" onclick="limpiarCampos()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    <script src="script.js" type="module" defer></script>
+</body>
+</html>
