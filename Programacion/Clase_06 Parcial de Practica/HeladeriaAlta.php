@@ -1,7 +1,11 @@
 <?php
 require "./Classes/Helado.php";
+$valores = include 'archivo.php';
+
 $jsonFile = "./Registros/heladeria.json";
-$imageDir = 'ImagenesDeHelados/2024/';
+$imageDir = "./ImagenesDeHelados/2024/";
+$tipos_validos = $valores['tipos_validos'];
+$vasos_validos = $valores['vasos_validos'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sabor = $_POST['sabor'];
@@ -12,57 +16,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imagen = $_FILES['imagen'];
 
     if (empty($sabor) || empty($precio) || empty($tipo) || empty($vaso) || empty($stock) || empty($imagen)) {
-        echo json_encode(['error' => 'ERROR: Faltan datos obligatorios o la imagen.']);
+        echo "ERROR: Faltan datos obligatorios en el body de la petición.\n";
         exit;
     }
 
-    // Verificar si se han ingresado tipo y vaso valido.
-    $tipos_validos = ['Agua', 'Crema'];
-    $vasos_validos = ['Cucurucho', 'Plastico'];
     if (!Helado::VerificarTipo($tipo, $tipos_validos) || !Helado::VerificarVaso($vaso, $vasos_validos)) {
-        echo json_encode(['error' => 'ERROR: Tipo o Vaso invalido']);
+        echo "ERROR: Se ha ingresado Tipo o Vaso invalido.\n";
         exit;
     }
 
-    // Creo un objeto HELADO para las siguientes operaciones.
     $helado_ingresado = new Helado($sabor, $precio, $tipo, $vaso, $stock, $imagen['tmp_name']);
 
     $helado_ingresado->Mostrar();
 
-    // Cargo una variable lista/array con los registros en el archivo JSON.
-    if (file_exists($jsonFile)) {
-        $lista_helados = json_decode(file_get_contents($jsonFile), true);
-    } else {
-        $lista_helados = [];
-        echo "ADVERTENCIA: El archivo '$jsonFile' no existe. Se ha creado un listado de helados vacio.\n";        
+    $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
+    if ($lista_helados == []){
+        echo "ADVERTENCIA: El archivo '$jsonFile' no existe. Se ha creado un listado de helados vacio.\n";
     }
 
-    // Aca se da ALTA o ACTUALIZACION/MODIFICACION.
     if($lista_helados == [] || !Helado::VerificarExistenciaHelado($lista_helados, $helado_ingresado)){
-        // Si el helado NO EXISTE en la lista, se da de ALTA.
         $id = Helado::GenerarID($lista_helados);
         $helado_ingresado->setId($id);
         $lista_helados = Helado::Alta($lista_helados, $helado_ingresado);
     }else{
-        echo "Entro aca\n";
-        // Si el helado EXISTE en la lista, se ACTUALIZA/MODIFICA.
         $lista_helados = Helado::ActualizarHelado($lista_helados, $helado_ingresado);
     }
 
-    // Guardar la imagen en el directorio de imágenes
     if(Helado::GuardarImagenHelado($helado_ingresado, $imageDir)) {
-        echo json_encode(['succes' => 'Imagen subida con exito.']);
+        echo "SUCCES: Se ha subido la imagen con exito.\n";
     }else{
-        echo json_encode(['error' => 'ERROR: Error al subir la imagen']);
+        echo "ERROR: No se ha podido subir la imagen.\n";
         exit;
     }
 
-    // Guardar los datos actualizados en el archivo JSON
-    if (file_put_contents($jsonFile, json_encode($lista_helados, JSON_PRETTY_PRINT))) {
-        echo json_encode(['success' => 'Helado registrado/actualizado con exito']);
-    } else {
-        echo json_encode(['error' => 'ERROR" Error al guardar los datos']);
+    if(Archivo::CargarArrayJSON($jsonFile, $lista_helados)){
+        echo "SUCCES: Helado registrado/actualizado con exito.\n";
+    }else{
+        echo "ERROR: No se han podido guardar los datos.\n";
     }
 } else {
-    echo json_encode(['error' => 'ERROR: Método no permitido']);
+    echo "ERROR: Método de petición no permitido.\n";
 }

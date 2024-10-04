@@ -155,9 +155,9 @@ class Helado{
 
         // Si no encontramos el sabor y tipo juntos, informamos el resultado
         if (!$saborEncontrado) {
-            echo json_encode(['message' => 'El sabor no existe']);
+            echo "ERROR: El sabor no existe.\n";
         } elseif ($saborEncontrado && !$tipoEncontrado) {
-            echo json_encode(['message' => 'El tipo no coincide con el sabor']);
+            echo "ERROR: El tipo no coincide con el sabor.\n";
         }
     }
 
