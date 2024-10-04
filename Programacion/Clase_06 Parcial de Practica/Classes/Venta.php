@@ -63,18 +63,26 @@ class Venta{
         $this->$usuario = $usuario;
     }
 
-    public static function VerificarPosibleVenta(array $lista_helados, string $sabor, string $tipo, int $cantidadVendida): array {
+    public static function VerificarEmail(string $email): bool {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function VerificarPosibleVenta(array $lista_helados, Venta $venta): array {
         $heladoEncontrado = false;
         $stockSuficiente = false;
         $result = [];
 
         foreach ($lista_helados as &$helado) {
-            if ($helado['sabor'] == $sabor && $helado['tipo'] == $tipo) {
+            if ($helado['sabor'] == $venta->getSabor() && $helado['tipo'] == $venta->getTipo()) {
                 $heladoEncontrado = true;
-                if ($helado['stock'] >= $cantidadVendida) {
+                if ($helado['stock'] >= $venta->getCantidadVendida()) {
                     $stockSuficiente = true;
                     // Actualizo el stock. Descuento la cantidad pedida del stock.
-                    $helado['stock'] -= $cantidadVendida;                    
+                    $helado['stock'] -= $venta->getCantidadVendida();                    
                 }
                 break;
             }

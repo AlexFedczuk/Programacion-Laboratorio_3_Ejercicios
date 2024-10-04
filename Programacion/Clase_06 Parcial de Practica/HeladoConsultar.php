@@ -1,5 +1,6 @@
 <?php
 require "./Classes/Archivo.php";
+require "./Classes/Helado.php";
 
 $jsonFile = "./Registros/heladeria.json";
 
@@ -15,5 +16,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     Helado::VerificarExistenciaSaborYTipo($lista_helados, $sabor, $tipo);
 } else {
-    echo json_encode(['error' => 'ERROR: Metodo no permitido']);
+    echo "ERROR: Sabor y tipo son requeridos en el body.\n";
 }

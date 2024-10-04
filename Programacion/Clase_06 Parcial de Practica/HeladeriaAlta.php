@@ -20,14 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    if (!Helado::VerificarTipo($tipo, $tipos_validos) || !Helado::VerificarVaso($vaso, $vasos_validos)) {
-        echo "ERROR: Se ha ingresado Tipo o Vaso invalido.\n";
+    if (!Helado::VerificarTipo($tipo, $tipos_validos)) {
+        echo "ERROR: El TIPO ingresado es invalido.\n";
         exit;
+    }else if(!Helado::VerificarVaso($vaso, $vasos_validos)){
+        echo "ERROR: El VASO ingresado es invalido.\n";
+        exit;        
     }
 
     $helado_ingresado = new Helado($sabor, $precio, $tipo, $vaso, $stock, $imagen['tmp_name']);
-
-    $helado_ingresado->Mostrar();
 
     $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
     if ($lista_helados == []){

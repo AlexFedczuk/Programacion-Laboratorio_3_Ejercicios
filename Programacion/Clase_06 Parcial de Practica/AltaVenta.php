@@ -22,9 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "ERROR: Faltan datos obligatorios en el body.\n";
         exit;
     }
-
-    if (!Helado::VerificarTipo($tipo, $tipos_validos) || !Helado::VerificarVaso($vaso, $vasos_validos)) {
-        echo "ERROR: Tipo o Vaso invalido ingresado.\n";
+    
+    if (!Helado::VerificarTipo($tipo, $tipos_validos)) {
+        echo "ERROR: El TIPO ingresado es invalido.\n";
+        exit;
+    }else if(!Helado::VerificarVaso($vaso, $vasos_validos)){
+        echo "ERROR: El VASO ingresado es invalido.\n";
+        exit;        
+    }else if(!Venta::VerificarEmail($email)) {
+        echo "ERROR: El EMAIL ingresado es invalido.\n";
         exit;
     }
 
@@ -32,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
 
-    $result = Venta::VerificarPosibleVenta($lista_helados, $sabor, $tipo, $cantidadVendida);
+    $result = Venta::VerificarPosibleVenta($lista_helados, $venta_ingresada);
     if ($result[0] && $result[1]){        
         $venta_ingresada->setNumeroPedido(rand(1000, 9999)); // Genero un numero de pedido.
         $venta_ingresada->setFecha(date('Y-m-d H:i:s')); // Su fecha.
@@ -51,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!is_dir($imageDir)) {
         mkdir($imageDir, 0777, true);
+        echo "ADVERTENCIA: El directorio '$imageDir' no existe. Se acaba de crear para poder subir la imagen de la venta.\n";
     }
     
     // Mover la imagen subida a la carpeta especificada.
