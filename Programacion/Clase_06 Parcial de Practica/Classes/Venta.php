@@ -21,7 +21,15 @@ class Venta{
         $this->cantidadVendida = $cantidadVendida;
         $this->numeroPedido = $numeroPedido;
         $this->fecha = $fecha;
-    }   
+    }
+
+    public function getId(): string {
+        if($this->id){
+            return $this->id;
+        }else{
+            return 0;
+        }        
+    }
 
     public function getEmail(): string {
         return $this->email;
@@ -48,7 +56,11 @@ class Venta{
     }
 
     public function getNumeroPedido(): int {
-        return $this->numeroPedido;
+        if($this->numeroPedido){
+            return $this->numeroPedido;
+        }else{
+            return 0;
+        }
     }
 
     public function setNumeroPedido(int $numeroPedido): void {
@@ -88,7 +100,7 @@ class Venta{
             }
         }
 
-        $result = [$heladoEncontrado, $stockSuficiente];
+        $result = [$heladoEncontrado, $stockSuficiente, $lista_helados];
 
         return $result;
     }
@@ -96,4 +108,14 @@ class Venta{
     public static function CrearNombreImagenVenta(Venta $venta, string $usuario): string {
         return $venta->getSabor() . '_' . $venta->getTipo() . '_' . $venta->getVaso() . '_' . $usuario . '_' . date('Ymd_His') . '.jpg';
     }    
+    public function Mostrar(): void {
+        echo "".$this->getId()."\n";
+        echo "".$this->getEmail()."\n";
+        echo "".$this->getSabor()."\n";
+        echo "".$this->getTipo()."\n";
+        echo "".$this->getVaso()."\n";
+        echo "".$this->getCantidadVendida()."\n";
+        echo "".$this->getNumeroPedido()."\n";
+        echo "".$this->getFecha()."\n\n";
+    }
 }

@@ -2,11 +2,12 @@
 require "./Classes/Helado.php";
 require "./Classes/Venta.php";
 require "./Classes/DataBase.php";
+require "./Classes/Archivo.php";
 $valores = include "./Registros/opciones_validas.php";
 
 $config = require "./db/config.php";
 $jsonFile = "./Registros/heladeria.json";
-$imageDir = "./ImagenesDeHelados/2024/";
+$imageDir = "./ImagenesDeLaVenta/2024/";
 $tipos_validos = $valores['tipos_validos'];
 $vasos_validos = $valores['vasos_validos'];
 
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "ERROR: Faltan datos obligatorios en el body.\n";
         exit;
     }
-    
+
     if (!Helado::VerificarTipo($tipo, $tipos_validos)) {
         echo "ERROR: El TIPO ingresado es invalido.\n";
         exit;
@@ -39,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
 
     $result = Venta::VerificarPosibleVenta($lista_helados, $venta_ingresada);
-    if ($result[0] && $result[1]){        
+    $lista_helados = $result[2];
+    if ($result[0] && $result[1]){  
         $venta_ingresada->setNumeroPedido(rand(1000, 9999)); // Genero un numero de pedido.
         $venta_ingresada->setFecha(date('Y-m-d H:i:s')); // Su fecha.
         $usuario = explode('@', $venta_ingresada->getEmail())[0]; // Obtengo la parte del email (nombre/usuario) antes del '@'.        
@@ -53,7 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "ERROR: Stock insuficiente.\n";
             exit;
         }
-    }    
+    }
+    
+    $venta_ingresada->Mostrar();
 
     if (!is_dir($imageDir)) {
         mkdir($imageDir, 0777, true);
@@ -73,6 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $db = $database->getConnection();
 
     if($db){
+        $fecha = $venta_ingresada->getFecha();
+        $numeroPedido = $venta_ingresada->getNumeroPedido();
         // Preparar la consulta para insertar la venta en la base de datos
         $stmt = $db->prepare("INSERT INTO ventas (email, sabor, tipo, cantidad, fecha, numero_pedido) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssiss", $email, $sabor, $tipo, $cantidadVendida, $fecha, $numeroPedido);
