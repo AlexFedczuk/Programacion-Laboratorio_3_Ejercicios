@@ -52,15 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!is_dir($imageDir)) {
         mkdir($imageDir, 0777, true);
-
-        // Mover la imagen subida a la carpeta especificada.
-        if (move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
-            echo "Imagen subida con exito.\n";
-        } else {
-            echo json_encode(['error' => 'ERROR: Error al subir la imagen.']);
-            exit;
-        }
-    }    
+    }
+    
+    // Mover la imagen subida a la carpeta especificada.
+    if (move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
+        echo "Imagen subida con exito.\n";
+    } else {
+        echo json_encode(['error' => 'ERROR: Error al subir la imagen.']);
+        exit;
+    }
 
     // Se realiza la conexion a la DB
     $database = new Database($config);

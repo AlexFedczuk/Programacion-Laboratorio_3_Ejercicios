@@ -13,12 +13,12 @@ class Venta{
     private $fecha;
 
     public function __construct(string $email, string $sabor, string $tipo, string $vaso, int $cantidadVendida, int $numeroPedido = null, string $fecha = "", int $id = null){
-        $this->$id = $id;
-        $this->$email = $email;
-        $this->$sabor = $sabor;
-        $this->$tipo = $tipo;
-        $this->$vaso = $vaso;
-        $this->$cantidadVendida = $cantidadVendida;
+        $this->id = $id;
+        $this->email = $email;
+        $this->sabor = $sabor;
+        $this->tipo = $tipo;
+        $this->vaso = $vaso;
+        $this->cantidadVendida = $cantidadVendida;
         $this->numeroPedido = $numeroPedido;
         $this->fecha = $fecha;
     }   

@@ -10,13 +10,13 @@ class Helado{
     private $imagen_path;
 
     public function __construct(string $sabor, float $precio, string $tipo, string $vaso, int $stock, string $imagen_path, int $id = null){
-        $this->$id = $id;
-        $this->$sabor = $sabor;
-        $this->$precio = $precio;
-        $this->$tipo = $tipo;
-        $this->$vaso = $vaso;
-        $this->$stock = $stock;
-        $this->$imagen_path = $imagen_path;
+        $this->id = $id;
+        $this->sabor = $sabor;
+        $this->precio = $precio;
+        $this->tipo = $tipo;
+        $this->vaso = $vaso;
+        $this->stock = $stock;
+        $this->imagen_path = $imagen_path;
     }
 
     public function getId(): int {
@@ -68,25 +68,26 @@ class Helado{
     }
 
     public static function GuardarImagenHelado(Helado $helado, string $imageDir): bool{
+        $result = false;
         if (!is_dir($imageDir)) {
-            mkdir($imageDir, 0777, true);
+            mkdir($imageDir, 0777, true);     
+        }
 
-            $imagenNombre = $helado->getSabor() . '_' . $helado->getTipo() . '.jpg';
-            $imagenPath = $imageDir . $imagenNombre;
+        $imagenNombre = $helado->getSabor() . '_' . $helado->getTipo() . '.jpg';
+        $imagenPath = $imageDir . $imagenNombre;
 
-            if (move_uploaded_file($helado->getImagenPath(), $imagenPath)) {
-                return true;
-            } else {
-                return false;
-            }
-        }        
+        if (move_uploaded_file($helado->getImagenPath(), $imagenPath)) {
+            $result = true;
+        }
+        
+        return $result;
     }
 
-    public static function GenerarID(array $lista): int{
-        if($lista !== []){
-            $id = count($lista) > 0 ? end($lista)['id'] + 1 : 1;
-        }else{
+    public static function GenerarID($lista): int{
+        if($lista == []){
             $id = 1;
+        }else{
+            $id = count($lista) > 0 ? end($lista)['id'] + 1 : 1;   
         }        
 
         return $id;
@@ -104,8 +105,9 @@ class Helado{
         return $result;
     }
 
-    public static function ActualizarHelado(array $lista, Helado $helado): bool{
-        $result = false;
+    public static function ActualizarHelado(array $lista, Helado $helado): array{
+        $result = [];
+        
         foreach ($lista as &$item) {
             if ($item['sabor'] == $helado->getSabor() && $item['tipo'] == $helado->getTipo()) {
                 $item['precio'] = $helado->getPrecio();
@@ -114,11 +116,13 @@ class Helado{
                 break;
             }
         }
+        $result = $lista;
 
         return $result;
     }
 
-    public static function Alta(array $lista, Helado $helado): array{
+    public static function Alta($lista, Helado $helado): array{
+        echo $helado;
         $helado = [
             'id' => $helado->getId(),
             'sabor' => $helado->getSabor(),
@@ -157,5 +161,17 @@ class Helado{
         }
     }
 
+    public function Mostrar(): void {
+        //echo "".$this->getId()."\n";
+        echo "".$this->getSabor()."\n";
+        echo "".$this->getPrecio()."\n";
+        echo "".$this->getTipo()."\n";
+        echo "".$this->getVaso()."\n";
+        echo "".$this->getStock()."\n";
+        echo "".$this->getImagenPath()."\n";
+    }
     
+    public function __toString() {
+        return "Helado: Sabor={".$this->getSabor()."}, Precio={$this->precio}, Tipo={$this->tipo}, Vaso={$this->vaso}, Stock={$this->stock}, Imagen={$this->imagen_path}";
+    }
 }

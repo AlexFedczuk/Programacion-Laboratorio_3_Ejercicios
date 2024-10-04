@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "sabor": "Chocolate",
+        "precio": 120,
+        "tipo": "Crema",
+        "vaso": "Cucurucho",
+        "stock": 130,
+        "imagen": "C:\\xampp\\tmp\\php2C4A.tmp"
+    },
+    {
+        "id": 2,
+        "sabor": "Frutilla",
+        "precio": 100,
+        "tipo": "Crema",
+        "vaso": "Cucurucho",
+        "stock": 50,
+        "imagen": "C:\\xampp\\tmp\\phpA3B7.tmp"
+    },
+    {
+        "id": 3,
+        "sabor": "Vainilla",
+        "precio": 90,
+        "tipo": "Crema",
+        "vaso": "Plastico",
+        "stock": 10,
+        "imagen": "C:\\xampp\\tmp\\phpAB39.tmp"
+    }
+]
