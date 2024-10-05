@@ -24,7 +24,7 @@ switch ($method) {
         }
         break;
     case 'PUT':
-        echo "Has enviado una peticion con el metodo PUT. En desarrollo...";
+        require 'ModificarVenta.php';
         break;
     case 'DELETE':
         echo "Has enviado una peticion con el metodo DELETE. En desarrollo...";

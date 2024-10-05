@@ -5,7 +5,6 @@ $config = require "./db/config.php";
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $accion = isset($_GET['accion']) ? $_GET['accion'] : null;
 
-
     $database = new Database($config);
     $db = $database->getConnection();
 
