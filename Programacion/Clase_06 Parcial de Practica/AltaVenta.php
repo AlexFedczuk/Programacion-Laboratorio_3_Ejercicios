@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!$result[0]) {
             echo "ERROR: El helado no existe.\n";
             exit;
-        }else if (!$$result[1]) {
+        }else if (!$result[1]) {
             echo "ERROR: Stock insuficiente.\n";
             exit;
         }
