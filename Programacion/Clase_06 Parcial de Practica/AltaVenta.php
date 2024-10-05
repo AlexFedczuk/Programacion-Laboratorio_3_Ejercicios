@@ -95,10 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "ERROR: Error al registrar la venta en la base de datos.\n";
         }
     }
-    
-    // Se cierra la conexion
-    $stmt->close();
-    $db->close();
+        
+    Database::closeConnection($db, $stmt);
 } else {
     echo "ERROR: Metodo no permitido.\n";
 }

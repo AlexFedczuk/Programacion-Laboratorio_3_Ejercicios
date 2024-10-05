@@ -3,7 +3,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
-        echo "Has enviado una peticion con el metodo GET. En desarrollo...";
+        require 'ConsultasVentas.php';
         break;
     case 'POST':
         // Obtengo el valor de 'action' para determinar qué operación se desea realizar.
