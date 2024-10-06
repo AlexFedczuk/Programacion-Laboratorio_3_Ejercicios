@@ -6,7 +6,6 @@ switch ($method) {
         require 'ConsultasVentas.php';
         break;
     case 'POST':
-        // Obtengo el valor de 'action' para determinar qué operación se desea realizar.
         $action = isset($_POST['action']) && !empty($_POST['action']) ? $_POST['action'] : null;
         switch ($action) {
             case 'altaHelado':
