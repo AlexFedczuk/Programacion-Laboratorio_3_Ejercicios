@@ -58,8 +58,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } else {
     echo "ERROR: Metodo no permitido.\n";
 }
-
-
-
-
-

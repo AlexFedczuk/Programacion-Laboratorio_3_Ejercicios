@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         exit;
     }
 
-    // Descargar la lista de helados
     $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
 
     // Verificar si el número de pedido existe en la base de datos
@@ -49,12 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // El pedido existe, actualizamos la venta
         $stmt = $db->prepare("UPDATE ventas SET email = ?, sabor = ?, tipo = ?, cantidad = ?, vaso = ? WHERE numero_pedido = ?");
         $stmt->bind_param("sssisi", $email, $sabor, $tipo, $cantidad, $vaso, $numeroPedido);
 
         if ($stmt->execute()) {
-            // Actualizamos el archivo JSON (stock)
             $result = Venta::VerificarPosibleVenta($lista_helados, new Venta($email, $sabor, $tipo, $vaso, $cantidad));
             if (file_put_contents($jsonFile, json_encode($result[2], JSON_PRETTY_PRINT))) {
                 echo "VENTA MODIFICADA: El pedido numero $numeroPedido ha sido modificado correctamente.\n";
