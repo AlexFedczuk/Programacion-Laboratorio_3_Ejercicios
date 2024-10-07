@@ -41,27 +41,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
     $db = Database::getDB($config);
 
-    $stmt = $db->prepare("SELECT * FROM ventas WHERE numero_pedido = ?");
-    $stmt->bind_param("i", $numeroPedido);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $queryVerificar = "SELECT * FROM ventas WHERE numero_pedido = ?";
+    $result = Database::Consultar($db, $queryVerificar, [$numeroPedido], "i");
 
-    if ($result->num_rows > 0) {
-        $stmt = $db->prepare("UPDATE ventas SET email = ?, sabor = ?, tipo = ?, cantidad = ?, vaso = ? WHERE numero_pedido = ?");
-        $stmt->bind_param("sssisi", $email, $sabor, $tipo, $cantidad, $vaso, $numeroPedido);
+    if (count($result) > 0) {
+        $queryActualizar = "UPDATE ventas SET email = ?, sabor = ?, tipo = ?, cantidad = ?, vaso = ? WHERE numero_pedido = ?";
+        $paramsActualizar = [$email, $sabor, $tipo, $cantidad, $vaso, $numeroPedido];
 
-        if ($stmt->execute()) {
-            $result = Venta::VerificarPosibleVenta($lista_helados, new Venta($email, $sabor, $tipo, $vaso, $cantidad));
-            if (file_put_contents($jsonFile, json_encode($result[2], JSON_PRETTY_PRINT))) {
-                echo "VENTA MODIFICADA: El pedido numero $numeroPedido ha sido modificado correctamente.\n";
+        $resultado = Database::Actualizar($db, $queryActualizar, $paramsActualizar, "sssisi");
+
+        if ($resultado === true) {
+            $resultVenta = Venta::VerificarPosibleVenta($lista_helados, new Venta($email, $sabor, $tipo, $vaso, $cantidad));
+            if (file_put_contents($jsonFile, json_encode($resultVenta[2], JSON_PRETTY_PRINT))) {
+                echo "VENTA MODIFICADA: El pedido número $numeroPedido ha sido modificado correctamente.\n";
             } else {
                 echo "ERROR: No se pudo actualizar el archivo JSON.\n";
             }
         } else {
-            echo "ERROR: No se pudo modificar el pedido en la base de datos.\n";
+            echo "ERROR: No se pudo modificar el pedido en la base de datos. Detalle: $resultado\n";
         }
     } else {
-        echo "ERROR: No existe un pedido con el numero $numeroPedido.\n";
+        echo "ERROR: No existe un pedido con el número $numeroPedido.\n";
     }
 
     Database::closeConnection($db, $stmt);
