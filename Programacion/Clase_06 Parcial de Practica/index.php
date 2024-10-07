@@ -17,6 +17,8 @@ switch ($method) {
             case 'altaVenta':
                 require 'AltaVenta.php';
                 break;
+            case 'devolverHelado':
+                require 'DevolverHelado.php';
             default:
                 echo json_encode(['error' => 'ERROR: ACCION dentro del METODO POST no valida.']);
                 break;

@@ -1,7 +1,7 @@
 <?php
 require "./Classes/DataBase.php";
 
-class Venta{
+class Venta {
     private $id;
     private $email;
     private $sabor;
@@ -23,11 +23,7 @@ class Venta{
     }
 
     public function getId(): string {
-        if($this->id){
-            return $this->id;
-        }else{
-            return 0;
-        }        
+        return $this->id ?? 0;
     }
 
     public function getEmail(): string {
@@ -55,11 +51,7 @@ class Venta{
     }
 
     public function getNumeroPedido(): int {
-        if($this->numeroPedido){
-            return $this->numeroPedido;
-        }else{
-            return 0;
-        }
+        return $this->numeroPedido ?? 0;
     }
 
     public function setNumeroPedido(int $numeroPedido): void {
@@ -70,43 +62,32 @@ class Venta{
         $this->fecha = $fecha;
     }
 
-    public function setUsuario(string $usuario): void {
-        $this->$usuario = $usuario;
-    }
-
     public static function VerificarEmail(string $email): bool {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return true;
-        } else {
-            return false;
-        }
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     public static function VerificarPosibleVenta(array $lista_helados, Venta $venta): array {
         $heladoEncontrado = false;
         $stockSuficiente = false;
-        $result = [];
 
         foreach ($lista_helados as &$helado) {
             if ($helado['sabor'] == $venta->getSabor() && $helado['tipo'] == $venta->getTipo()) {
                 $heladoEncontrado = true;
                 if ($helado['stock'] >= $venta->getCantidadVendida()) {
                     $stockSuficiente = true;
-                    // Actualizo el stock. Descuento la cantidad pedida del stock.
                     $helado['stock'] -= $venta->getCantidadVendida();                    
                 }
                 break;
             }
         }
 
-        $result = [$heladoEncontrado, $stockSuficiente, $lista_helados];
-
-        return $result;
+        return [$heladoEncontrado, $stockSuficiente, $lista_helados];
     }
 
     public static function CrearNombreImagenVenta(Venta $venta, string $usuario): string {
         return $venta->getSabor() . '_' . $venta->getTipo() . '_' . $venta->getVaso() . '_' . $usuario . '_' . date('Ymd_His') . '.jpg';
-    }    
+    }
+
     public function Mostrar(): void {
         echo "".$this->getId()."\n";
         echo "".$this->getEmail()."\n";
@@ -118,15 +99,49 @@ class Venta{
         echo "".$this->getFecha()."\n\n";
     }
 
+    //soft-delete y mueve imagen.
+    public static function borrarVenta($db, int $numeroPedido) {
+        $backupImageDir = "./ImagenesBackupVentas/2024/";
+        $imageDir = "./ImagenesDeVentas/2024/";
+        $imagenNombre = "venta_" . $numeroPedido . ".jpg";
+        $rutaImagen = $imageDir . $imagenNombre;
+
+        $queryVerificar = "SELECT * FROM ventas WHERE numero_pedido = ?";
+        $result = Database::Consultar($db, $queryVerificar, [$numeroPedido], "i");
+
+        if (count($result) > 0) {
+            $queryBorrar = "UPDATE ventas SET estado = 'eliminado' WHERE numero_pedido = ?";
+            $actualizado = Database::Actualizar($db, $queryBorrar, [$numeroPedido], "i");
+
+            if ($actualizado) {
+                if (file_exists($rutaImagen)) {
+                    if (!is_dir($backupImageDir)) {
+                        mkdir($backupImageDir, 0777, true);
+                        echo "ADVERTENCIA: El directorio de backup '$backupImageDir' no existía y se creó.\n";
+                    }
+                    if (rename($rutaImagen, $backupImageDir . $imagenNombre)) {
+                        echo "Venta marcada como eliminada y la imagen se movió al backup.\n";
+                    } else {
+                        echo "ERROR: No se pudo mover la imagen al directorio de backup.\n";
+                    }
+                } else {
+                    echo "ERROR: No se encontró la imagen asociada a la venta.\n";
+                }
+            } else {
+                echo "ERROR: No se pudo eliminar la venta.\n";
+            }
+        } else {
+            echo "ERROR: No existe una venta con el número $numeroPedido.\n";
+        }
+    }
+
     public static function ConsultarVentasPorDia($db, $fecha) {
         $query = "SELECT COUNT(*) as total FROM ventas WHERE DATE(fecha) = ?";
         $result = Database::Consultar($db, $query, [$fecha], "s");
 
-        if (count($result) > 0) {
-            echo "RESPUESTA DE CONSULTA: Cantidad de ventas en el dia $fecha: " . $result[0]['total'] . "\n";
-        } else {
-            echo "RESPUESTA DE CONSULTA: No se encontraron ventas en el dia $fecha.\n";
-        }
+        echo (count($result) > 0) 
+            ? "RESPUESTA DE CONSULTA: Cantidad de ventas en el dia $fecha: " . $result[0]['total'] . "\n"
+            : "RESPUESTA DE CONSULTA: No se encontraron ventas en el dia $fecha.\n";
     }
 
     public static function ConsultarVentasPorUsuario($db, $email) {
@@ -164,5 +179,4 @@ class Venta{
             echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Cantidad: " . $venta['cantidad'] . "\n";
         });
     }
-
 }

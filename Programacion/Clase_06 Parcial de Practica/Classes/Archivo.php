@@ -5,7 +5,7 @@ class Archivo{
         if (file_exists($jsonFile)) {
             $result = json_decode(file_get_contents($jsonFile), true);
         } else {
-            echo json_encode(['error' => 'ERROR: No se encontro el archivo de datos']);
+            echo "ERROR: No se encontro el archivo de datos.\n";
             exit;
         }
 
