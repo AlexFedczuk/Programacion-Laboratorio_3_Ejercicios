@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "devolucion_id": 1,
+        "porcentajeDescuento": 10,
+        "estado": "no usado"
+    },
+    {
+        "id": 2,
+        "devolucion_id": 2,
+        "porcentajeDescuento": 10,
+        "estado": "no usado"
+    }
+]

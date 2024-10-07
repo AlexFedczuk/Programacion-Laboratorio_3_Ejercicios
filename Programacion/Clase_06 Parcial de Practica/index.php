@@ -28,7 +28,7 @@ switch ($method) {
         require 'ModificarVenta.php';
         break;
     case 'DELETE':
-        echo "Has enviado una peticion con el metodo DELETE. En desarrollo...";
+        require 'BorrarVenta.php';
         break;
 
     default:
