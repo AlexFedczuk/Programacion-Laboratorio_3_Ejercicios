@@ -1,6 +1,5 @@
 <?php
 require "./Classes/Helado.php";
-require "./Classes/Venta.php";
 require "./Classes/DataBase.php";
 require "./Classes/Archivo.php";
 $valores = include "./Registros/opciones_validas.php";
@@ -64,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "ADVERTENCIA: El directorio '$imageDir' no existe. Se acaba de crear para poder subir la imagen de la venta.\n";
     }
     
-    // Mover la imagen subida a la carpeta especificada.
     if (move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
         echo "Imagen subida con exito.\n";
     } else {
@@ -72,27 +70,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    // Se realiza la conexion a la DB
-    $database = new Database($config);
-    $db = $database->getConnection();
+    $db = Database::getDB($config);
 
     if($db){
         $fecha = $venta_ingresada->getFecha();
         $numeroPedido = $venta_ingresada->getNumeroPedido();
-        // Preparar la consulta para insertar la venta en la base de datos
-        $stmt = $db->prepare("INSERT INTO ventas (email, sabor, tipo, cantidad, fecha, numero_pedido) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssiss", $email, $sabor, $tipo, $cantidadVendida, $fecha, $numeroPedido);
 
-        // Ejecuta la consulta
-        if ($stmt->execute()) {
-            // Guardar los cambios en el archivo JSON (actualizando el stock)
+        $query = "INSERT INTO ventas (email, sabor, tipo, cantidad, fecha, numero_pedido) VALUES (?, ?, ?, ?, ?, ?)";
+        $params = [$email, $sabor, $tipo, $cantidadVendida, $fecha, $numeroPedido];
+
+        $resultado = DataBase::Insertar($db, $query, $params, "sssiss");
+
+        if ($resultado === true) {
             if (file_put_contents($jsonFile, json_encode($lista_helados, JSON_PRETTY_PRINT))) {
-                echo "SUCCES: Venta registrada exitosamente. Numero de pedido: $numeroPedido\n";
+                echo "SUCCESS: Venta registrada exitosamente. Numero de pedido: $numeroPedido\n";
             } else {
                 echo "ERROR: Error al actualizar el stock en el archivo.\n";
             }
         } else {
-            echo "ERROR: Error al registrar la venta en la base de datos.\n";
+            echo "ERROR: " . $resultado . "\n";
         }
     }
         

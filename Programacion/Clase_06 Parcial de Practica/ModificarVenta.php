@@ -39,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
     $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
 
-    // Verificar si el número de pedido existe en la base de datos
-    $database = new Database($config);
-    $db = $database->getConnection();
+    $db = Database::getDB($config);
+
     $stmt = $db->prepare("SELECT * FROM ventas WHERE numero_pedido = ?");
     $stmt->bind_param("i", $numeroPedido);
     $stmt->execute();
@@ -69,4 +68,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 } else {
     echo "ERROR: Metodo no permitido.\n";
 }
-?>

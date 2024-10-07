@@ -24,80 +24,59 @@ class Database {
         return $this->conn;
     }
 
-    public static function closeConnection($db, $stmt) {
-        $stmt->close();
+    public static function getDB($config){
+        $database = new Database($config);
+        return $database->getConnection();
+    }    
+
+    public static function closeConnection($db, $stmt = null) {
+        if ($stmt) {
+            $stmt->close();
+        }
         $db->close();
-    } 
-
-    public static function ConsultarVentasPorDia($db, string $fecha) {
-        $stmt = $db->prepare("SELECT COUNT(*) as total FROM ventas WHERE DATE(fecha) = ?");
-        $stmt->bind_param("s", $fecha);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
-        echo "RESPUESTA DE CONSULTA: Cantidad de ventas en el dia $fecha: " . $result['total'] . "\n";
-        Database::closeConnection($db, $stmt);
     }
 
-    public static function ConsultarVentasPorUsuario($db, $email) {
-        $stmt = $db->prepare("SELECT * FROM ventas WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-        
-        if (count($result) > 0) {
-            foreach ($result as $venta) {
-                echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Tipo: " . $venta['tipo'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-            }
-        } else {
-            echo "RESPUESTA DE CONSULTA: No se encontraron ventas para el usuario $email.\n";
+    public static function Insertar($db, $query, $params = [], $types = "") {
+        $stmt = $db->prepare($query);
+
+        if ($params) {
+            $stmt->bind_param($types, ...$params);
         }
-        Database::closeConnection($db, $stmt);
+
+        $resultado = $stmt->execute();
+        return $resultado ? true : $stmt->error;
     }
 
-    public static function ConsultarVentasEntreFechas($db, $fechaInicio, $fechaFin) {
-        $stmt = $db->prepare("SELECT * FROM ventas WHERE fecha BETWEEN ? AND ? ORDER BY email");
-        $stmt->bind_param("ss", $fechaInicio, $fechaFin);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-        
-        if (count($result) > 0) {
-            foreach ($result as $venta) {
-                echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Tipo: " . $venta['tipo'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-            }
-        } else {
-            echo "RESPUESTA DE CONSULTA: No se encontraron ventas entre las fechas $fechaInicio y $fechaFin.\n";
+    public static function Actualizar($db, $query, $params = [], $types = "") {
+        $stmt = $db->prepare($query);
+        if ($params) {
+            $stmt->bind_param($types, ...$params);
         }
-        Database::closeConnection($db, $stmt);
+        $resultado = $stmt->execute();
+        return $resultado ? true : $stmt->error;
     }
 
-    public static function ConsultarVentasPorSabor($db, $sabor) {
-        $stmt = $db->prepare("SELECT * FROM ventas WHERE sabor = ?");
-        $stmt->bind_param("s", $sabor);
+    public static function Consultar($db, $query, $params = [], $types = "") {
+        $stmt = $db->prepare($query);
+        
+        if ($params) {
+            $stmt->bind_param($types, ...$params);  // Vincular los parámetros dinámicamente
+        }
+        
         $stmt->execute();
         $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-        
-        if (count($result) > 0) {
-            foreach ($result as $venta) {
-                echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Tipo: " . $venta['tipo'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-            }
-        } else {
-            echo "RESPUESTA DE CONSULTA: No se encontraron ventas para el sabor $sabor.\n";
-        }
-        Database::closeConnection($db, $stmt);
+
+        return $result;
     }
 
-    public static function ConsultarVentasPorVasoCucurucho($db) {
-        $stmt = $db->prepare("SELECT * FROM ventas WHERE tipo = 'Cucurucho'");
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-        
+    // Método para mostrar los resultados de forma dinámica
+    public static function MostrarResultados($result, $mensajeNoEncontrado, $callback) {
         if (count($result) > 0) {
-            foreach ($result as $venta) {
-                echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Cantidad: " . $venta['cantidad'] . "\n";
+            foreach ($result as $item) {
+                $callback($item);  // Usar una función de callback para mostrar los resultados
             }
         } else {
-            echo "RESPUESTA DE CONSULTA: No se encontraron ventas con vaso Cucurucho.\n";
+            echo $mensajeNoEncontrado . "\n";
         }
-        Database::closeConnection($db, $stmt);
     }
 }
