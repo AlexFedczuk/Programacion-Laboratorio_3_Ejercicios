@@ -1,7 +1,6 @@
 <?php
 require "./Classes/Helado.php";
 require "./Classes/Venta.php";
-require "./Classes/DataBase.php";
 require "./Classes/Archivo.php";
 $valores = include "./Registros/opciones_validas.php";
 
@@ -45,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     $result = Database::Consultar($db, $queryVerificar, [$numeroPedido], "i");
 
     if (count($result) > 0) {
-        $queryActualizar = "UPDATE ventas SET email = ?, sabor = ?, tipo = ?, cantidad = ?, vaso = ? WHERE numero_pedido = ?";
-        $paramsActualizar = [$email, $sabor, $tipo, $cantidad, $vaso, $numeroPedido];
+        $queryActualizar = "UPDATE ventas SET email = ?, sabor = ?, tipo = ?, cantidad = ? WHERE numero_pedido = ?";
+        $paramsActualizar = [$email, $sabor, $tipo, $cantidad, $numeroPedido];
 
-        $resultado = Database::Actualizar($db, $queryActualizar, $paramsActualizar, "sssisi");
+        $resultado = Database::Actualizar($db, $queryActualizar, $paramsActualizar, "sssii");
 
         if ($resultado === true) {
             $resultVenta = Venta::VerificarPosibleVenta($lista_helados, new Venta($email, $sabor, $tipo, $vaso, $cantidad));
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         echo "ERROR: No existe un pedido con el número $numeroPedido.\n";
     }
 
-    Database::closeConnection($db, $stmt);
+    Database::closeConnection($db);
 } else {
     echo "ERROR: Metodo no permitido.\n";
 }
