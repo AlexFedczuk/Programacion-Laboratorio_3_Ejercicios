@@ -131,4 +131,16 @@ class Helado {
     public function __toString() {
         return "Helado: Sabor={$this->sabor}, Precio={$this->precio}, Tipo={$this->tipo}, Vaso={$this->vaso}, Stock={$this->stock}, Imagen={$this->imagen_path}";
     }
+
+    public static function getPrecioFromLista(array $lista_helados, string $sabor, string $tipo) {
+        $precioHelado = 0;
+        foreach ($lista_helados as $helado) {
+            if ($helado['sabor'] == $sabor && $helado['tipo'] == $tipo) {
+                $precioHelado = $helado['precio'];
+                break;
+            }
+        }
+
+        return $precioHelado;
+    }
 }

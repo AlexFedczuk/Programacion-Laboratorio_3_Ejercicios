@@ -2,11 +2,13 @@
 require "./Classes/Helado.php";
 require "./Classes/DataBase.php";
 require "./Classes/Archivo.php";
-require "./Classes/Venta.php"; // Si no está incluida ya
+require "./Classes/Venta.php";
+require "./Classes/Cupon.php";
 
 $valores = include "./Registros/opciones_validas.php";
 $config = require "./db/config.php";
 $jsonFile = "./Registros/heladeria.json";
+$cuponesFile = "./Registros/cupones.json";
 $imageDir = "./ImagenesDeLaVenta/2024/";
 
 $tipos_validos = $valores['tipos_validos'];
@@ -27,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $vaso = $_POST['vaso'];
     $cantidadVendida = $_POST['stock'];
     $imagen = $_FILES['imagen'];
+    $cupon_codigo = $_POST['cupon'] ?? null;
 
     if (!Helado::VerificarTipo($tipo, $tipos_validos)) {
         echo "ERROR: El TIPO ingresado es inválido.\n";
@@ -43,13 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    // Cargar JSON de helados y verificar existencia/stock
+    $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
     $venta_ingresada = new Venta($email, $sabor, $tipo, $vaso, $cantidadVendida);
 
-    $lista_helados = Archivo::DescargarArrayJSON($jsonFile);
-
     $result = Venta::VerificarPosibleVenta($lista_helados, $venta_ingresada);
-    $lista_helados = $result[2];
-
     if (!$result[0]) {
         echo "ERROR: El helado no existe.\n";
         exit;
@@ -58,45 +59,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    $precioHelado = Helado::getPrecioFromLista($lista_helados, $sabor, $tipo);
+
+    if ($precioHelado == 0) {
+        echo "ERROR: No se pudo determinar el precio del helado.\n";
+        exit;
+    }
+
+    // Aplicar cupón si existe
+    $descuento = 0;
+    if ($cupon_codigo) {
+        $cupones = Archivo::DescargarArrayJSON($cuponesFile);
+        $cuponAplicado = Cupon::AplicarCupon($cupon_codigo, $cupones);
+
+        if ($cuponAplicado['valido']) {
+            $descuento = $cuponAplicado['descuento'];
+            Cupon::MarcarComoUsado($cupon_codigo, $cuponesFile, $cupones);
+            echo "Cupon aplicado. Descuento: $descuento%\n";
+        } else {
+            echo "ERROR: Cupón inválido o ya usado.\n";
+            exit;
+        }
+    }
+
+    // Generar número de pedido y fecha de la venta
     $venta_ingresada->setNumeroPedido(rand(1000, 9999));
     $venta_ingresada->setFecha(date('Y-m-d H:i:s'));
 
+    // Calcular el importe total con el precio obtenido desde el JSON
+    $importeTotal = ($cantidadVendida * $precioHelado) * (1 - $descuento / 100);
+    $venta_ingresada->setImporteFinal($importeTotal); // Importe final después del descuento
+
+
+    // Mostrar detalles de la venta
+    $venta_ingresada->Mostrar();
+
+    // Guardar la imagen de la venta
     $usuario = explode('@', $venta_ingresada->getEmail())[0];
     $nombreImagen = Venta::CrearNombreImagenVenta($venta_ingresada, $usuario);
     $rutaImagen = $imageDir . $nombreImagen;
-
-    $venta_ingresada->Mostrar();
 
     if (!is_dir($imageDir)) {
         mkdir($imageDir, 0777, true);
         echo "ADVERTENCIA: El directorio '$imageDir' no existía. Se acaba de crear.\n";
     }
 
-    if (!move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
+    if (move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
+        echo "Imagen subida con éxito.\n";
+    } else {
         echo "ERROR: No se pudo subir la imagen.\n";
         exit;
     }
-    echo "Imagen subida con éxito.\n";
 
+    // Guardar la venta en la base de datos
     $db = Database::getDB($config);
-
     if ($db) {
-        $fecha = $venta_ingresada->getFecha();
-        $numeroPedido = $venta_ingresada->getNumeroPedido();
-
-        $query = "INSERT INTO ventas (email, sabor, tipo, cantidad, fecha, numero_pedido) VALUES (?, ?, ?, ?, ?, ?)";
-        $params = [$email, $sabor, $tipo, $cantidadVendida, $fecha, $numeroPedido];
-
-        $resultado = Database::Insertar($db, $query, $params, "sssiss");
+        $query = "INSERT INTO ventas (email, sabor, tipo, cantidad, fecha, numero_pedido, importe_final, descuento) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $params = [$email, $sabor, $tipo, $cantidadVendida, $venta_ingresada->getFecha(), $venta_ingresada->getNumeroPedido(), $importeTotal, $descuento];
+        
+        $resultado = Database::Insertar($db, $query, $params, "sssissdi");
 
         if ($resultado === true) {
+            // Guardar la actualización del stock en el archivo JSON
             if (file_put_contents($jsonFile, json_encode($lista_helados, JSON_PRETTY_PRINT))) {
-                echo "SUCCESS: Venta registrada exitosamente. Número de pedido: $numeroPedido\n";
+                echo "SUCCESS: Venta registrada exitosamente. Número de pedido: " . $venta_ingresada->getNumeroPedido() . "\n";
             } else {
                 echo "ERROR: Error al actualizar el stock en el archivo.\n";
             }
         } else {
-            echo "ERROR: " . $resultado . "\n";
+            echo "ERROR: No se pudo registrar la venta.\n";
         }
     }
 

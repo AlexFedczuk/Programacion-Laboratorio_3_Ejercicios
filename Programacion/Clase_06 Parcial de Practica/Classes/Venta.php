@@ -10,8 +10,21 @@ class Venta {
     private $cantidadVendida;
     private $numeroPedido;
     private $fecha;
+    private $importeFinal;
+    private $descuento;
 
-    public function __construct(string $email, string $sabor, string $tipo, string $vaso, int $cantidadVendida, int $numeroPedido = null, string $fecha = "", int $id = null){
+    public function __construct(
+        string $email,
+        string $sabor,
+        string $tipo,
+        string $vaso,
+        int $cantidadVendida,
+        int $numeroPedido = null,
+        string $fecha = "",
+        float $importeFinal = 0,
+        float $descuento = 0,
+        int $id = null
+    ) {
         $this->id = $id;
         $this->email = $email;
         $this->sabor = $sabor;
@@ -20,9 +33,11 @@ class Venta {
         $this->cantidadVendida = $cantidadVendida;
         $this->numeroPedido = $numeroPedido;
         $this->fecha = $fecha;
+        $this->importeFinal = $importeFinal;
+        $this->descuento = $descuento;
     }
 
-    public function getId(): string {
+    public function getId(): int {
         return $this->id ?? 0;
     }
 
@@ -54,12 +69,28 @@ class Venta {
         return $this->numeroPedido ?? 0;
     }
 
+    public function getImporteFinal(): float {
+        return $this->importeFinal;
+    }
+
+    public function getDescuento(): float {
+        return $this->descuento;
+    }
+
     public function setNumeroPedido(int $numeroPedido): void {
         $this->numeroPedido = $numeroPedido;
     }
 
     public function setFecha(string $fecha): void {
         $this->fecha = $fecha;
+    }
+
+    public function setImporteFinal(float $importeFinal): void {
+        $this->importeFinal = $importeFinal;
+    }
+
+    public function setDescuento(float $descuento): void {
+        $this->descuento = $descuento;
     }
 
     public static function VerificarEmail(string $email): bool {
@@ -75,7 +106,7 @@ class Venta {
                 $heladoEncontrado = true;
                 if ($helado['stock'] >= $venta->getCantidadVendida()) {
                     $stockSuficiente = true;
-                    $helado['stock'] -= $venta->getCantidadVendida();                    
+                    $helado['stock'] -= $venta->getCantidadVendida();
                 }
                 break;
             }
@@ -89,17 +120,18 @@ class Venta {
     }
 
     public function Mostrar(): void {
-        echo "".$this->getId()."\n";
-        echo "".$this->getEmail()."\n";
-        echo "".$this->getSabor()."\n";
-        echo "".$this->getTipo()."\n";
-        echo "".$this->getVaso()."\n";
-        echo "".$this->getCantidadVendida()."\n";
-        echo "".$this->getNumeroPedido()."\n";
-        echo "".$this->getFecha()."\n\n";
+        echo "ID: " . $this->getId() . "\n";
+        echo "Email: " . $this->getEmail() . "\n";
+        echo "Sabor: " . $this->getSabor() . "\n";
+        echo "Tipo: " . $this->getTipo() . "\n";
+        echo "Vaso: " . $this->getVaso() . "\n";
+        echo "Cantidad Vendida: " . $this->getCantidadVendida() . "\n";
+        echo "Número Pedido: " . $this->getNumeroPedido() . "\n";
+        echo "Fecha: " . $this->getFecha() . "\n";
+        echo "Importe Final: " . $this->getImporteFinal() . "\n";
+        echo "Descuento: " . $this->getDescuento() . "%\n";
     }
 
-    //soft-delete y mueve imagen.
     public static function borrarVenta($db, int $numeroPedido) {
         $backupImageDir = "./ImagenesBackupVentas/2024/";
         $imageDir = "./ImagenesDeVentas/2024/";
@@ -133,50 +165,5 @@ class Venta {
         } else {
             echo "ERROR: No existe una venta con el número $numeroPedido.\n";
         }
-    }
-
-    public static function ConsultarVentasPorDia($db, $fecha) {
-        $query = "SELECT COUNT(*) as total FROM ventas WHERE DATE(fecha) = ?";
-        $result = Database::Consultar($db, $query, [$fecha], "s");
-
-        echo (count($result) > 0) 
-            ? "RESPUESTA DE CONSULTA: Cantidad de ventas en el dia $fecha: " . $result[0]['total'] . "\n"
-            : "RESPUESTA DE CONSULTA: No se encontraron ventas en el dia $fecha.\n";
-    }
-
-    public static function ConsultarVentasPorUsuario($db, $email) {
-        $query = "SELECT * FROM ventas WHERE email = ?";
-        $result = Database::Consultar($db, $query, [$email], "s");
-
-        Database::MostrarResultados($result, "RESPUESTA DE CONSULTA: No se encontraron ventas para el usuario $email.", function($venta) {
-            echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Tipo: " . $venta['tipo'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-        });
-    }
-
-    public static function ConsultarVentasEntreFechas($db, $fechaInicio, $fechaFin) {
-        $query = "SELECT * FROM ventas WHERE fecha BETWEEN ? AND ? ORDER BY email";
-        $result = Database::Consultar($db, $query, [$fechaInicio, $fechaFin], "ss");
-
-        Database::MostrarResultados($result, "RESPUESTA DE CONSULTA: No se encontraron ventas entre las fechas $fechaInicio y $fechaFin.", function($venta) {
-            echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Tipo: " . $venta['tipo'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-        });
-    }
-
-    public static function ConsultarVentasPorSabor($db, $sabor) {
-        $query = "SELECT * FROM ventas WHERE sabor = ?";
-        $result = Database::Consultar($db, $query, [$sabor], "s");
-
-        Database::MostrarResultados($result, "RESPUESTA DE CONSULTA: No se encontraron ventas para el sabor $sabor.", function($venta) {
-            echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Tipo: " . $venta['tipo'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-        });
-    }
-
-    public static function ConsultarVentasPorVasoCucurucho($db) {
-        $query = "SELECT * FROM ventas WHERE tipo = 'Cucurucho'";
-        $result = Database::Consultar($db, $query);
-
-        Database::MostrarResultados($result, "RESPUESTA DE CONSULTA: No se encontraron ventas con vaso Cucurucho.", function($venta) {
-            echo "RESPUESTA DE CONSULTA: Venta - Pedido: " . $venta['numero_pedido'] . ", Fecha: " . $venta['fecha'] . ", Sabor: " . $venta['sabor'] . ", Cantidad: " . $venta['cantidad'] . "\n";
-        });
     }
 }
