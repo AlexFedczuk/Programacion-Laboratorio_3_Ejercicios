@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "titulo": "Super Mario",
+        "precio": "60",
+        "tipo": "Videojuego",
+        "anioDeSalida": 2023,
+        "formato": "Digital",
+        "stock": 100,
+        "imagen": ".\/ImagenesDeProductos\/2024\/Super Mario_Videojuego.jpg"
+    },
+    {
+        "id": 2,
+        "titulo": "The Legend of Zelda",
+        "precio": 70,
+        "tipo": "Videojuego",
+        "anioDeSalida": 2022,
+        "formato": "Fisico",
+        "stock": 100,
+        "imagen": ".\/ImagenesDeProductos\/2024\/The Legend of Zelda_Videojuego.jpg"
+    },
+    {
+        "id": 3,
+        "titulo": "Avengers: Endgame",
+        "precio": 15,
+        "tipo": "Pelicula",
+        "anioDeSalida": 2019,
+        "formato": "Fisico",
+        "stock": 30,
+        "imagen": ".\/ImagenesDeProductos\/2024\/Avengers_Endgame_Pelicula.jpg"
+    }
+]
