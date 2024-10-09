@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
     $ventaModificada = Venta::modificarVenta($numeroPedido, $email, $titulo, $tipo, $formato, $cantidad, $lista_ventas);
 
-    if ($ventaEncontrada) {
+    if ($ventaModificada) {
         if (Archivo::CargarArrayJSON($ventasFile, $lista_ventas)) {
             echo "SUCCESS: Venta modificada exitosamente.\n";
         } else {

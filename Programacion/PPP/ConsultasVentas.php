@@ -1,7 +1,9 @@
 <?php
 require "./Clases/Venta.php";
 
-$ventasFile = "./Registros/ventas.json";
+$ventasFile = "./Registros/tienda.json";
+// Esto lo acabo de agregar...
+$ventasNuevoFile = "./Registros/ventas.json";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $accion = isset($_GET["accion"]) ? $_GET["accion"] : null;
@@ -52,7 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             break;
 
         case "productoMasVendido":
-            Venta::consultarProductoMasVendido($lista_ventas);
+            $lista_ventas_agregada = Archivo::DescargarArrayJSON($ventasNuevoFile);
+            Venta::consultarProductoMasVendido($lista_ventas_agregada);
             break;
 
         default:

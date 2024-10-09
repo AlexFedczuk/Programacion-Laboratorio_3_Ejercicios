@@ -1,0 +1,48 @@
+[
+    {
+        "id": 1,
+        "email": "usuario@example.com",
+        "titulo": "Ironman 2",
+        "tipo": "Pelicula",
+        "formato": "Fisico",
+        "cantidad": "421",
+        "numeroPedido": 9564,
+        "fecha": "2024-10-09 01:57:58",
+        "imagen": ".\/ImagenesDeVenta\/2024\/Ironman 2_Pelicula_Fisico_usuario_20241009_015758.jpg",
+        "estado": "eliminado"
+    },
+    {
+        "id": 2,
+        "email": "usuario@example.com",
+        "titulo": "Ironman 2",
+        "tipo": "Pelicula",
+        "formato": "Fisico",
+        "cantidad": "1",
+        "numeroPedido": 3380,
+        "fecha": "2024-10-09 01:58:47",
+        "imagen": ".\/ImagenesDeVenta\/2024\/Ironman 2_Pelicula_Fisico_usuario_20241009_015847.jpg",
+        "estado": "eliminado"
+    },
+    {
+        "id": 3,
+        "email": "usuario@example.com",
+        "titulo": "Ironman 2",
+        "tipo": "Pelicula",
+        "formato": "Fisico",
+        "cantidad": "1",
+        "numeroPedido": 2542,
+        "fecha": "2024-10-09 02:31:59",
+        "imagen": ".\/ImagenesDeVenta\/2024\/Ironman 2_Pelicula_Fisico_usuario_20241009_023159.jpg"
+    },
+    {
+        "id": 4,
+        "email": "usuario@example.com",
+        "titulo": "Ironman 2",
+        "tipo": "Pelicula",
+        "formato": "Fisico",
+        "cantidad": "3",
+        "numeroPedido": 6994,
+        "fecha": "2024-10-09 02:33:28",
+        "imagen": ".\/ImagenesDeVenta\/2024\/Ironman 2_Pelicula_Fisico_usuario_20241009_023328.jpg"
+    }
+]

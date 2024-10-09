@@ -28,5 +28,25 @@
         "formato": "Fisico",
         "stock": 30,
         "imagen": ".\/ImagenesDeProductos\/2024\/Avengers_Endgame_Pelicula.jpg"
+    },
+    {
+        "id": 4,
+        "titulo": "Ironman 2",
+        "precio": "2500",
+        "tipo": "Pelicula",
+        "anioDeSalida": "2010",
+        "formato": "Fisico",
+        "stock": 30,
+        "imagen": "C:\\xampp\\tmp\\phpE82B.tmp"
+    },
+    {
+        "id": 5,
+        "titulo": "Ironman 3",
+        "precio": "2500",
+        "tipo": "Pelicula",
+        "anioDeSalida": "2010",
+        "formato": "Fisico",
+        "stock": "9",
+        "imagen": "C:\\xampp\\tmp\\php2AEF.tmp"
     }
 ]

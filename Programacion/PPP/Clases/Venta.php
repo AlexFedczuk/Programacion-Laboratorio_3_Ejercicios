@@ -138,7 +138,7 @@ class Venta {
 
     public static function consultarProductosPorRangoDePrecio($lista_ventas, $precioMin, $precioMax) {
         foreach ($lista_ventas as $venta) {
-            if ($venta["precio"] >= $precioMin && $venta["precio"] <= $precioMax) {
+            if ($venta['precio'] >= $precioMin && $venta['precio'] <= $precioMax) {
                 echo "Producto: " . $venta['titulo'] . ", Precio: " . $venta["precio"] . "\n";
             }
         }
@@ -182,7 +182,7 @@ class Venta {
 
     public static function modificarVenta($numeroPedido, $email, $titulo, $tipo, $formato, $cantidad, &$lista_ventas) {
         foreach ($lista_ventas as &$venta) {
-            if ($venta['numero_pedido'] == $numeroPedido) {
+            if ($venta['numeroPedido'] == $numeroPedido) {
                 $venta['email'] = $email;
                 $venta['titulo'] = $titulo;
                 $venta['tipo'] = $tipo;
@@ -196,7 +196,7 @@ class Venta {
 
     public static function borrarVenta($numeroPedido, &$lista_ventas, $imageDir, $backupImageDir) {
         foreach ($lista_ventas as &$venta) {
-            if ($venta['numero_pedido'] == $numeroPedido) {
+            if ($venta['numeroPedido'] == $numeroPedido) {
                 $venta['estado'] = 'eliminado';
 
                 $imagenNombre = "venta_" . $numeroPedido . ".jpg";
