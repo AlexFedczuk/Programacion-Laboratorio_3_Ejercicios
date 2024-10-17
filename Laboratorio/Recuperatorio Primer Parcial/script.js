@@ -1,4 +1,4 @@
-import { generarVehiculosDesdeJSON } from './funciones.js';
+import { generarVehiculosDesdeJSON, mostrarVehiculosEnTabla } from './funciones.js';
 
 // Hacemos una solicitud fetch para obtener el archivo JSON
 fetch('./Registros/vehiculos.json')
@@ -19,6 +19,9 @@ fetch('./Registros/vehiculos.json')
     vehiculos.forEach(vehiculo => {
       console.log(vehiculo.toString());
     });
+
+    // Mostrar los vehículos en la tabla
+    mostrarVehiculosEnTabla(vehiculos);
   })
   .catch(error => {
     console.error("ERROR: Hubo un problema al cargar el archivo JSON:\n", error);
