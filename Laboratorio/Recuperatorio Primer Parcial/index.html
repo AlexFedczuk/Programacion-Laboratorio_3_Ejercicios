@@ -1,11 +1,114 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ABM de Vehículos</title>
+  <link rel="stylesheet" href="estilo.css">
 </head>
+
 <body>
+  <!-- HTML para el Formulario de Filtros y Tabla -->
+  <div class="form-filtros">
+    <h3>Form Datos</h3>
+    <label for="filtro">Filtrar por:</label>
+    <select id="filtro">
+      <option value="todos">Todos</option>
+      <option value="aereos">Aereos</option>
+      <option value="terrestre">Terrestres</option>
+      <!-- Puedes agregar más opciones si lo necesitas -->
+    </select>
+
+    <div class="checkboxes">
+      <label><input type="checkbox" checked> id</label>
+      <label><input type="checkbox" checked> modelo</label>
+      <label><input type="checkbox" checked> año fab</label>
+      <label><input type="checkbox" checked> vel max</label>
+      <label><input type="checkbox" checked> alt max</label>
+      <label><input type="checkbox" checked> autonomia</label>
+      <label><input type="checkbox" checked> cant pue</label>
+      <label><input type="checkbox" checked> cant rue</label>
+    </div>
+
+    <div class="form-promedio">
+      <label for="prom-vel-max">Promedio Velocidad Máxima:</label>
+      <input type="text" id="prom-vel-max" readonly>
+      <button type="button">Calcular</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>modelo</th>
+          <th>año fab</th>
+          <th>vel max</th>
+          <th>alt max</th>
+          <th>autonomia</th>
+          <th>cant pue</th>
+          <th>cant rue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button type="button">Agregar</button>
+  </div>
+
+  <!-- HTML para el Formulario ABM -->
+  <div class="form-abm">
+    <h3>Form ABM</h3>
+
+    <label for="id">ID:</label>
+    <input type="text" id="id">
+
+    <label for="modelo">Modelo:</label>
+    <input type="text" id="modelo">
+
+    <label for="anoFab">Año Fabricacion:</label>
+    <input type="text" id="anoFab">
+
+    <label for="velMax">Velocidad Maxima:</label>
+    <input type="text" id="velMax">
+
+    <label for="tipo">Tipo:</label>
+    <select id="tipo">
+      <option value="aereo">Aereo</option>
+      <option value="terrestre">Terrestre</option>
+    </select>
+
+    <label for="altMax">Altura Maxima:</label>
+    <input type="text" id="altMax">
+
+    <label for="autonomia">Autonomia:</label>
+    <input type="text" id="autonomia">
+
+    <label for="cantPue">Cantidad Puertas:</label>
+    <input type="text" id="cantPue">
+
+    <label for="cantRue">Cantidad Ruedas:</label>
+    <input type="text" id="cantRue">
+
+    <div class="form-actions">
+      <button type="button">Agregar</button>
+      <button type="button">Modificar</button>
+      <button type="button">Eliminar</button>
+      <button type="button">Cancelar</button>
+    </div>
+  </div>
   <script type="module" src="script.js"></script>
 </body>
+
 </html>
