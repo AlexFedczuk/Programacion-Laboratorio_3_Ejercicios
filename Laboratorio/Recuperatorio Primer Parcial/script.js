@@ -1,3 +1,5 @@
+import { Aereo } from "./Clases/Aereo.js";
+import { Terrestre } from "./Clases/Terrestre.js";
 import * as funciones from './funciones.js';
 
 let vehiculos = []; // Definimos 'vehiculos' en un ámbito global
@@ -37,3 +39,23 @@ document.getElementById('filtro').addEventListener('change', function() {
   funciones.filtrarVehiculos(vehiculos, filtroSeleccionado);
 });
 
+// Calcular la velocidad máxima promedio al hacer click en "Calcular"
+document.querySelector('button[type="button"]').addEventListener('click', function() {
+  const filtroSeleccionado = document.getElementById('filtro').value;
+
+  // Filtramos los vehículos según el filtro seleccionado
+  let vehiculosFiltrados = [];
+  if (filtroSeleccionado === 'terrestre') {
+    vehiculosFiltrados = vehiculos.filter(vehiculo => vehiculo instanceof Terrestre);
+  } else if (filtroSeleccionado === 'aereo') {
+    vehiculosFiltrados = vehiculos.filter(vehiculo => vehiculo instanceof Aereo);
+  } else {
+    vehiculosFiltrados = vehiculos;
+  }
+
+  // Llamamos a la función para calcular el promedio de la velocidad máxima
+  const promedioVelocidadMax = funciones.calcularPromedioVelocidadMax(vehiculosFiltrados);
+
+  // Mostrar el promedio en el input correspondiente
+  document.getElementById('prom-vel-max').value = promedioVelocidadMax.toFixed(2);
+});

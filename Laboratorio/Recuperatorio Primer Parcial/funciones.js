@@ -93,3 +93,20 @@ export function filtrarVehiculos(vehiculos, filtro) {
 
   mostrarVehiculosEnTabla(vehiculosFiltrados); // Mostramos los vehículos filtrados
 }
+
+/**
+ * Calcula el promedio de la velocidad máxima de los vehículos.
+ * @param {Array} vehiculos - Array de objetos (instancias de Terrestre o Aereo).
+ * @returns {number} - El promedio de la velocidad máxima.
+ */
+export function calcularPromedioVelocidadMax(vehiculos) {
+  if (vehiculos.length === 0) return 0;
+
+  // Usamos map para extraer las velocidades máximas y reduce para calcular la suma
+  const sumaVelMax = vehiculos
+    .map(vehiculo => vehiculo.velMax)  // Extraemos la velocidad máxima
+    .reduce((suma, velMax) => suma + velMax, 0);  // Sumamos todas las velocidades
+
+  // Calculamos el promedio
+  return sumaVelMax / vehiculos.length;
+}
