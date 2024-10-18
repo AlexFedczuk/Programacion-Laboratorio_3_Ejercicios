@@ -61,18 +61,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Agregar un nuevo vehículo al hacer clic en el botón "Agregar" del formulario ABM
   document.getElementById('btn-agregar-abm').addEventListener('click', function () {
-    // Crear un nuevo vehículo
-    const nuevoVehiculo = crearVehiculoDesdeFormulario();
-    nuevoVehiculo.id = generarIdUnico(); // Generar un ID único para el nuevo vehículo
-    vehiculos.push(nuevoVehiculo); // Agregar el vehículo a la lista
-    actualizarTablaVehiculos(); // Actualizar la tabla
-    ocultarFormularioABM(); // Ocultar el formulario ABM
+    if (validarFormularioABM()) { // Validamos el formulario antes de continuar
+      const nuevoVehiculo = crearVehiculoDesdeFormulario(); // Crear el vehículo con el ID generado
+      vehiculos.push(nuevoVehiculo); // Agregar el vehículo a la lista
+      actualizarTablaVehiculos(); // Actualizar la tabla con el nuevo vehículo
+      ocultarFormularioABM(); // Ocultar el formulario ABM
+    }
   });
 
   // Modificar un vehículo existente
   document.getElementById('btn-modificar').addEventListener('click', function () {
-    if (vehiculoSeleccionado) {
-      // Actualizar los datos del vehículo (menos el ID)
+    if (vehiculoSeleccionado && validarFormularioABM()) { // Validamos el formulario antes de continuar
       actualizarVehiculoDesdeFormulario(vehiculoSeleccionado);
       actualizarTablaVehiculos(); // Actualizar la tabla
       ocultarFormularioABM(); // Ocultar el formulario ABM
@@ -204,5 +203,67 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('form-abm').style.display = 'none';
     // Limpiamos la selección del vehículo
     vehiculoSeleccionado = null;
+  }
+
+  // Función para validar los campos del formulario ABM
+  function validarFormularioABM() {
+    let valido = true;
+    let errores = [];
+
+    const modelo = document.getElementById('modelo').value;
+    const anoFab = parseInt(document.getElementById('anoFab').value);
+    const velMax = parseInt(document.getElementById('velMax').value);
+    const tipo = document.getElementById('tipo').value;
+
+    // Validaciones comunes a todos los vehículos
+    if (modelo.trim() === '') {
+      errores.push('El modelo no puede estar vacío.');
+      valido = false;
+    }
+    if (isNaN(anoFab) || anoFab <= 1885) {
+      errores.push('El año de fabricación debe ser mayor a 1885.');
+      valido = false;
+    }
+    if (isNaN(velMax) || velMax <= 0) {
+      errores.push('La velocidad máxima debe ser mayor a 0.');
+      valido = false;
+    }
+
+    // Validaciones específicas para vehículos aéreos
+    if (tipo === 'aereo') {
+      const altMax = parseInt(document.getElementById('altMax').value);
+      const autonomia = parseInt(document.getElementById('autonomia').value);
+
+      if (isNaN(altMax) || altMax <= 0) {
+        errores.push('La altura máxima debe ser mayor a 0.');
+        valido = false;
+      }
+      if (isNaN(autonomia) || autonomia <= 0) {
+        errores.push('La autonomía debe ser mayor a 0.');
+        valido = false;
+      }
+    }
+
+    // Validaciones específicas para vehículos terrestres
+    if (tipo === 'terrestre') {
+      const cantPue = parseInt(document.getElementById('cantPue').value);
+      const cantRue = parseInt(document.getElementById('cantRue').value);
+
+      if (isNaN(cantPue) || cantPue < 0) {
+        errores.push('La cantidad de puertas debe ser mayor o igual a 0.');
+        valido = false;
+      }
+      if (isNaN(cantRue) || cantRue <= 0) {
+        errores.push('La cantidad de ruedas debe ser mayor a 0.');
+        valido = false;
+      }
+    }
+
+    // Mostrar errores si hay alguno
+    if (!valido) {
+      alert(errores.join('\n')); // Mostrar errores en una alerta (puedes cambiarlo por un mejor manejo de errores)
+    }
+
+    return valido; // Retornar si el formulario es válido o no
   }
 });
