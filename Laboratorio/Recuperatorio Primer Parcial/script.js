@@ -102,6 +102,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // Manejar los checkboxes para mostrar/ocultar columnas
+  document.querySelectorAll('.checkboxes input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      const columna = this.getAttribute('data-column'); // Obtener el nombre de la columna asociada
+      const mostrar = this.checked; // Verificar si el checkbox está marcado o no
+      mostrarOcultarColumna(columna, mostrar); // Llamamos a la función para mostrar u ocultar la columna
+    });
+  });
+
   // Función para mostrar el formulario ABM con los datos de un vehículo o vacío para agregar uno nuevo
   function mostrarFormularioABM(vehiculo) {
     document.querySelector('.form-filtros').style.display = 'none';
@@ -310,6 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Función para actualizar la tabla con los vehículos filtrados y ordenados
+  // Función para actualizar la tabla con los vehículos filtrados
   function actualizarTablaVehiculos() {
     const vehiculosFiltrados = aplicarFiltro(); // Aplicamos el filtro actual
     funciones.mostrarVehiculosEnTabla(vehiculosFiltrados); // Mostrar solo los vehículos filtrados
@@ -322,6 +332,13 @@ document.addEventListener('DOMContentLoaded', function () {
         mostrarFormularioABM(vehiculoSeleccionado); // Mostrar el formulario con los datos del vehículo
       });
     });
+
+    // Aplicar la visibilidad de las columnas según el estado de los checkboxes
+    document.querySelectorAll('.checkboxes input[type="checkbox"]').forEach(checkbox => {
+      const columna = checkbox.getAttribute('data-column');
+      const mostrar = checkbox.checked;
+      mostrarOcultarColumna(columna, mostrar);
+    });
   }
 
   // Función para aplicar el filtro actual a los vehículos
@@ -332,6 +349,22 @@ document.addEventListener('DOMContentLoaded', function () {
       return vehiculos.filter(v => v instanceof Aereo);
     } else {
       return vehiculos; // Si el filtro es 'todos', devolvemos todos los vehículos
+    }
+  }
+
+  // Función para mostrar u ocultar columnas
+  function mostrarOcultarColumna(columna, mostrar) {
+    const index = Array.from(document.querySelectorAll('th')).findIndex(th => th.textContent.toLowerCase().replace(" ", "") === columna);
+
+    if (index !== -1) {
+      // Mostrar u ocultar la columna en el encabezado
+      document.querySelectorAll(`th:nth-child(${index + 1})`).forEach(th => {
+        th.style.display = mostrar ? '' : 'none';
+      });
+      // Mostrar u ocultar la columna en todas las filas
+      document.querySelectorAll(`td:nth-child(${index + 1})`).forEach(td => {
+        td.style.display = mostrar ? '' : 'none';
+      });
     }
   }
 });
