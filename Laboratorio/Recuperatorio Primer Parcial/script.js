@@ -3,8 +3,10 @@ import { Terrestre } from "./Clases/Terrestre.js";
 import * as funciones from './funciones.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-  let vehiculos = []; // Definimos 'vehiculos' en un ámbito global
-  let vehiculoSeleccionado = null; // Variable para almacenar el vehículo seleccionado para editar
+  let vehiculos = []; // Lista completa de vehículos
+  let vehiculoSeleccionado = null; // Vehículo seleccionado para editar
+  let ordenAscendente = true; // Control para alternar el orden ascendente y descendente
+  let filtroSeleccionado = 'todos'; // Filtro inicial (todos los vehículos)
 
   // Hacemos una solicitud fetch para obtener el archivo JSON
   fetch('./Registros/vehiculos.json')
@@ -35,12 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => {
       console.error("ERROR: Hubo un problema al cargar el archivo JSON:\n", error);
     });
-
-  // Filtrar los vehículos según el valor seleccionado
-  document.getElementById('filtro').addEventListener('change', function () {
-    const filtroSeleccionado = this.value;
-    funciones.filtrarVehiculos(vehiculos, filtroSeleccionado);
-  });
 
   // Calcular la velocidad máxima promedio al hacer clic en "Calcular"
   document.getElementById('btn-calcular').addEventListener('click', function () {
@@ -90,6 +86,20 @@ document.addEventListener('DOMContentLoaded', function () {
   // Ocultar el "Formulario ABM" y mostrar el "Form Datos" al hacer clic en "Cancelar"
   document.getElementById('btn-cancelar').addEventListener('click', function () {
     ocultarFormularioABM(); // Ocultar el formulario ABM
+  });
+
+  // Filtrar los vehículos según el valor seleccionado
+  document.getElementById('filtro').addEventListener('change', function () {
+    filtroSeleccionado = this.value; // Actualizamos el filtro seleccionado
+    actualizarTablaVehiculos(); // Actualizamos la tabla con los vehículos filtrados
+  });
+
+  // Capturar los clics en los encabezados de la tabla para ordenar
+  document.querySelectorAll('th').forEach(th => {
+    th.addEventListener('click', function () {
+      const columna = this.textContent.toLowerCase().replace(" ", ""); // Obtener el nombre de la columna
+      ordenarTablaPorColumna(columna);
+    });
   });
 
   // Función para mostrar el formulario ABM con los datos de un vehículo o vacío para agregar uno nuevo
@@ -265,5 +275,63 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     return valido; // Retornar si el formulario es válido o no
+  }
+
+  // Función para ordenar la tabla según la columna clickeada
+  function ordenarTablaPorColumna(columna) {
+    const vehiculosFiltrados = aplicarFiltro(); // Obtener los vehículos filtrados
+    vehiculosFiltrados.sort((a, b) => {
+      let valorA = a[columna];
+      let valorB = b[columna];
+
+      // Si los valores son strings, hacer la comparación de forma alfabética
+      if (typeof valorA === 'string') {
+        valorA = valorA.toLowerCase();
+        valorB = valorB.toLowerCase();
+        if (ordenAscendente) {
+          return valorA.localeCompare(valorB);
+        } else {
+          return valorB.localeCompare(valorA);
+        }
+      } else { 
+        // Para números
+        if (ordenAscendente) {
+          return valorA - valorB;
+        } else {
+          return valorB - valorA;
+        }
+      }
+    });
+
+    ordenAscendente = !ordenAscendente; // Alternar el orden en cada clic
+
+    // Actualizar la tabla con los datos ordenados
+    funciones.mostrarVehiculosEnTabla(vehiculosFiltrados); // Mostramos los vehículos filtrados y ordenados
+  }
+
+  // Función para actualizar la tabla con los vehículos filtrados y ordenados
+  function actualizarTablaVehiculos() {
+    const vehiculosFiltrados = aplicarFiltro(); // Aplicamos el filtro actual
+    funciones.mostrarVehiculosEnTabla(vehiculosFiltrados); // Mostrar solo los vehículos filtrados
+
+    // Re-agregamos los event listeners de doble clic en las filas
+    document.querySelectorAll('tbody tr').forEach(fila => {
+      fila.addEventListener('dblclick', function () {
+        const id = this.querySelector('td:first-child').textContent; // Obtener el ID de la fila
+        vehiculoSeleccionado = vehiculos.find(v => v.id == id); // Buscar el vehículo por ID
+        mostrarFormularioABM(vehiculoSeleccionado); // Mostrar el formulario con los datos del vehículo
+      });
+    });
+  }
+
+  // Función para aplicar el filtro actual a los vehículos
+  function aplicarFiltro() {
+    if (filtroSeleccionado === 'terrestre') {
+      return vehiculos.filter(v => v instanceof Terrestre);
+    } else if (filtroSeleccionado === 'aereo') {
+      return vehiculos.filter(v => v instanceof Aereo);
+    } else {
+      return vehiculos; // Si el filtro es 'todos', devolvemos todos los vehículos
+    }
   }
 });
