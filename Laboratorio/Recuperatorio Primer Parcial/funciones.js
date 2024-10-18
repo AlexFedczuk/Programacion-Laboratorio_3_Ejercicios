@@ -134,7 +134,7 @@ export function mostrarFormularioABM(vehiculo) {
     document.getElementById('cantRue').value = vehiculo.cantRue || '';
 
     // Mostramos el botón "Modificar" y ocultamos "Agregar"
-    document.getElementById('btn-agregar').style.display = 'none';
+    document.getElementById('btn-alta').style.display = 'none';
     document.getElementById('btn-modificar').style.display = 'inline-block';
   } else {
     // Si es un nuevo registro, vaciamos los campos
@@ -149,7 +149,7 @@ export function mostrarFormularioABM(vehiculo) {
     document.getElementById('cantRue').value = '';
 
     // Mostramos el botón "Agregar" y ocultamos "Modificar"
-    document.getElementById('btn-agregar').style.display = 'inline-block';
+    document.getElementById('btn-alta').style.display = 'inline-block';
     document.getElementById('btn-modificar').style.display = 'none';
   }
 }
