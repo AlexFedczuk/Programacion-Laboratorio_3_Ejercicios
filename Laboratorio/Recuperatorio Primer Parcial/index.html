@@ -34,7 +34,7 @@
     <div class="form-promedio">
       <label for="prom-vel-max">Promedio Velocidad Máxima:</label>
       <input type="text" id="prom-vel-max" readonly>
-      <button type="button">Calcular</button>
+      <button type="button" id="btn-calcular">Calcular</button>
     </div>
 
     <table>
@@ -64,11 +64,11 @@
       </tbody>
     </table>
 
-    <button type="button">Agregar</button>
+    <button type="button" id="btn-agregar">Agregar</button>
   </div>
 
   <!-- HTML para el Formulario ABM -->
-  <div class="form-abm">
+  <div id="form-abm" class="form-abm" style="display: none;">
     <h3>Form ABM</h3>
 
     <label for="id">ID:</label>
@@ -105,7 +105,7 @@
       <button type="button">Agregar</button>
       <button type="button">Modificar</button>
       <button type="button">Eliminar</button>
-      <button type="button">Cancelar</button>
+      <button type="button" id="btn-cancelar">Cancelar</button>
     </div>
   </div>
   <script type="module" src="script.js"></script>
