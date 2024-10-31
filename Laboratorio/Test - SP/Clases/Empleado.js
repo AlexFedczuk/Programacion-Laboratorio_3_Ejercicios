@@ -9,19 +9,19 @@ export class Empleado extends Persona {
 
     #validarFlotante(valor, campo) {
         if (typeof valor !== "number" || isNaN(valor) || valor < 0) {
-            throw new Error(`ERROR: ${campo} debe ser un número flotante mayor o igual a 0.`);
+            throw new Error(`ERROR: ${campo} debe ser un número flotante mayor o igual a 0.\n`);
         }
         return valor;
     }
 
     #validarEntero(valor, campo, min = 1) {
         if (!Number.isInteger(valor) || valor < min) {
-            throw new Error(`ERROR: ${campo} debe ser un número entero mayor o igual a ${min}.`);
+            throw new Error(`ERROR: ${campo} debe ser un número entero mayor o igual a ${min}.\n`);
         }
         return valor;
     }
 
     toString() {
-        return `ID: ${this.id}, Nombre: ${this.nombre}, Apellido: ${this.apellido}, Edad: ${this.edad}, Sueldo: ${this.sueldo}, Ventas: ${this.ventas}`;
+        return `ID: ${this.id}, Nombre: ${this.nombre}, Apellido: ${this.apellido}, Edad: ${this.edad}, Sueldo: ${this.sueldo}, Ventas: ${this.ventas}\n`;
     }
 }

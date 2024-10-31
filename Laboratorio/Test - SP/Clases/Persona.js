@@ -1,27 +1,26 @@
-import Persona from './Persona.js';
-
-export class Cliente extends Persona {
-    constructor(id, nombre, apellido, edad, compras, telefono) {
-        super(id, nombre, apellido, edad);
-        this.compras = this.#validarFlotante(compras, "compras");
-        this.telefono = this.#validarEntero(telefono, "telefono", 999999);
-    }
-
-    #validarFlotante(valor, campo) {
-        if (typeof valor !== "number" || isNaN(valor) || valor < 0) {
-            throw new Error(`ERROR: ${campo} debe ser un número flotante mayor o igual a 0.`);
-        }
-        return valor;
+export class Persona {
+    constructor(id, nombre, apellido, edad) {
+        this.id = this.#validarEntero(id, "ID");
+        this.nombre = this.#validarNombreApellido(nombre, "nombre");
+        this.apellido = this.#validarNombreApellido(apellido, "apellido");
+        this.edad = this.#validarEntero(edad, "edad", 15);
     }
 
     #validarEntero(valor, campo, min = 1) {
         if (!Number.isInteger(valor) || valor < min) {
-            throw new Error(`ERROR: ${campo} debe ser un número entero mayor o igual a ${min}.`);
+            throw new Error(`ERROR: ${campo} debe ser un número entero mayor o igual a ${min}.\n`);
         }
         return valor;
     }
 
+    #validarNombreApellido(campo, tipo) {
+        if (typeof campo !== "string" || campo.trim() === "") {
+            throw new Error(`ERROR: El ${tipo} no puede estar vacío y debe ser una cadena de texto.\n`);
+        }
+        return campo;
+    }
+
     toString() {
-        return `ID: ${this.id}, Nombre: ${this.nombre}, Apellido: ${this.apellido}, Edad: ${this.edad}, Compras: ${this.compras}, Teléfono: ${this.telefono}`;
+        return `ID: ${this.id}, Nombre: ${this.nombre}, Apellido: ${this.apellido}, Edad: ${this.edad}\n`;
     }
 }
