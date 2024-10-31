@@ -1,0 +1,78 @@
+[
+    {
+        "id": 1,
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "edad": 30
+    },
+    {
+        "id": 2,
+        "nombre": "Ana",
+        "apellido": "González",
+        "edad": 35,
+        "sueldo": 50000,
+        "ventas": 20
+    },
+    {
+        "id": 3,
+        "nombre": "Carlos",
+        "apellido": "López",
+        "edad": 28,
+        "compras": 1500.75,
+        "telefono": 1122334455
+    },
+    {
+        "id": 4,
+        "nombre": "Lucía",
+        "apellido": "Martínez",
+        "edad": 40,
+        "sueldo": 45000,
+        "ventas": 15
+    },
+    {
+        "id": 5,
+        "nombre": "Diego",
+        "apellido": "Ramírez",
+        "edad": 25,
+        "compras": 300.50,
+        "telefono": 1166778899
+    },
+    {
+        "id": 6,
+        "nombre": "Sofía",
+        "apellido": "Fernández",
+        "edad": 32
+    },
+    {
+        "id": 7,
+        "nombre": "Pedro",
+        "apellido": "Jiménez",
+        "edad": 29,
+        "sueldo": 35000,
+        "ventas": 12
+    },
+    {
+        "id": 8,
+        "nombre": "Marta",
+        "apellido": "Herrera",
+        "edad": 45,
+        "compras": 2000.00,
+        "telefono": 1199887766
+    },
+    {
+        "id": 9,
+        "nombre": "José",
+        "apellido": "Castro",
+        "edad": 38,
+        "sueldo": 48000,
+        "ventas": 25
+    },
+    {
+        "id": 10,
+        "nombre": "María",
+        "apellido": "Domínguez",
+        "edad": 27,
+        "compras": 750.25,
+        "telefono": 1177334422
+    }
+]
