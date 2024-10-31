@@ -1,10 +1,10 @@
-import Persona from './Persona.js';
+import { Persona } from "./Persona.js";
 
-export class Empleado extends Persona {
-    constructor(id, nombre, apellido, edad, sueldo, ventas) {
+export class Cliente extends Persona {
+    constructor(id, nombre, apellido, edad, compras, telefono) {
         super(id, nombre, apellido, edad);
-        this.sueldo = this.#validarFlotante(sueldo, "sueldo");
-        this.ventas = this.#validarEntero(ventas, "ventas", 1);
+        this.compras = this.#validarFlotante(compras, "compras");
+        this.telefono = this.#validarEntero(telefono, "telefono", 10000000);
     }
 
     #validarFlotante(valor, campo) {
@@ -22,6 +22,6 @@ export class Empleado extends Persona {
     }
 
     toString() {
-        return `ID: ${this.id}, Nombre: ${this.nombre}, Apellido: ${this.apellido}, Edad: ${this.edad}, Sueldo: ${this.sueldo}, Ventas: ${this.ventas}\n`;
+        return `ID: ${this.id}, Nombre: ${this.nombre}, Apellido: ${this.apellido}, Edad: ${this.edad}, Compras: ${this.compras}, Teléfono: ${this.telefono}\n`;
     }
 }
