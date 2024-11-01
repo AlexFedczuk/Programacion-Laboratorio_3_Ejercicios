@@ -2,15 +2,6 @@ import { Persona } from "./Clases/Persona.js";
 import { Empleado } from "./Clases/Empleado.js";
 import { Cliente } from "./Clases/Cliente.js";
 
-/**
- * Carga los datos desde un archivo JSON y crea instancias de las clases Persona, Empleado, o Cliente.
- * Los datos cargados se almacenan en el array `personas`.
- *
- * @param {Array} personas - Array donde se almacenarán las instancias de personas cargadas desde el JSON.
- * @returns {Promise<void>} - Una promesa que se resuelve cuando los datos se han cargado y procesado.
- * 
- * @throws {Error} - Lanza un error si no se puede cargar el archivo JSON.
- */
 export function cargarPersonasDesdeJSON(personas) {
     return fetch('./Registros/datos.json')
         .then(response => {
@@ -35,12 +26,6 @@ export function cargarPersonasDesdeJSON(personas) {
         .catch(error => console.error(error.message));
 }
 
-/**
- * Muestra la lista de personas en una tabla HTML. Para cada persona, muestra los atributos
- * correspondientes y completa con "N/A" aquellos atributos que no aplican.
- *
- * @param {Array} personas - Array de instancias de Persona, Empleado o Cliente que serán mostradas en la tabla.
- */
 export function mostrarPersonasEnTabla(personas) {
     const tablaBody = document.querySelector("#tablaPersonas tbody");
     tablaBody.innerHTML = ""; // Limpiamos la tabla antes de poblarla
@@ -67,40 +52,49 @@ export function mostrarPersonasEnTabla(personas) {
     });
 }
 
-/**
- * Muestra el formulario ABM con el título correspondiente y elimina la clase "oculto".
- *
- * @param {string} titulo - El título que debe mostrarse en el formulario ("Alta", "Modificación" o "Baja").
- */
 export function mostrarFormulario(titulo) {
     console.log(`Mostrando formulario para: ${titulo}`);
     const formularioABM = document.getElementById("formularioABM");
     const formularioTitulo = document.getElementById("formularioTitulo");
+    const formularioLista = document.getElementById("formularioLista");
+
     formularioTitulo.innerText = titulo;
     formularioABM.classList.remove("oculto");
+    formularioABM.style.display = "block";
+
+    // Ocultar el formulario lista de manera forzada
+    formularioLista.style.display = "none";
 }
 
-/**
- * Oculta el formulario ABM aplicando la clase "oculto".
- */
 export function ocultarFormulario() {
     const formularioABM = document.getElementById("formularioABM");
+    const formularioLista = document.getElementById("formularioLista");
+
     formularioABM.classList.add("oculto");
-    formularioABM.style.display = "none"; // Fuerza el ocultamiento
+    formularioABM.style.display = "none";
+
+    // Mostrar el formulario lista de manera forzada
+    formularioLista.style.display = "block";
 }
 
-/**
- * Configura los eventos de los botones Aceptar y Cancelar en el formulario ABM.
- * El botón Aceptar imprimirá la acción actual en consola y luego ocultará el formulario.
- */
-export function configurarBotonesABM() {
-    const btnAceptar = document.getElementById("btnAceptar");
-    const btnCancelar = document.getElementById("btnCancelar");
+export function mostrarSpinner() {
+    document.getElementById("spinner").style.display = "block";
+    console.log("Se mostró spinner...");
+}
 
-    btnAceptar.addEventListener("click", () => {
-        console.log(`Acción: ${document.getElementById("formularioTitulo").innerText}`);
-        ocultarFormulario();
+export function mostrarSpinnerConRetraso() {
+    console.log("Se mostró spinner...");
+    const spinner = document.getElementById("spinner");
+    spinner.style.display = "block";
+
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, 2000); // 2000 milisegundos = 2 segundos
     });
+}
 
-    btnCancelar.addEventListener("click", ocultarFormulario);
+export function ocultarSpinner() {
+    document.getElementById("spinner").style.display = "none";
+    console.log("Se ocultó spinner...");
 }
