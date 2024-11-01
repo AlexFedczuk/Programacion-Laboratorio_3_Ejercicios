@@ -35,8 +35,19 @@
     <!-- Formulario ABM -->
     <div id="formularioABM" class="form-abm oculto">
         <div id="spinner" class="spinner"></div>
+
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+            <option value="Persona">Persona</option>
+            <option value="Empleado">Empleado</option>
+            <option value="Cliente">Cliente</option>
+        </select>
+
         <h2 id="formularioTitulo">Alta</h2>
         <form id="abmForm">
+            <label for="ID">ID:</label>
+            <input type="text" id="campoID" name="id" disabled>
+
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre">
 
