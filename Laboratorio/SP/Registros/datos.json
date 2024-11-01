@@ -84,5 +84,25 @@
         "compras": "",
         "telefono": "",
         "id": 11
+    },
+    {
+        "nombre": "lalala",
+        "apellido": "lululu",
+        "edad": "234",
+        "sueldo": "",
+        "ventas": "",
+        "compras": "3000",
+        "telefono": "11112222",
+        "id": 12
+    },
+    {
+        "nombre": "lalala",
+        "apellido": "lululu",
+        "edad": "234",
+        "sueldo": "",
+        "ventas": "",
+        "compras": "3000",
+        "telefono": "11112222",
+        "id": 13
     }
 ]
