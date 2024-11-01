@@ -66,3 +66,41 @@ export function mostrarPersonasEnTabla(personas) {
         tablaBody.appendChild(fila);
     });
 }
+
+/**
+ * Muestra el formulario ABM con el título correspondiente y elimina la clase "oculto".
+ *
+ * @param {string} titulo - El título que debe mostrarse en el formulario ("Alta", "Modificación" o "Baja").
+ */
+export function mostrarFormulario(titulo) {
+    console.log(`Mostrando formulario para: ${titulo}`);
+    const formularioABM = document.getElementById("formularioABM");
+    const formularioTitulo = document.getElementById("formularioTitulo");
+    formularioTitulo.innerText = titulo;
+    formularioABM.classList.remove("oculto");
+}
+
+/**
+ * Oculta el formulario ABM aplicando la clase "oculto".
+ */
+export function ocultarFormulario() {
+    const formularioABM = document.getElementById("formularioABM");
+    formularioABM.classList.add("oculto");
+    formularioABM.style.display = "none"; // Fuerza el ocultamiento
+}
+
+/**
+ * Configura los eventos de los botones Aceptar y Cancelar en el formulario ABM.
+ * El botón Aceptar imprimirá la acción actual en consola y luego ocultará el formulario.
+ */
+export function configurarBotonesABM() {
+    const btnAceptar = document.getElementById("btnAceptar");
+    const btnCancelar = document.getElementById("btnCancelar");
+
+    btnAceptar.addEventListener("click", () => {
+        console.log(`Acción: ${document.getElementById("formularioTitulo").innerText}`);
+        ocultarFormulario();
+    });
+
+    btnCancelar.addEventListener("click", ocultarFormulario);
+}

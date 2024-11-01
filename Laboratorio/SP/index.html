@@ -7,27 +7,63 @@
     <link rel="stylesheet" href="./estilo.css">
 </head>
 <body>
-    <h1>Formulario Lista</h1>
-    <table id="tablaPersonas">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Sueldo</th>
-                <th>Ventas</th>
-                <th>Compras</th>
-                <th>Telefono</th>
-                <th>Modificar</th>
-                <th>Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Aquí se insertarán las filas dinámicamente -->
-        </tbody>
-    </table>
-    <button id="btnAgregar">Agregar Elemento</button>
+    <div id="formularioLista">
+        <div id="spinner" class="spinner"></div>
+        <h1>Formulario Lista</h1>
+        <table id="tablaPersonas">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Sueldo</th>
+                    <th>Ventas</th>
+                    <th>Compras</th>
+                    <th>Telefono</th>
+                    <th>Modificar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se insertarán las filas dinámicamente -->
+            </tbody>
+        </table>
+        <button id="btnAgregar">Agregar Elemento</button>
+    </div>    
+
+    <!-- Formulario ABM -->
+    <div id="formularioABM" class="form-abm oculto">
+        <div id="spinner" class="spinner"></div>
+        <h2 id="formularioTitulo">Alta</h2>
+        <form id="abmForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre">
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido">
+
+            <label for="edad">Edad:</label>
+            <input type="text" id="edad" name="edad">
+
+            <label for="sueldo">Sueldo:</label>
+            <input type="text" id="sueldo" name="sueldo" step="0.01">
+
+            <label for="ventas">Ventas:</label>
+            <input type="text" id="ventas" name="ventas">
+
+            <label for="compras">Compras:</label>
+            <input type="text" id="compras" name="compras" step="0.01">
+
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono">
+
+            <div class="form-actions">
+                <button type="button" id="btnAceptar">Aceptar</button>
+                <button type="button" id="btnCancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
 
     <script src="./app.js" type="module"></script>
 </body>
