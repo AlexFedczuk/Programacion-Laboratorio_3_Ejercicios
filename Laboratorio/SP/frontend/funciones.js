@@ -98,3 +98,31 @@ export function ocultarSpinner() {
     document.getElementById("spinner").style.display = "none";
     console.log("Se ocultó spinner...");
 }
+
+// Función para manejar solicitudes XMLHttpRequest
+export function fetchData(url, successCallback, errorCallback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                successCallback(data);
+            } else {
+                errorCallback("Error al cargar datos.");
+            }
+        }
+    };
+    xhr.send();
+}
+
+// Función para crear una instancia de Persona, Empleado o Cliente según el JSON
+export function crearPersonaDesdeJSON(item) {
+    if ("sueldo" in item && "ventas" in item) {
+        return new Empleado(item.id, item.nombre, item.apellido, item.edad, item.sueldo, item.ventas);
+    } else if ("compras" in item && "telefono" in item) {
+        return new Cliente(item.id, item.nombre, item.apellido, item.edad, item.compras, item.telefono);
+    } else {
+        return new Persona(item.id, item.nombre, item.apellido, item.edad);
+    }
+}

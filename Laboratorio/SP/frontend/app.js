@@ -1,56 +1,24 @@
-import { Persona } from "./Clases/Persona.js";
-import { Empleado } from "./Clases/Empleado.js";
-import { Cliente } from "./Clases/Cliente.js";
-import { mostrarPersonasEnTabla, mostrarFormulario, ocultarFormulario, mostrarSpinner, ocultarSpinner } from "./funciones.js";
+import { mostrarPersonasEnTabla, 
+    mostrarFormulario, 
+    ocultarFormulario, 
+    mostrarSpinner, 
+    ocultarSpinner, 
+    fetchData,
+    crearPersonaDesdeJSON } from "./funciones.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     let personas = [];
 
-    function cargarDatosConXMLHttpRequest() {
-        const xhr = new XMLHttpRequest();
-        
-        // Configuramos la solicitud para realizar un GET al endpoint
-        xhr.open("GET", "../backend/PersonasEmpleadosClientes.php", true);
-
-        // Definimos la función que se ejecutará cuando cambie el estado de la solicitud
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) { // La solicitud ha completado
-                if (xhr.status === 200) {
-                    // Parseamos la respuesta JSON y generamos la lista en memoria
-                    const data = JSON.parse(xhr.responseText);
-                    data.forEach(item => {
-                        let persona;
-                        if ("sueldo" in item && "ventas" in item) {
-                            persona = new Empleado(item.id, item.nombre, item.apellido, item.edad, item.sueldo, item.ventas);
-                        } else if ("compras" in item && "telefono" in item) {
-                            persona = new Cliente(item.id, item.nombre, item.apellido, item.edad, item.compras, item.telefono);
-                        } else {
-                            persona = new Persona(item.id, item.nombre, item.apellido, item.edad);
-                        }
-                        personas.push(persona);
-                    });
-
-                    // Ocultar el spinner y mostrar la lista en la tabla
-                    ocultarSpinner();
-                    mostrarPersonasEnTabla(personas);
-
-                } else {
-                    // En caso de error, ocultamos el spinner y mostramos una advertencia
-                    ocultarSpinner();
-                    alert("Error al cargar los datos. Por favor, intente nuevamente.");
-                }
-            }
-        };
-
-        // Mostrar spinner antes de enviar la solicitud
-        mostrarSpinner();
-
-        // Enviamos la solicitud
-        xhr.send();
-    }
-
-    // Llamamos a la función para cargar los datos cuando la página termina de cargar
-    cargarDatosConXMLHttpRequest();
+    // Llamada a la función para cargar los datos al cargar la página
+    mostrarSpinner();
+    fetchData("../backend/PersonasEmpleadosClientes.php", (data) => {
+        personas = data.map(item => crearPersonaDesdeJSON(item));
+        ocultarSpinner();
+        mostrarPersonasEnTabla(personas);
+    }, (error) => {
+        ocultarSpinner();
+        alert("Error al cargar los datos. Por favor, intente nuevamente.");
+    });
 
     // Configuración adicional para el formulario ABM y los botones
     configurarBotonesABM();
