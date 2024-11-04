@@ -44,15 +44,7 @@
         "modelo": "Chevy Silverado",
         "anoFabricacion": 1994,
         "velMax": 80,
-        "carga": 1000,
+        "carga": 3333,
         "autonomia": 450
-    },
-    {
-        "modelo": "asd",
-        "anoFabricacion": 2222,
-        "velMax": 2222,
-        "cantidadPuertas": 2,
-        "asientos": 2,
-        "id": 667
     }
 ]
