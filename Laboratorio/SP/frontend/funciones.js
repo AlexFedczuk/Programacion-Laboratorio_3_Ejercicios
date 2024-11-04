@@ -306,3 +306,152 @@ function obtenerElementoError(idElemento, idError, mensaje) {
     errorElemento.textContent = mensaje;
     return errorElemento;
 }
+
+// Función para prellenar el formulario según los datos de una persona
+export function prellenarFormulario(persona) {
+    document.getElementById("campoID").value = persona.id || "";
+    document.getElementById("nombre").value = persona.nombre || "";
+    document.getElementById("apellido").value = persona.apellido || "";
+    document.getElementById("edad").value = persona.edad || "";
+    document.getElementById("sueldo").value = persona.sueldo || "";
+    document.getElementById("ventas").value = persona.ventas || "";
+    document.getElementById("compras").value = persona.compras || "";
+    document.getElementById("telefono").value = persona.telefono || "";
+
+    actualizarCamposSegunTipo();
+}
+
+// Función que configura el botón de aceptar y cancelar en el formulario ABM
+export function configurarBotonesForm(personas, tipoAccion, personaId = null) {
+    document.getElementById("btnAceptar").onclick = async function () {
+        if (!validarFormulario()) return;
+
+        const elemento = obtenerDatosFormulario();
+        if (!elemento) return;
+
+        mostrarSpinner();
+        try {
+            const metodo = tipoAccion === "modificar" ? "POST" : "PUT";
+            const response = await fetch("../backend/PersonasEmpleadosClientes.php", {
+                method: metodo,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(elemento)
+            });
+
+            ocultarSpinner();
+            if (response.ok) {
+                const data = await response.json();
+                if (tipoAccion === "modificar" && personaId !== null) {
+                    const index = personas.findIndex(p => p.id === personaId);
+                    if (index !== -1) personas[index] = { ...personas[index], ...elemento };
+                } else {
+                    elemento.id = data.id;
+                    personas.push(elemento);
+                }
+
+                ocultarFormulario();
+                mostrarPersonasEnTabla(personas);
+            } else {
+                throw new Error("Error en la solicitud");
+            }
+        } catch (error) {
+            ocultarSpinner();
+            console.error("Error:", error);
+            alert(`ERROR: No se pudo completar la ${tipoAccion}.`);
+        }
+    };
+
+    // Configurar el botón Cancelar
+    document.getElementById("btnCancelar").onclick = function () {
+        ocultarFormulario();
+    };
+}
+
+export function configurarFormularioModificacion(id, personas) {
+    const tipoSeleccionado = document.getElementById("tipo");
+    const sueldoInput = document.getElementById("sueldo");
+    const ventasInput = document.getElementById("ventas");
+    const comprasInput = document.getElementById("compras");
+    const telefonoInput = document.getElementById("telefono");
+
+    // Llenar los datos de la persona seleccionada
+    const persona = personas.find(p => p.id == id); // Encuentra la persona por ID
+
+    if (persona) {
+        // Asignar valores a los campos
+        document.getElementById("nombre").value = persona.nombre;
+        document.getElementById("apellido").value = persona.apellido;
+        document.getElementById("edad").value = persona.edad;
+        sueldoInput.value = persona.sueldo || ''; // Asigna valor o vacío
+        ventasInput.value = persona.ventas || ''; // Asigna valor o vacío
+        comprasInput.value = persona.compras || ''; // Asigna valor o vacío
+        telefonoInput.value = persona.telefono || ''; // Asigna valor o vacío
+
+        actualizarCamposPorTipo(tipoSeleccionado.value, sueldoInput, ventasInput, comprasInput, telefonoInput);
+    } else {
+        console.error("Persona no encontrada.");
+    }
+
+    // Agregar evento de cambio al campo tipo
+    tipoSeleccionado.addEventListener('change', (event) => {
+        const nuevoTipo = event.target.value;
+        actualizarCamposPorTipo(nuevoTipo, sueldoInput, ventasInput, comprasInput, telefonoInput);
+    });
+
+    const btnAceptar = document.getElementById("btnAceptar");
+    btnAceptar.onclick = async function () {
+        const nuevoElemento = obtenerDatosFormulario(); // Esta función debe validar los datos del formulario
+        //nuevoElemento.id = id;
+        console.log(nuevoElemento);
+
+        if (!nuevoElemento) return; // Verifica que los datos sean válidos
+
+        nuevoElemento.id = parseInt(id, 10); // Asegúrate de que el ID sea un entero
+
+        mostrarSpinner();
+        try {
+            const response = await fetch("../backend/PersonasEmpleadosClientes.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...nuevoElemento, id: nuevoElemento.id }) // Incluye el ID en el cuerpo
+            });
+
+            ocultarSpinner();
+            if (response.ok) {
+                const data = await response.json();
+                // Actualiza la lista en memoria y la tabla
+                const index = personas.findIndex(p => p.id === id);
+                personas[index] = { ...personas[index], ...nuevoElemento }; // Actualiza el objeto
+                ocultarFormulario();
+                mostrarPersonasEnTabla(personas);
+            } else {
+                throw new Error("Error en la solicitud");
+            }
+        } catch (error) {
+            ocultarSpinner();
+            console.error("Error:", error);
+            alert("ERROR: Hubo un problema al enviar la modificación.");
+        }
+    };
+}
+
+// Nueva función para habilitar/deshabilitar campos
+function actualizarCamposPorTipo(tipo, sueldoInput, ventasInput, comprasInput, telefonoInput) {
+    // Habilitar o deshabilitar campos según el tipo
+    if (tipo === 'Persona') {
+        sueldoInput.disabled = true;
+        ventasInput.disabled = true;
+        comprasInput.disabled = true;
+        telefonoInput.disabled = true;
+    } else if (tipo === 'Empleado') {
+        sueldoInput.disabled = false;
+        ventasInput.disabled = false;
+        comprasInput.disabled = true;
+        telefonoInput.disabled = true;
+    } else if (tipo === 'Cliente') {
+        sueldoInput.disabled = true;
+        ventasInput.disabled = true;
+        comprasInput.disabled = false;
+        telefonoInput.disabled = false;
+    }
+}
