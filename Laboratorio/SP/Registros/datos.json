@@ -78,31 +78,15 @@
     {
         "nombre": "Alex Yago",
         "apellido": "Fedczuk",
-        "edad": "23",
-        "sueldo": "",
-        "ventas": "",
-        "compras": "",
-        "telefono": "",
+        "edad": 23,
         "id": 11
     },
     {
-        "nombre": "lalala",
-        "apellido": "lululu",
-        "edad": "234",
-        "sueldo": "",
-        "ventas": "",
-        "compras": "3000",
-        "telefono": "11112222",
+        "nombre": "Joja",
+        "apellido": "Fedczuk",
+        "edad": 23,
+        "sueldo": 55555,
+        "ventas": 5,
         "id": 12
-    },
-    {
-        "nombre": "lalala",
-        "apellido": "lululu",
-        "edad": "234",
-        "sueldo": "",
-        "ventas": "",
-        "compras": "3000",
-        "telefono": "11112222",
-        "id": 13
     }
 ]
