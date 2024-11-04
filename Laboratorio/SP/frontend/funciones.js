@@ -422,8 +422,9 @@ export function configurarFormularioModificacion(id, personas) {
                 // Actualiza la lista en memoria y la tabla
                 const index = personas.findIndex(p => p.id === id);
                 personas[index] = { ...personas[index], ...nuevoElemento }; // Actualiza el objeto
-                ocultarFormulario();
-                mostrarPersonasEnTabla(personas);
+
+                ocultarFormulario();  
+                mostrarPersonasEnTabla(personas);                              
             } else {
                 throw new Error("Error en la solicitud");
             }
@@ -454,4 +455,51 @@ function actualizarCamposPorTipo(tipo, sueldoInput, ventasInput, comprasInput, t
         comprasInput.disabled = false;
         telefonoInput.disabled = false;
     }
+}
+
+// Función para configurar el formulario de eliminación
+export function configurarFormularioEliminacion(id, personas) {
+    const persona = personas.find(p => p.id == id);
+
+    if (persona) {
+        // Muestra los datos de la persona a eliminar
+        document.getElementById("nombre").value = persona.nombre;
+        document.getElementById("apellido").value = persona.apellido;
+
+        // Deshabilita el campo de ID
+        document.getElementById("campoID").disabled = true;
+        document.getElementById("nombre").disabled = true;
+        document.getElementById("apellido").disabled = true;
+
+        const btnAceptar = document.getElementById("btnAceptar");
+        btnAceptar.onclick = async function () {
+            mostrarSpinner();
+            try {
+                const response = await fetch(`../backend/PersonasEmpleadosClientes.php?id=${id}`, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                });
+
+                ocultarSpinner();
+                if (response.ok) {
+                    // Actualiza la lista en memoria
+                    personas = personas.filter(p => p.id != id);
+                    ocultarFormulario();
+                    mostrarPersonasEnTabla(personas);
+                } else {
+                    throw new Error("Error en la solicitud de eliminación.");
+                }
+            } catch (error) {
+                ocultarSpinner();
+                alert("ERROR: No se pudo eliminar la persona.");
+            }
+        };
+    } else {
+        console.error("Persona no encontrada.");
+    }
+
+    // Configura el botón de cancelar
+    document.getElementById("btnCancelar").onclick = function () {
+        ocultarFormulario();
+    };
 }

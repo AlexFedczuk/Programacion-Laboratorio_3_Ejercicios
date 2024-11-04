@@ -1,11 +1,5 @@
 [
     {
-        "id": 1,
-        "nombre": "Juan LALALA",
-        "apellido": "Lolazo Dso",
-        "edad": 234
-    },
-    {
         "id": 2,
         "nombre": "Ana",
         "apellido": "Gonz\u00e1lez",

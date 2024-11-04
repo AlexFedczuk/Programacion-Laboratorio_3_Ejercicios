@@ -81,7 +81,30 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'DELETE':
-        echo json_encode(['warning' => 'AVISO: En desarollo...']);
+        $id = $_GET['id']; // Obtener el ID del query string
+
+        // Leer el archivo JSON existente
+        $data = file_get_contents($jsonFile);
+        $personas = json_decode($data, true);
+
+        // Buscar el índice del elemento a eliminar
+        $index = array_search($id, array_column($personas, 'id'));
+
+        if ($index !== false) {
+            // Eliminar el elemento del array
+            array_splice($personas, $index, 1);
+
+            // Guardar los datos actualizados en el archivo JSON
+            file_put_contents($jsonFile, json_encode($personas, JSON_PRETTY_PRINT));
+
+            // Respuesta exitosa
+            http_response_code(200);
+            echo json_encode(['message' => 'Persona eliminada correctamente.']);
+        } else {
+            // Si no se encuentra el ID
+            http_response_code(404);
+            echo json_encode(['error' => 'Persona no encontrada.']);
+        }
         break;
 
     default:
