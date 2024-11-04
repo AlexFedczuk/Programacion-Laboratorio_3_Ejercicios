@@ -130,9 +130,22 @@ export function crearVehiculoDesdeJSON(item) {
 export function configurarFormularioAlta(vehiculos) {
     const formulario = document.getElementById("abmForm");
     formulario.reset();
+
+    const tipoSeleccionado = document.getElementById("tipo");
+    const cantidadPuertasInput = document.getElementById("cantidadPuertas");
+    const asientosInput = document.getElementById("asientos");
+    const cargaInput = document.getElementById("carga");
+    const autonomiaInput = document.getElementById("autonomia");
     
     document.getElementById("campoID").disabled = true;
     actualizarCamposSegunTipo();
+
+    // Agregar evento de cambio al campo tipo
+    tipoSeleccionado.addEventListener('change', (event) => {
+        const nuevoTipo = event.target.value;
+        actualizarCamposPorTipo(nuevoTipo, cantidadPuertasInput, asientosInput, cargaInput, autonomiaInput);
+    });
+    
 
     document.getElementById("btnAceptar").onclick = async function () {
         // Llamar a la función de validación y almacenar el resultado
@@ -150,7 +163,7 @@ export function configurarFormularioAlta(vehiculos) {
 
         mostrarSpinner();
         try {
-            const response = await fetch("../backend/VehiculosAutosCamions.php", {
+            const response = await fetch("../backend/VehiculoAutoCamion.php", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(nuevoElemento)
@@ -195,11 +208,11 @@ function actualizarCamposSegunTipo() {
 
 export function obtenerDatosFormulario() {
     const modelo = document.getElementById("modelo").value.trim();
-    const anoFabricacion = document.getElementById("anoFabricacion").value.trim();
-    const velMax = parseInt(document.getElementById("velMax").value);
-    const cantidadPuertas = document.getElementById("cantidadPuertas").value ? parseFloat(document.getElementById("cantidadPuertas").value) : null;
-    const asientos = document.getElementById("asientos").value ? parseFloat(document.getElementById("asientos").value) : null;
-    const carga = document.getElementById("carga").value ? parseFloat(document.getElementById("carga").value) : null;
+    const anoFabricacion = parseInt(document.getElementById("anoFabricacion").value.trim());
+    const velMax = parseFloat(document.getElementById("velMax").value);
+    const cantidadPuertas = document.getElementById("cantidadPuertas").value ? parseInt(document.getElementById("cantidadPuertas").value) : null;
+    const asientos = document.getElementById("asientos").value ? parseInt(document.getElementById("asientos").value) : null;
+    const carga = document.getElementById("carga").value ? parseInt(document.getElementById("carga").value) : null;
     const autonomia = document.getElementById("autonomia").value ? parseInt(document.getElementById("autonomia").value) : null;
 
     let nuevoElemento = { modelo, anoFabricacion, velMax };
@@ -231,8 +244,9 @@ export function validarFormulario() {
     // Validación del anoFabricacion
     const anoFabricacionInput = document.getElementById("anoFabricacion");
     const errorAnoFabricacion = obtenerElementoError("anoFabricacion", "error-anoFabricacion", "");
-    if (anoFabricacionInput.value.trim() === "") {
-        errorAnoFabricacion.textContent = "Error: El anoFabricacion no puede estar vacío.";
+    const anoFabricacion = parseInt(anoFabricacionInput.value, 10);
+    if (isNaN(anoFabricacion) || anoFabricacion < 1986) {
+        errorAnoFabricacion.textContent = "Error: La anoFabricacion debe ser un número mayor a 1986 y no puede estar vacía.";
         esValido = false;
     } else {
         errorAnoFabricacion.textContent = "";
@@ -241,9 +255,9 @@ export function validarFormulario() {
     // Validación de la velMax
     const velMaxInput = document.getElementById("velMax");
     const errorVelMax = obtenerElementoError("velMax", "error-velMax", "");
-    const velMax = parseInt(velMaxInput.value, 10);
-    if (isNaN(velMax) || velMax < 15) {
-        errorVelMax.textContent = "Error: La velMax debe ser un número mayor a 15 años y no puede estar vacía.";
+    const velMax = parseFloat(velMaxInput.value, 10);
+    if (isNaN(velMax) || velMax < 1) {
+        errorVelMax.textContent = "Error: La velMax debe ser un número mayor a 0 y no puede estar vacía.";
         esValido = false;
     } else {
         errorVelMax.textContent = "";
@@ -251,43 +265,58 @@ export function validarFormulario() {
 
     // Validación del cantidadPuertas (si se aplica)
     const cantidadPuertasInput = document.getElementById("cantidadPuertas");
-    const errorCantidadPuertas = obtenerElementoError("cantidadPuertas", "error-cantidadPuertas", "");
-    if (cantidadPuertasInput.value && parseFloat(cantidadPuertasInput.value) <= 0) {
-        errorCantidadPuertas.textContent = "Error: El cantidadPuertas debe ser un número positivo.";
-        esValido = false;
-    } else {
-        errorCantidadPuertas.textContent = "";
+    if(!cantidadPuertasInput.disabled){
+        const errorCantidadPuertas = obtenerElementoError("cantidadPuertas", "error-cantidadPuertas", "");
+        const cantidadPuertas = parseInt(cantidadPuertasInput.value, 10);
+        if (isNaN(cantidadPuertas) || cantidadPuertas < 1) {
+            errorCantidadPuertas.textContent = "Error: La cantidadPuertas debe ser un número mayor a 1 y no puede estar vacía.";
+            esValido = false;
+        } else {
+            errorCantidadPuertas.textContent = "";
+        }
     }
+    
 
     // Validación de asientos (si se aplica)
     const asientosInput = document.getElementById("asientos");
-    const errorAsientos = obtenerElementoError("asientos", "error-asientos", "");
-    if (asientosInput.value && parseFloat(asientosInput.value) <= 0) {
-        errorAsientos.textContent = "Error: Las asientos deben ser un número positivo.";
-        esValido = false;
-    } else {
-        errorAsientos.textContent = "";
+    if(!asientosInput.disabled){
+        const errorAsientos = obtenerElementoError("asientos", "error-asientos", "");
+        const asientos = parseInt(asientosInput.value, 10);
+        if (isNaN(asientos) || asientos < 1) {
+            errorAsientos.textContent = "Error: La asientos debe ser un número mayor a 1 y no puede estar vacía.";
+            esValido = false;
+        } else {
+            errorAsientos.textContent = "";
+        }
     }
+    
 
     // Validación de carga (si se aplica)
     const cargaInput = document.getElementById("carga");
-    const errorCarga = obtenerElementoError("carga", "error-carga", "");
-    if (cargaInput.value && parseFloat(cargaInput.value) <= 0) {
-        errorCarga.textContent = "Error: Las carga deben ser un número positivo.";
-        esValido = false;
-    } else {
-        errorCarga.textContent = "";
+    if(!cargaInput.disabled){
+        const errorCarga = obtenerElementoError("carga", "error-carga", "");
+        const carga = parseInt(cargaInput.value, 10);
+        if (isNaN(carga) || carga < 1) {
+            errorCarga.textContent = "Error: La carga debe ser un número mayor a 0 y no puede estar vacía.";
+            esValido = false;
+        } else {
+            errorCarga.textContent = "";
+        }
     }
+    
 
-    // Validación del teléfono (si se aplica)
+    // Validación del autonomia (si se aplica)
     const autonomiaInput = document.getElementById("autonomia");
-    const errorAutonomia = obtenerElementoError("autonomia", "error-autonomia", "");
-    if (autonomiaInput.value && autonomiaInput.value.length < 8) {
-        errorAutonomia.textContent = "Error: El teléfono debe tener al menos 8 dígitos.";
-        esValido = false;
-    } else {
-        errorAutonomia.textContent = "";
-    }
+    if(!cargaInput.disabled){
+        const errorAutonomia = obtenerElementoError("autonomia", "error-autonomia", "");
+        const autonomia = parseInt(autonomiaInput.value, 10);
+        if (isNaN(autonomia) || autonomia < 1) {
+            errorAutonomia.textContent = "Error: La autonomia debe ser un número mayor a 0 y no puede estar vacía.";
+            esValido = false;
+        } else {
+            errorAutonomia.textContent = "";
+        }
+    }    
 
     return esValido;
 }
@@ -332,7 +361,7 @@ export function configurarBotonesForm(vehiculos, tipoAccion, vehiculoId = null) 
         mostrarSpinner();
         try {
             const metodo = tipoAccion === "modificar" ? "POST" : "PUT";
-            const response = await fetch("../backend/VehiculosAutosCamions.php", {
+            const response = await fetch("../backend/VehiculoAutoCamion.php", {
                 method: metodo,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(elemento)
@@ -410,7 +439,7 @@ export function configurarFormularioModificacion(id, vehiculos) {
 
         mostrarSpinner();
         try {
-            const response = await fetch("../backend/VehiculosAutosCamions.php", {
+            const response = await fetch("../backend/VehiculoAutoCamion.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...nuevoElemento, id: nuevoElemento.id }) // Incluye el ID en el cuerpo
@@ -475,7 +504,7 @@ export function configurarFormularioEliminacion(id, vehiculos) {
         btnAceptar.onclick = async function () {
             mostrarSpinner();
             try {
-                const response = await fetch(`../backend/VehiculosAutosCamions.php?id=${id}`, {
+                const response = await fetch(`../backend/VehiculoAutoCamion.php?id=${id}`, {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" },
                 });
