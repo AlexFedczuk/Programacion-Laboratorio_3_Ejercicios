@@ -9,7 +9,8 @@ import {
     configurarFormularioAlta,
     configurarFormularioModificacion,
     configurarBotonesABM,
-    configurarFormularioEliminacion 
+    configurarFormularioEliminacion, 
+    cargarVehiculosDesdeAPI
 } from "./funciones.js";
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Cargar los datos iniciales al cargar la página para la lista.
     mostrarSpinner();
     fetchData("../backend/VehiculoAutoCamion.php", (data) => {
+        //vehiculos = data.map(item => cargarVehiculosDesdeAPI(item, 'https://examenesutn.vercel.app/api/VehiculoAutoCamion'));
         vehiculos = data.map(item => crearVehiculoDesdeJSON(item));
         ocultarSpinner();
         mostrarVehiculosEnTabla(vehiculos);

@@ -26,6 +26,33 @@ export function cargarVehiculosDesdeJSON(vehiculos) {
         .catch(error => console.error(error.message));
 }
 
+export function cargarVehiculosDesdeAPI(vehiculos, url) {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("ERROR: Error al cargar los datos de la API\n");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Limpiar el array de vehículos antes de llenarlo
+            vehiculos.length = 0; // Limpiar el array
+
+            data.forEach(item => {
+                let vehiculo;
+                if ("cantidadPuertas" in item && "asientos" in item) {
+                    vehiculo = new Auto(item.id, item.modelo, item.anoFabricacion, item.velMax, item.cantidadPuertas, item.asientos);
+                } else if ("carga" in item && "autonomia" in item) {
+                    vehiculo = new Camion(item.id, item.modelo, item.anoFabricacion, item.velMax, item.carga, item.autonomia);
+                } else {
+                    vehiculo = new Vehiculo(item.id, item.modelo, item.anoFabricacion, item.velMax);
+                }
+                vehiculos.push(vehiculo);
+            });
+        })
+        .catch(error => console.error(error.message));
+}
+
 export function mostrarVehiculosEnTabla(vehiculos) {
     const tablaBody = document.querySelector("#tablaVehiculos tbody");
     tablaBody.innerHTML = ""; // Limpiamos la tabla antes de poblarla
