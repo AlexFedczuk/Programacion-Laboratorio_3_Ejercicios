@@ -1,0 +1,92 @@
+[
+    {
+        "id": 2,
+        "nombre": "Ana",
+        "apellido": "Gonz\u00e1lez",
+        "edad": 35,
+        "sueldo": 50000,
+        "ventas": 20
+    },
+    {
+        "id": 3,
+        "nombre": "Carlos",
+        "apellido": "L\u00f3pez",
+        "edad": 28,
+        "compras": 1500.75,
+        "telefono": 1122334455
+    },
+    {
+        "id": 4,
+        "nombre": "Luc\u00eda",
+        "apellido": "Mart\u00ednez",
+        "edad": 40,
+        "sueldo": 45000,
+        "ventas": 15
+    },
+    {
+        "id": 5,
+        "nombre": "Diego",
+        "apellido": "Ram\u00edrez",
+        "edad": 25,
+        "compras": 300.5,
+        "telefono": 1166778899
+    },
+    {
+        "id": 6,
+        "nombre": "Sof\u00eda",
+        "apellido": "Fern\u00e1ndez",
+        "edad": 32
+    },
+    {
+        "id": 7,
+        "nombre": "Pedro",
+        "apellido": "Jim\u00e9nez",
+        "edad": 29,
+        "sueldo": 35000,
+        "ventas": 12
+    },
+    {
+        "id": 8,
+        "nombre": "Marta",
+        "apellido": "Herrera",
+        "edad": 45,
+        "compras": 2000,
+        "telefono": 1199887766
+    },
+    {
+        "id": 9,
+        "nombre": "Jos\u00e9",
+        "apellido": "Castro",
+        "edad": 38,
+        "sueldo": 48000,
+        "ventas": 25
+    },
+    {
+        "id": 10,
+        "nombre": "Mar\u00eda",
+        "apellido": "Dom\u00ednguez",
+        "edad": 27,
+        "compras": 750.25,
+        "telefono": 1177334422
+    },
+    {
+        "nombre": "Alex Yago",
+        "apellido": "Fedczuk",
+        "edad": 23,
+        "id": 11
+    },
+    {
+        "nombre": "Joja",
+        "apellido": "Fedczuk",
+        "edad": 23,
+        "sueldo": 55555,
+        "ventas": 5,
+        "id": 12
+    },
+    {
+        "nombre": "asd",
+        "apellido": "sdf",
+        "edad": 23,
+        "id": 13
+    }
+]

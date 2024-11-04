@@ -1,8 +1,8 @@
-import { Persona } from "./Clases/Persona.js";
-import { Empleado } from "./Clases/Empleado.js";
-import { Cliente } from "./Clases/Cliente.js";
+import { Vehiculo } from "./Clases/Vehiculo.js";
+import { Auto } from "./Clases/Auto.js";
+import { Camion } from "./Clases/Camion.js";
 
-export function cargarPersonasDesdeJSON(personas) {
+export function cargarVehiculosDesdeJSON(vehiculos) {
     return fetch('./Registros/datos.json')
         .then(response => {
             if (!response.ok) {
@@ -12,37 +12,37 @@ export function cargarPersonasDesdeJSON(personas) {
         })
         .then(data => {
             data.forEach(item => {
-                let persona;
-                if ("sueldo" in item && "ventas" in item) {
-                    persona = new Empleado(item.id, item.nombre, item.apellido, item.edad, item.sueldo, item.ventas);
-                } else if ("compras" in item && "telefono" in item) {
-                    persona = new Cliente(item.id, item.nombre, item.apellido, item.edad, item.compras, item.telefono);
+                let vehiculo;
+                if ("cantidadPuertas" in item && "asientos" in item) {
+                    vehiculo = new Auto(item.id, item.modelo, item.anoFabricacion, item.velMax, item.cantidadPuertas, item.asientos);
+                } else if ("carga" in item && "autonomia" in item) {
+                    vehiculo = new Camion(item.id, item.modelo, item.anoFabricacion, item.velMax, item.carga, item.autonomia);
                 } else {
-                    persona = new Persona(item.id, item.nombre, item.apellido, item.edad);
+                    vehiculo = new Vehiculo(item.id, item.modelo, item.anoFabricacion, item.velMax);
                 }
-                personas.push(persona);
+                vehiculos.push(vehiculo);
             });
         })
         .catch(error => console.error(error.message));
 }
 
-export function mostrarPersonasEnTabla(personas) {
-    const tablaBody = document.querySelector("#tablaPersonas tbody");
+export function mostrarVehiculosEnTabla(vehiculos) {
+    const tablaBody = document.querySelector("#tablaVehiculos tbody");
     tablaBody.innerHTML = ""; // Limpiamos la tabla antes de poblarla
 
-    personas.forEach((persona) => {
+    vehiculos.forEach((vehiculo) => {
         const fila = document.createElement("tr");
 
         // Columna para cada atributo, rellena con "N/A" si no aplica
         fila.innerHTML = `
-            <td>${persona.id}</td>
-            <td>${persona.nombre}</td>
-            <td>${persona.apellido}</td>
-            <td>${persona.edad}</td>
-            <td>${persona.sueldo || "N/A"}</td>
-            <td>${persona.ventas || "N/A"}</td>
-            <td>${persona.compras || "N/A"}</td>
-            <td>${persona.telefono || "N/A"}</td>
+            <td>${vehiculo.id}</td>
+            <td>${vehiculo.modelo}</td>
+            <td>${vehiculo.anoFabricacion}</td>
+            <td>${vehiculo.velMax}</td>
+            <td>${vehiculo.cantidadPuertas || "N/A"}</td>
+            <td>${vehiculo.asientos || "N/A"}</td>
+            <td>${vehiculo.carga || "N/A"}</td>
+            <td>${vehiculo.autonomia || "N/A"}</td>
             <td><button class="btnModificar">Modificar</button></td>
             <td><button class="btnEliminar">Eliminar</button></td>
         `;
@@ -116,18 +116,18 @@ export function fetchData(url, successCallback, errorCallback) {
     xhr.send();
 }
 
-// Función para crear una instancia de Persona, Empleado o Cliente según el JSON
-export function crearPersonaDesdeJSON(item) {
-    if ("sueldo" in item && "ventas" in item) {
-        return new Empleado(item.id, item.nombre, item.apellido, item.edad, item.sueldo, item.ventas);
-    } else if ("compras" in item && "telefono" in item) {
-        return new Cliente(item.id, item.nombre, item.apellido, item.edad, item.compras, item.telefono);
+// Función para crear una instancia de Vehiculo, Auto o Camion según el JSON
+export function crearVehiculoDesdeJSON(item) {
+    if ("cantidadPuertas" in item && "asientos" in item) {
+        return new Auto(item.id, item.modelo, item.anoFabricacion, item.velMax, item.cantidadPuertas, item.asientos);
+    } else if ("carga" in item && "autonomia" in item) {
+        return new Camion(item.id, item.modelo, item.anoFabricacion, item.velMax, item.carga, item.autonomia);
     } else {
-        return new Persona(item.id, item.nombre, item.apellido, item.edad);
+        return new Vehiculo(item.id, item.modelo, item.anoFabricacion, item.velMax);
     }
 }
 
-export function configurarFormularioAlta(personas) {
+export function configurarFormularioAlta(vehiculos) {
     const formulario = document.getElementById("abmForm");
     formulario.reset();
     
@@ -150,7 +150,7 @@ export function configurarFormularioAlta(personas) {
 
         mostrarSpinner();
         try {
-            const response = await fetch("../backend/PersonasEmpleadosClientes.php", {
+            const response = await fetch("../backend/VehiculosAutosCamions.php", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(nuevoElemento)
@@ -160,11 +160,11 @@ export function configurarFormularioAlta(personas) {
             if (response.ok) {
                 const data = await response.json();
                 nuevoElemento.id = data.id;
-                personas.push(nuevoElemento);
+                vehiculos.push(nuevoElemento);
                 
                 // Mostrar Formulario Lista solo si la alta fue exitosa
                 ocultarFormulario();
-                mostrarPersonasEnTabla(personas);
+                mostrarVehiculosEnTabla(vehiculos);
             } else {
                 throw new Error("Error en la solicitud");
             }
@@ -187,29 +187,29 @@ export function configurarBotonesABM() {
 
 function actualizarCamposSegunTipo() {
     const tipo = document.getElementById("tipo").value;
-    document.getElementById("sueldo").disabled = tipo !== "Empleado";
-    document.getElementById("ventas").disabled = tipo !== "Empleado";
-    document.getElementById("compras").disabled = tipo !== "Cliente";
-    document.getElementById("telefono").disabled = tipo !== "Cliente";
+    document.getElementById("cantidadPuertas").disabled = tipo !== "Auto";
+    document.getElementById("asientos").disabled = tipo !== "Auto";
+    document.getElementById("carga").disabled = tipo !== "Camion";
+    document.getElementById("autonomia").disabled = tipo !== "Camion";
 }
 
 export function obtenerDatosFormulario() {
-    const nombre = document.getElementById("nombre").value.trim();
-    const apellido = document.getElementById("apellido").value.trim();
-    const edad = parseInt(document.getElementById("edad").value);
-    const sueldo = document.getElementById("sueldo").value ? parseFloat(document.getElementById("sueldo").value) : null;
-    const ventas = document.getElementById("ventas").value ? parseFloat(document.getElementById("ventas").value) : null;
-    const compras = document.getElementById("compras").value ? parseFloat(document.getElementById("compras").value) : null;
-    const telefono = document.getElementById("telefono").value ? parseInt(document.getElementById("telefono").value) : null;
+    const modelo = document.getElementById("modelo").value.trim();
+    const anoFabricacion = document.getElementById("anoFabricacion").value.trim();
+    const velMax = parseInt(document.getElementById("velMax").value);
+    const cantidadPuertas = document.getElementById("cantidadPuertas").value ? parseFloat(document.getElementById("cantidadPuertas").value) : null;
+    const asientos = document.getElementById("asientos").value ? parseFloat(document.getElementById("asientos").value) : null;
+    const carga = document.getElementById("carga").value ? parseFloat(document.getElementById("carga").value) : null;
+    const autonomia = document.getElementById("autonomia").value ? parseInt(document.getElementById("autonomia").value) : null;
 
-    let nuevoElemento = { nombre, apellido, edad };
+    let nuevoElemento = { modelo, anoFabricacion, velMax };
     
-    if (compras !== null && telefono !== null) {
-        nuevoElemento.compras = compras;
-        nuevoElemento.telefono = telefono;
-    } else if (sueldo !== null && ventas !== null) {
-        nuevoElemento.sueldo = sueldo;
-        nuevoElemento.ventas = ventas;
+    if (carga !== null && autonomia !== null) {
+        nuevoElemento.carga = carga;
+        nuevoElemento.autonomia = autonomia;
+    } else if (cantidadPuertas !== null && asientos !== null) {
+        nuevoElemento.cantidadPuertas = cantidadPuertas;
+        nuevoElemento.asientos = asientos;
     }
 
     return nuevoElemento;
@@ -218,75 +218,75 @@ export function obtenerDatosFormulario() {
 export function validarFormulario() {
     let esValido = true;
 
-    // Validación del nombre
-    const nombreInput = document.getElementById("nombre");
-    const errorNombre = obtenerElementoError("nombre", "error-nombre", "");
-    if (nombreInput.value.trim() === "") {
-        errorNombre.textContent = "Error: El nombre no puede estar vacío.";
+    // Validación del modelo
+    const modeloInput = document.getElementById("modelo");
+    const errorModelo = obtenerElementoError("modelo", "error-modelo", "");
+    if (modeloInput.value.trim() === "") {
+        errorModelo.textContent = "Error: El modelo no puede estar vacío.";
         esValido = false;
     } else {
-        errorNombre.textContent = "";
+        errorModelo.textContent = "";
     }
 
-    // Validación del apellido
-    const apellidoInput = document.getElementById("apellido");
-    const errorApellido = obtenerElementoError("apellido", "error-apellido", "");
-    if (apellidoInput.value.trim() === "") {
-        errorApellido.textContent = "Error: El apellido no puede estar vacío.";
+    // Validación del anoFabricacion
+    const anoFabricacionInput = document.getElementById("anoFabricacion");
+    const errorAnoFabricacion = obtenerElementoError("anoFabricacion", "error-anoFabricacion", "");
+    if (anoFabricacionInput.value.trim() === "") {
+        errorAnoFabricacion.textContent = "Error: El anoFabricacion no puede estar vacío.";
         esValido = false;
     } else {
-        errorApellido.textContent = "";
+        errorAnoFabricacion.textContent = "";
     }
 
-    // Validación de la edad
-    const edadInput = document.getElementById("edad");
-    const errorEdad = obtenerElementoError("edad", "error-edad", "");
-    const edad = parseInt(edadInput.value, 10);
-    if (isNaN(edad) || edad < 15) {
-        errorEdad.textContent = "Error: La edad debe ser un número mayor a 15 años y no puede estar vacía.";
+    // Validación de la velMax
+    const velMaxInput = document.getElementById("velMax");
+    const errorVelMax = obtenerElementoError("velMax", "error-velMax", "");
+    const velMax = parseInt(velMaxInput.value, 10);
+    if (isNaN(velMax) || velMax < 15) {
+        errorVelMax.textContent = "Error: La velMax debe ser un número mayor a 15 años y no puede estar vacía.";
         esValido = false;
     } else {
-        errorEdad.textContent = "";
+        errorVelMax.textContent = "";
     }
 
-    // Validación del sueldo (si se aplica)
-    const sueldoInput = document.getElementById("sueldo");
-    const errorSueldo = obtenerElementoError("sueldo", "error-sueldo", "");
-    if (sueldoInput.value && parseFloat(sueldoInput.value) <= 0) {
-        errorSueldo.textContent = "Error: El sueldo debe ser un número positivo.";
+    // Validación del cantidadPuertas (si se aplica)
+    const cantidadPuertasInput = document.getElementById("cantidadPuertas");
+    const errorCantidadPuertas = obtenerElementoError("cantidadPuertas", "error-cantidadPuertas", "");
+    if (cantidadPuertasInput.value && parseFloat(cantidadPuertasInput.value) <= 0) {
+        errorCantidadPuertas.textContent = "Error: El cantidadPuertas debe ser un número positivo.";
         esValido = false;
     } else {
-        errorSueldo.textContent = "";
+        errorCantidadPuertas.textContent = "";
     }
 
-    // Validación de ventas (si se aplica)
-    const ventasInput = document.getElementById("ventas");
-    const errorVentas = obtenerElementoError("ventas", "error-ventas", "");
-    if (ventasInput.value && parseFloat(ventasInput.value) <= 0) {
-        errorVentas.textContent = "Error: Las ventas deben ser un número positivo.";
+    // Validación de asientos (si se aplica)
+    const asientosInput = document.getElementById("asientos");
+    const errorAsientos = obtenerElementoError("asientos", "error-asientos", "");
+    if (asientosInput.value && parseFloat(asientosInput.value) <= 0) {
+        errorAsientos.textContent = "Error: Las asientos deben ser un número positivo.";
         esValido = false;
     } else {
-        errorVentas.textContent = "";
+        errorAsientos.textContent = "";
     }
 
-    // Validación de compras (si se aplica)
-    const comprasInput = document.getElementById("compras");
-    const errorCompras = obtenerElementoError("compras", "error-compras", "");
-    if (comprasInput.value && parseFloat(comprasInput.value) <= 0) {
-        errorCompras.textContent = "Error: Las compras deben ser un número positivo.";
+    // Validación de carga (si se aplica)
+    const cargaInput = document.getElementById("carga");
+    const errorCarga = obtenerElementoError("carga", "error-carga", "");
+    if (cargaInput.value && parseFloat(cargaInput.value) <= 0) {
+        errorCarga.textContent = "Error: Las carga deben ser un número positivo.";
         esValido = false;
     } else {
-        errorCompras.textContent = "";
+        errorCarga.textContent = "";
     }
 
     // Validación del teléfono (si se aplica)
-    const telefonoInput = document.getElementById("telefono");
-    const errorTelefono = obtenerElementoError("telefono", "error-telefono", "");
-    if (telefonoInput.value && telefonoInput.value.length < 8) {
-        errorTelefono.textContent = "Error: El teléfono debe tener al menos 8 dígitos.";
+    const autonomiaInput = document.getElementById("autonomia");
+    const errorAutonomia = obtenerElementoError("autonomia", "error-autonomia", "");
+    if (autonomiaInput.value && autonomiaInput.value.length < 8) {
+        errorAutonomia.textContent = "Error: El teléfono debe tener al menos 8 dígitos.";
         esValido = false;
     } else {
-        errorTelefono.textContent = "";
+        errorAutonomia.textContent = "";
     }
 
     return esValido;
@@ -307,22 +307,22 @@ function obtenerElementoError(idElemento, idError, mensaje) {
     return errorElemento;
 }
 
-// Función para prellenar el formulario según los datos de una persona
-export function prellenarFormulario(persona) {
-    document.getElementById("campoID").value = persona.id || "";
-    document.getElementById("nombre").value = persona.nombre || "";
-    document.getElementById("apellido").value = persona.apellido || "";
-    document.getElementById("edad").value = persona.edad || "";
-    document.getElementById("sueldo").value = persona.sueldo || "";
-    document.getElementById("ventas").value = persona.ventas || "";
-    document.getElementById("compras").value = persona.compras || "";
-    document.getElementById("telefono").value = persona.telefono || "";
+// Función para prellenar el formulario según los datos de una vehiculo
+export function prellenarFormulario(vehiculo) {
+    document.getElementById("campoID").value = vehiculo.id || "";
+    document.getElementById("modelo").value = vehiculo.modelo || "";
+    document.getElementById("anoFabricacion").value = vehiculo.anoFabricacion || "";
+    document.getElementById("velMax").value = vehiculo.velMax || "";
+    document.getElementById("cantidadPuertas").value = vehiculo.cantidadPuertas || "";
+    document.getElementById("asientos").value = vehiculo.asientos || "";
+    document.getElementById("carga").value = vehiculo.carga || "";
+    document.getElementById("autonomia").value = vehiculo.autonomia || "";
 
     actualizarCamposSegunTipo();
 }
 
 // Función que configura el botón de aceptar y cancelar en el formulario ABM
-export function configurarBotonesForm(personas, tipoAccion, personaId = null) {
+export function configurarBotonesForm(vehiculos, tipoAccion, vehiculoId = null) {
     document.getElementById("btnAceptar").onclick = async function () {
         if (!validarFormulario()) return;
 
@@ -332,7 +332,7 @@ export function configurarBotonesForm(personas, tipoAccion, personaId = null) {
         mostrarSpinner();
         try {
             const metodo = tipoAccion === "modificar" ? "POST" : "PUT";
-            const response = await fetch("../backend/PersonasEmpleadosClientes.php", {
+            const response = await fetch("../backend/VehiculosAutosCamions.php", {
                 method: metodo,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(elemento)
@@ -341,16 +341,16 @@ export function configurarBotonesForm(personas, tipoAccion, personaId = null) {
             ocultarSpinner();
             if (response.ok) {
                 const data = await response.json();
-                if (tipoAccion === "modificar" && personaId !== null) {
-                    const index = personas.findIndex(p => p.id === personaId);
-                    if (index !== -1) personas[index] = { ...personas[index], ...elemento };
+                if (tipoAccion === "modificar" && vehiculoId !== null) {
+                    const index = vehiculos.findIndex(p => p.id === vehiculoId);
+                    if (index !== -1) vehiculos[index] = { ...vehiculos[index], ...elemento };
                 } else {
                     elemento.id = data.id;
-                    personas.push(elemento);
+                    vehiculos.push(elemento);
                 }
 
                 ocultarFormulario();
-                mostrarPersonasEnTabla(personas);
+                mostrarVehiculosEnTabla(vehiculos);
             } else {
                 throw new Error("Error en la solicitud");
             }
@@ -367,35 +367,35 @@ export function configurarBotonesForm(personas, tipoAccion, personaId = null) {
     };
 }
 
-export function configurarFormularioModificacion(id, personas) {
+export function configurarFormularioModificacion(id, vehiculos) {
     const tipoSeleccionado = document.getElementById("tipo");
-    const sueldoInput = document.getElementById("sueldo");
-    const ventasInput = document.getElementById("ventas");
-    const comprasInput = document.getElementById("compras");
-    const telefonoInput = document.getElementById("telefono");
+    const cantidadPuertasInput = document.getElementById("cantidadPuertas");
+    const asientosInput = document.getElementById("asientos");
+    const cargaInput = document.getElementById("carga");
+    const autonomiaInput = document.getElementById("autonomia");
 
-    // Llenar los datos de la persona seleccionada
-    const persona = personas.find(p => p.id == id); // Encuentra la persona por ID
+    // Llenar los datos de la vehiculo seleccionada
+    const vehiculo = vehiculos.find(p => p.id == id); // Encuentra la vehiculo por ID
 
-    if (persona) {
+    if (vehiculo) {
         // Asignar valores a los campos
-        document.getElementById("nombre").value = persona.nombre;
-        document.getElementById("apellido").value = persona.apellido;
-        document.getElementById("edad").value = persona.edad;
-        sueldoInput.value = persona.sueldo || ''; // Asigna valor o vacío
-        ventasInput.value = persona.ventas || ''; // Asigna valor o vacío
-        comprasInput.value = persona.compras || ''; // Asigna valor o vacío
-        telefonoInput.value = persona.telefono || ''; // Asigna valor o vacío
+        document.getElementById("modelo").value = vehiculo.modelo;
+        document.getElementById("anoFabricacion").value = vehiculo.anoFabricacion;
+        document.getElementById("velMax").value = vehiculo.velMax;
+        cantidadPuertasInput.value = vehiculo.cantidadPuertas || ''; // Asigna valor o vacío
+        asientosInput.value = vehiculo.asientos || ''; // Asigna valor o vacío
+        cargaInput.value = vehiculo.carga || ''; // Asigna valor o vacío
+        autonomiaInput.value = vehiculo.autonomia || ''; // Asigna valor o vacío
 
-        actualizarCamposPorTipo(tipoSeleccionado.value, sueldoInput, ventasInput, comprasInput, telefonoInput);
+        actualizarCamposPorTipo(tipoSeleccionado.value, cantidadPuertasInput, asientosInput, cargaInput, autonomiaInput);
     } else {
-        console.error("Persona no encontrada.");
+        console.error("Vehiculo no encontrada.");
     }
 
     // Agregar evento de cambio al campo tipo
     tipoSeleccionado.addEventListener('change', (event) => {
         const nuevoTipo = event.target.value;
-        actualizarCamposPorTipo(nuevoTipo, sueldoInput, ventasInput, comprasInput, telefonoInput);
+        actualizarCamposPorTipo(nuevoTipo, cantidadPuertasInput, asientosInput, cargaInput, autonomiaInput);
     });
 
     const btnAceptar = document.getElementById("btnAceptar");
@@ -410,7 +410,7 @@ export function configurarFormularioModificacion(id, personas) {
 
         mostrarSpinner();
         try {
-            const response = await fetch("../backend/PersonasEmpleadosClientes.php", {
+            const response = await fetch("../backend/VehiculosAutosCamions.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...nuevoElemento, id: nuevoElemento.id }) // Incluye el ID en el cuerpo
@@ -420,11 +420,11 @@ export function configurarFormularioModificacion(id, personas) {
             if (response.ok) {
                 const data = await response.json();
                 // Actualiza la lista en memoria y la tabla
-                const index = personas.findIndex(p => p.id === id);
-                personas[index] = { ...personas[index], ...nuevoElemento }; // Actualiza el objeto
+                const index = vehiculos.findIndex(p => p.id === id);
+                vehiculos[index] = { ...vehiculos[index], ...nuevoElemento }; // Actualiza el objeto
 
                 ocultarFormulario();  
-                mostrarPersonasEnTabla(personas);                              
+                mostrarVehiculosEnTabla(vehiculos);                              
             } else {
                 throw new Error("Error en la solicitud");
             }
@@ -437,45 +437,45 @@ export function configurarFormularioModificacion(id, personas) {
 }
 
 // Nueva función para habilitar/deshabilitar campos
-function actualizarCamposPorTipo(tipo, sueldoInput, ventasInput, comprasInput, telefonoInput) {
+function actualizarCamposPorTipo(tipo, cantidadPuertasInput, asientosInput, cargaInput, autonomiaInput) {
     // Habilitar o deshabilitar campos según el tipo
-    if (tipo === 'Persona') {
-        sueldoInput.disabled = true;
-        ventasInput.disabled = true;
-        comprasInput.disabled = true;
-        telefonoInput.disabled = true;
-    } else if (tipo === 'Empleado') {
-        sueldoInput.disabled = false;
-        ventasInput.disabled = false;
-        comprasInput.disabled = true;
-        telefonoInput.disabled = true;
-    } else if (tipo === 'Cliente') {
-        sueldoInput.disabled = true;
-        ventasInput.disabled = true;
-        comprasInput.disabled = false;
-        telefonoInput.disabled = false;
+    if (tipo === 'Vehiculo') {
+        cantidadPuertasInput.disabled = true;
+        asientosInput.disabled = true;
+        cargaInput.disabled = true;
+        autonomiaInput.disabled = true;
+    } else if (tipo === 'Auto') {
+        cantidadPuertasInput.disabled = false;
+        asientosInput.disabled = false;
+        cargaInput.disabled = true;
+        autonomiaInput.disabled = true;
+    } else if (tipo === 'Camion') {
+        cantidadPuertasInput.disabled = true;
+        asientosInput.disabled = true;
+        cargaInput.disabled = false;
+        autonomiaInput.disabled = false;
     }
 }
 
 // Función para configurar el formulario de eliminación
-export function configurarFormularioEliminacion(id, personas) {
-    const persona = personas.find(p => p.id == id);
+export function configurarFormularioEliminacion(id, vehiculos) {
+    const vehiculo = vehiculos.find(p => p.id == id);
 
-    if (persona) {
-        // Muestra los datos de la persona a eliminar
-        document.getElementById("nombre").value = persona.nombre;
-        document.getElementById("apellido").value = persona.apellido;
+    if (vehiculo) {
+        // Muestra los datos de la vehiculo a eliminar
+        document.getElementById("modelo").value = vehiculo.modelo;
+        document.getElementById("anoFabricacion").value = vehiculo.anoFabricacion;
 
         // Deshabilita el campo de ID
         document.getElementById("campoID").disabled = true;
-        document.getElementById("nombre").disabled = true;
-        document.getElementById("apellido").disabled = true;
+        document.getElementById("modelo").disabled = true;
+        document.getElementById("anoFabricacion").disabled = true;
 
         const btnAceptar = document.getElementById("btnAceptar");
         btnAceptar.onclick = async function () {
             mostrarSpinner();
             try {
-                const response = await fetch(`../backend/PersonasEmpleadosClientes.php?id=${id}`, {
+                const response = await fetch(`../backend/VehiculosAutosCamions.php?id=${id}`, {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" },
                 });
@@ -483,19 +483,19 @@ export function configurarFormularioEliminacion(id, personas) {
                 ocultarSpinner();
                 if (response.ok) {
                     // Actualiza la lista en memoria
-                    personas = personas.filter(p => p.id != id);
+                    vehiculos = vehiculos.filter(p => p.id != id);
                     ocultarFormulario();
-                    mostrarPersonasEnTabla(personas);
+                    mostrarVehiculosEnTabla(vehiculos);
                 } else {
                     throw new Error("Error en la solicitud de eliminación.");
                 }
             } catch (error) {
                 ocultarSpinner();
-                alert("ERROR: No se pudo eliminar la persona.");
+                alert("ERROR: No se pudo eliminar la vehiculo.");
             }
         };
     } else {
-        console.error("Persona no encontrada.");
+        console.error("Vehiculo no encontrada.");
     }
 
     // Configura el botón de cancelar

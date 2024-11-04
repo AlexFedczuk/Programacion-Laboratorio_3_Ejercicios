@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABM de Personas</title>
+    <link rel="stylesheet" href="./estilo.css">
+</head>
+<body>
+    <div id="formularioLista">
+        <div id="spinner" class="spinner"></div>
+        <h1>Formulario Lista</h1>
+        <table id="tablaPersonas">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Sueldo</th>
+                    <th>Ventas</th>
+                    <th>Compras</th>
+                    <th>Telefono</th>
+                    <th>Modificar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se insertarán las filas dinámicamente -->
+            </tbody>
+        </table>
+        <button id="btnAgregar">Agregar Elemento</button>
+    </div>    
+
+    <!-- Formulario ABM -->
+    <div id="formularioABM" class="form-abm oculto">
+        <div id="spinner" class="spinner"></div>
+
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+            <option value="Persona">Persona</option>
+            <option value="Empleado">Empleado</option>
+            <option value="Cliente">Cliente</option>
+        </select>
+
+        <h2 id="formularioTitulo">Alta</h2>
+        <form id="abmForm">
+            <label for="ID">ID:</label>
+            <input type="text" id="campoID" name="id" disabled>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre">
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido">
+
+            <label for="edad">Edad:</label>
+            <input type="text" id="edad" name="edad">
+            <span id="error-edad" class="error-message"></span>
+
+            <label for="sueldo">Sueldo:</label>
+            <input type="text" id="sueldo" name="sueldo" step="0.01">
+            <span id="error-sueldo" class="error-message"></span>
+
+            <label for="ventas">Ventas:</label>
+            <input type="text" id="ventas" name="ventas">
+            <span id="error-ventas" class="error-message"></span>
+
+            <label for="compras">Compras:</label>
+            <input type="text" id="compras" name="compras" step="0.01">
+            <span id="error-compras" class="error-message"></span>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono">
+            <span id="error-telefono" class="error-message"></span>
+
+            <div class="form-actions">
+                <button type="button" id="btnAceptar">Aceptar</button>
+                <button type="button" id="btnCancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="./app.js" type="module"></script>
+</body>
+</html>

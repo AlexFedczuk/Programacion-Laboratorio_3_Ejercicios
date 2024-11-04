@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABM de Personas</title>
+    <title>ABM de Vehiculos</title>
     <link rel="stylesheet" href="./estilo.css">
 </head>
 <body>
     <div id="formularioLista">
         <div id="spinner" class="spinner"></div>
         <h1>Formulario Lista</h1>
-        <table id="tablaPersonas">
+        <table id="tablaVehiculos">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Edad</th>
-                    <th>Sueldo</th>
-                    <th>Ventas</th>
-                    <th>Compras</th>
-                    <th>Telefono</th>
+                    <th>Modelo</th>
+                    <th>Ano de Fabricacion</th>
+                    <th>VelMaxima</th>
+                    <th>Cantidad Puertas</th>
+                    <th>Asientos</th>
+                    <th>Carga</th>
+                    <th>Autonomia</th>
                     <th>Modificar</th>
                     <th>Eliminar</th>
                 </tr>
@@ -38,9 +38,9 @@
 
         <label for="tipo">Tipo:</label>
         <select id="tipo" name="tipo">
-            <option value="Persona">Persona</option>
-            <option value="Empleado">Empleado</option>
-            <option value="Cliente">Cliente</option>
+            <option value="Vehiculo">Vehiculo</option>
+            <option value="Auto">Auto</option>
+            <option value="Camion">Camion</option>
         </select>
 
         <h2 id="formularioTitulo">Alta</h2>
@@ -48,31 +48,31 @@
             <label for="ID">ID:</label>
             <input type="text" id="campoID" name="id" disabled>
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre">
+            <label for="modelo">modelo:</label>
+            <input type="text" id="modelo" name="modelo">
 
-            <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido">
+            <label for="anoFabricacion">anoFabricacion:</label>
+            <input type="text" id="anoFabricacion" name="anoFabricacion">
 
-            <label for="edad">Edad:</label>
-            <input type="text" id="edad" name="edad">
-            <span id="error-edad" class="error-message"></span>
+            <label for="cantidadPuertas">cantidadPuertas:</label>
+            <input type="text" id="cantidadPuertas" name="cantidadPuertas">
+            <span id="error-cantidadPuertas" class="error-message"></span>
 
-            <label for="sueldo">Sueldo:</label>
-            <input type="text" id="sueldo" name="sueldo" step="0.01">
-            <span id="error-sueldo" class="error-message"></span>
+            <label for="velMax">velMax:</label>
+            <input type="text" id="velMax" name="velMax">
+            <span id="error-velMax" class="error-message"></span>
 
-            <label for="ventas">Ventas:</label>
-            <input type="text" id="ventas" name="ventas">
-            <span id="error-ventas" class="error-message"></span>
+            <label for="asientos">asientos:</label>
+            <input type="text" id="asientos" name="asientos">
+            <span id="error-asientos" class="error-message"></span>
 
-            <label for="compras">Compras:</label>
-            <input type="text" id="compras" name="compras" step="0.01">
-            <span id="error-compras" class="error-message"></span>
+            <label for="carga">carga:</label>
+            <input type="text" id="carga" name="carga">
+            <span id="error-carga" class="error-message"></span>
 
-            <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono">
-            <span id="error-telefono" class="error-message"></span>
+            <label for="autonomia">autonomia:</label>
+            <input type="text" id="autonomia" name="autonomia">
+            <span id="error-autonomia" class="error-message"></span>
 
             <div class="form-actions">
                 <button type="button" id="btnAceptar">Aceptar</button>
