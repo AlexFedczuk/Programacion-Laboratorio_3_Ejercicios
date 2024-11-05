@@ -1,17 +1,17 @@
 export class Vehiculo {
     constructor(id, modelo, anoFabricacion, velMax) {
-        this.id = this.#validarEntero(id, "ID");
+        this.id = id;
         this.modelo = this.#validarNombreApellido(modelo, "modelo");
-        this.anoFabricacion = this.#validarEntero(anoFabricacion, "anoFabricacion", 1985);
+        this.anoFabricacion = anoFabricacion; //this.#validarEntero(anoFabricacion, "anoFabricacion", 1985);
         this.velMax = this.#validarFlotante(velMax, "velMax");
     }
 
-    #validarEntero(valor, campo, min = 1) {
+    /*#validarEntero(valor, campo, min = 1) {
         if (!Number.isInteger(valor) || valor < min) {
             throw new Error(`ERROR: ${campo} debe ser un número entero mayor o igual a ${min}.\n`);
         }
         return valor;
-    }
+    }*/
 
     #validarFlotante(valor, campo) {
         if (typeof valor !== "number" || isNaN(valor) || valor < 0) {

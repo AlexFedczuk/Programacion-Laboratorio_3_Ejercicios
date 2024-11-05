@@ -190,15 +190,20 @@ export function configurarFormularioAlta(vehiculos) {
 
         mostrarSpinner();
         try {
-            const response = await fetch("../backend/VehiculoAutoCamion.php", {
-                method: "PUT",
+            const response = await fetch("https://examenesutn.vercel.app/api/VehiculoAutoCamion", {
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(nuevoElemento)
             });
 
+            if (!response.ok) {
+                throw new Error("Error en la solicitud: " + response.statusText);
+            }
+
             ocultarSpinner();
             if (response.ok) {
                 const data = await response.json();
+                console.log(data);
                 nuevoElemento.id = data.id;
                 vehiculos.push(nuevoElemento);
                 
@@ -463,21 +468,24 @@ export function configurarFormularioModificacion(id, vehiculos) {
         if (!nuevoElemento) return; // Verifica que los datos sean válidos
 
         nuevoElemento.id = parseInt(id, 10); // Asegúrate de que el ID sea un entero
+        console.log(nuevoElemento);
 
         mostrarSpinner();
         try {
-            const response = await fetch("../backend/VehiculoAutoCamion.php", {
-                method: "POST",
+            const response = await fetch("https://examenesutn.vercel.app/api/VehiculoAutoCamion", {
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...nuevoElemento, id: nuevoElemento.id }) // Incluye el ID en el cuerpo
+                body: JSON.stringify(nuevoElemento) // Incluye el ID en el cuerpo
             });
 
             ocultarSpinner();
             if (response.ok) {
                 const data = await response.json();
                 // Actualiza la lista en memoria y la tabla
-                const index = vehiculos.findIndex(p => p.id === id);
-                vehiculos[index] = { ...vehiculos[index], ...nuevoElemento }; // Actualiza el objeto
+                const index = vehiculos.findIndex(p => p.id === nuevoElemento.id);
+                if (index !== -1) {
+                    vehiculos[index] = { ...vehiculos[index], ...nuevoElemento }; // Actualizo el objeto
+                }
 
                 ocultarFormulario();  
                 mostrarVehiculosEnTabla(vehiculos);                              
