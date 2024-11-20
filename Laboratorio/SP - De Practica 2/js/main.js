@@ -94,6 +94,103 @@ const populateTable = (data) => {
     });
 };
 
+const generateUniqueId = () => {
+    const ids = vehiclesList.map((vehicle) => vehicle.id);
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1; // Si no hay IDs, comenzamos en 1
+};
+
+const handleAddVehicle = (formData) => {
+    console.log(formData);
+    const newId = generateUniqueId();
+    let newVehicle;
+
+    if (formData.cantidadPuertas || formData.asientos) {
+        newVehicle = new Auto(
+            newId,
+            formData.modelo,
+            formData.anoFabricacion,
+            formData.velMax,
+            formData.cantidadPuertas,
+            formData.asientos
+        );
+    } else if (formData.carga || formData.autonomia) {
+        newVehicle = new Camion(
+            newId,
+            formData.modelo,
+            formData.anoFabricacion,
+            formData.velMax,
+            formData.carga,
+            formData.autonomia
+        );
+    } else {
+        newVehicle = new Vehiculo(
+            newId,
+            formData.modelo,
+            formData.anoFabricacion,
+            formData.velMax
+        );
+    }
+
+    vehiclesList.push(newVehicle); // Agregar a la lista en memoria
+    console.log("Nuevo vehículo agregado:", newVehicle);
+    populateTable(vehiclesList); // Actualizar la tabla
+    hideABMForm(); // Ocultar el formulario
+};
+
+const abmForm = document.querySelector("#abm-form");
+const addButton = document.querySelector("#add-button");
+const cancelButton = document.querySelector("#cancel-button");
+const listContainer = document.querySelector("#list-container"); // Contenedor de la lista
+
+// Mostrar el formulario ABM
+const showABMForm = (title) => {
+    const abmTitle = document.querySelector("#abm-title");
+    const abmContainer = document.querySelector("#abm-container");
+
+    if (!abmTitle || !abmContainer || !listContainer) {
+        console.error("Elementos no encontrados en el DOM.");
+        return;
+    }
+
+    abmTitle.textContent = title; // Cambiar el título según la acción
+    abmContainer.classList.remove("hidden"); // Mostrar el formulario ABM
+    listContainer.classList.add("hidden"); // Ocultar la tabla de vehículos
+};
+
+// Ocultar el formulario ABM
+const hideABMForm = () => {
+    const abmContainer = document.querySelector("#abm-container");
+    const listContainer = document.querySelector("#list-container");
+    const abmForm = document.querySelector("#abm-form");
+
+    if (!abmContainer || !listContainer || !abmForm) {
+        console.error("Elementos no encontrados en el DOM.");
+        return;
+    }
+
+    abmContainer.classList.add("hidden"); // Ocultar el formulario ABM
+    listContainer.classList.remove("hidden"); // Mostrar la lista de vehículos
+    abmForm.reset(); // Resetear el formulario
+};
+
+// Configurar el evento para el botón de "Agregar Elemento"
+addButton.addEventListener("click", () => {
+    showABMForm("Agregar Vehículo"); // Muestra el formulario con el título correspondiente
+});
+
+// Configurar el evento para el botón de "Agregar Elemento"
+cancelButton.addEventListener("click", () => {
+    showABMForm(""); // Muestra el formulario con el título correspondiente
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     fetchData(); // Obtener los datos y generar la lista en memoria
 });
+
+abmForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formData = Object.fromEntries(new FormData(abmForm).entries());
+    handleAddVehicle(formData);
+});
+
