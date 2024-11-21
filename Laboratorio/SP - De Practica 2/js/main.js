@@ -1,3 +1,4 @@
+import Vehiculo from "./Clases/Vehiculo.js"; // Ignora este error.
 import Auto from "./Clases/Auto.js";
 import Camion from "./Clases/Camion.js";
 
@@ -104,30 +105,33 @@ const handleAddVehicle = (formData) => {
     const newId = generateUniqueId();
     let newVehicle;
 
-    if (formData.cantidadPuertas || formData.asientos) {
+    if((formData.cantidadPuertas || formData.asientos) && (formData.carga || formData.autonomia)){
+        console.log("ERROR: No se puede crear un vehiculo con todos los atributos definidos. Debe ser un Auto, Camion o Vehiculo.");
+        newVehicle = null;
+    } else if (formData.cantidadPuertas || formData.asientos) {
         newVehicle = new Auto(
             newId,
             formData.modelo,
-            formData.anoFabricacion,
-            formData.velMax,
-            formData.cantidadPuertas,
-            formData.asientos
+            parseInt(formData.anoFabricacion),
+            parseFloat(formData.velMax),
+            parseInt(formData.cantidadPuertas),
+            parseInt(formData.asientos)
         );
     } else if (formData.carga || formData.autonomia) {
         newVehicle = new Camion(
             newId,
             formData.modelo,
-            formData.anoFabricacion,
-            formData.velMax,
-            formData.carga,
-            formData.autonomia
+            parseInt(formData.anoFabricacion),
+            parseFloat(formData.velMax),
+            parseFloat(formData.carga),
+            parseInt(formData.autonomia)
         );
     } else {
         newVehicle = new Vehiculo(
             newId,
             formData.modelo,
-            formData.anoFabricacion,
-            formData.velMax
+            parseInt(formData.anoFabricacion),
+            parseFloat(formData.velMax),
         );
     }
 
@@ -139,7 +143,6 @@ const handleAddVehicle = (formData) => {
 
 const abmForm = document.querySelector("#abm-form");
 const addButton = document.querySelector("#add-button");
-const cancelButton = document.querySelector("#cancel-button");
 const listContainer = document.querySelector("#list-container"); // Contenedor de la lista
 
 // Mostrar el formulario ABM
@@ -178,11 +181,6 @@ addButton.addEventListener("click", () => {
     showABMForm("Agregar Vehículo"); // Muestra el formulario con el título correspondiente
 });
 
-// Configurar el evento para el botón de "Agregar Elemento"
-cancelButton.addEventListener("click", () => {
-    showABMForm(""); // Muestra el formulario con el título correspondiente
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     fetchData(); // Obtener los datos y generar la lista en memoria
 });
@@ -192,5 +190,10 @@ abmForm.addEventListener("submit", (e) => {
 
     const formData = Object.fromEntries(new FormData(abmForm).entries());
     handleAddVehicle(formData);
+});
+
+// Boton para cancelar en el ABM.
+document.querySelector("#abm-cancel").addEventListener("click", () => {
+    hideABMForm(); // Llamar a la función para ocultar el formulario ABM
 });
 
