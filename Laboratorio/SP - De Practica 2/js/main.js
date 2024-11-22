@@ -27,4 +27,7 @@ const initializeApp = async () => {
 };
 
 // Iniciar la aplicación al cargar el DOM
-document.addEventListener("DOMContentLoaded", initializeApp);
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado e inicializado");
+    initializeApp(); // Aquí es donde conectas los eventos al DOM
+});
