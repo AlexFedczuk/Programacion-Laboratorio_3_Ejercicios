@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./css/estilo.css">
-    <script src="./js/script.js" type="module" defer></script>
+    <title>ABM de Vehiculos</title>
+    <link rel="stylesheet" href="./css/estilo_viejo.css">
+    <script src="script.js" defer></script>
 </head>
+
 <body>
+    <!-- HTML para el Formulario de Filtros y Tabla -->
     <div id="spinner" class="spinner" style="display: none;">
         <div class="spinner-icon"></div>
     </div>
     <div class="form-datos">
+        <h3>Formulario de Lista de Vehiculos</h3>
         <form id="form-filtros">
             <label for="filtro">Filtrar Por:</label>
             <select id="filtro" name="filtro">
@@ -19,11 +23,6 @@
                 <option value="autos">Autos</option>
                 <option value="camiones">Camiones</option>
             </select>
-    
-      <!--      <label for="velocidadPromedio">Velocidad promedio:</label>
-            <input type="text" id="velocidadPromedio" name="velocidadPromedio" disabled>
-            <button type="button" onclick="calcularVelocidadPromedio()">Calcular</button>
-            <button type="button" onclick="limpiarVelocidadPromedio()">Limpiar</button>-->
     
             <p>Mostrar Columnas:</p>
             <div id="checkboxContainer">

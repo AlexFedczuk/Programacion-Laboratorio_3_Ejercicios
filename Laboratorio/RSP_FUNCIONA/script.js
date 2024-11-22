@@ -1,6 +1,64 @@
-import Vehiculo from "./clases/Vehiculo.js";
-import Auto from "./clases/Auto.js";
-import Camion from "./clases/Camion.js";
+class Vehiculo { 
+    constructor(P_id, P_modelo, P_anoFabricacion, P_velMax) {
+        this.id = P_id;
+        this.modelo = P_modelo;
+        this.anoFabricacion = P_anoFabricacion;
+        this.velMax = P_velMax;
+    }
+
+    toString() {
+        return `ID: ${this.id}, Modelo: ${this.modelo}, Año Fabricacion: ${this.anoFabricacion}, Velocidad Maxima: ${this.velMax}`;
+    }
+
+    toJson() {
+        return JSON.stringify({
+            id: this.id,
+            modelo: this.modelo,
+            anoFabricacion: this.anoFabricacion,
+            velMax: this.velMax
+        });
+    }
+}
+class Auto extends Vehiculo {
+    constructor(P_id, P_modelo, P_anoFabricacion, P_velMax, P_cantidadPuertas, P_asientos) {
+        super(P_id, P_modelo, P_anoFabricacion, P_velMax);
+        this.cantidadPuertas = P_cantidadPuertas;
+        this.asientos = P_asientos;
+    }
+
+    toString() {
+        return `${super.toString()}, Cantidad de puertas: ${this.P_cantidadPuertas}, Asientos: ${this.asientos}`;
+    }
+
+    toJson() {
+        const vehiculoAJson = super.toJson();
+        const AutoAJson = {
+            cantidadPuertas: this.cantidadPuertas,
+            asientos: this.asientos
+        };
+        return JSON.stringify({ ...JSON.parse(vehiculoAJson), ...AutoAJson });
+    }
+}
+class Camion extends Vehiculo {
+    constructor(P_id, P_modelo, P_anoFabricacion, P_velMax, P_carga, P_autonomia) {
+        super(P_id, P_modelo, P_anoFabricacion, P_velMax);
+        this.carga = P_carga;
+        this.autonomia = P_autonomia;
+    }
+
+    toString() {
+        return `${super.toString()}, Carga: ${this.carga}, Autonomia: ${this.autonomia}`;
+    }
+
+    toJson() {
+        const vehiculoAJson = super.toJson();
+        const camionAJson = {
+            carga: this.carga,
+            autonomia: this.autonomia
+        };
+        return JSON.stringify({ ...JSON.parse(vehiculoAJson), ...camionAJson });
+    }
+}
 
 let vehiculos = [];
 let ordenAscendente = true;
@@ -8,9 +66,7 @@ let modoActual = "";
 
 function cargarDatos() {
     mostrarSpinner();
-
-    console.log("NOTIFICACION: Iniciando la carga de datos...");
-
+    console.log("Iniciando la carga de datos...");
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState === 4) {
@@ -19,7 +75,7 @@ function cargarDatos() {
                     const data = JSON.parse(xhttp.responseText);
 
                     if (!Array.isArray(data)) {
-                        throw new Error("ERROR: Los datos recibidos no son un array.");
+                        throw new Error("Los datos recibidos no son un array");
                     }
                     vehiculos = data.map(item => {
                         if (item.carga !== undefined) {
@@ -48,7 +104,6 @@ function cargarDatos() {
     xhttp.send();
     console.log("Solicitud enviada a la API");
 }
-
 function actualizarTabla(filtro, vehiculosParaMostrar = window.listaVehiculos) {
     const tabla = document.querySelector('tbody');
     tabla.innerHTML = '';
@@ -84,8 +139,7 @@ function actualizarTabla(filtro, vehiculosParaMostrar = window.listaVehiculos) {
     manejarVisibilidadColumnas();
     console.log("Tabla actualizada");
     agregarEventos();
-}
-
+}  
 function agregarEventos() {
     const filas = document.querySelectorAll('tbody tr');
     filas.forEach(fila => {
@@ -114,7 +168,6 @@ function agregarEventos() {
     });
 
 }
-
 function mostrarFormularioABM(accion, datos = {}) {
     document.querySelector('.form-datos').style.display = 'none';
     const formABM = document.getElementById('form-abm');
@@ -153,7 +206,6 @@ function mostrarFormularioABM(accion, datos = {}) {
             break;
     }
 }
-
 function limpiarFormularioABM(){
     document.getElementById('modelo').value = '';
     document.getElementById('anoFabricacion').value = '';
@@ -170,12 +222,10 @@ function limpiarFormularioABM(){
     document.getElementById('autoInputs').style.display = 'none';
     document.getElementById('camionInputs').style.display = 'none';
 }
-
 function ocultarFormularioABM() {
     document.getElementById('form-abm').style.display = 'none';
     document.querySelector('.form-datos').style.display = 'block';
 }
-
 function mostrarInputsParaAbm() {
     const tipoSeleccionado = document.getElementById('tipo').value;
 
@@ -188,7 +238,6 @@ function mostrarInputsParaAbm() {
         document.getElementById('camionInputs').style.display = 'block';
     }
 }
-
 function cargarDatosEnFormulario(datos) {
     document.getElementById('id').value = datos.id;
     document.getElementById('modelo').value = datos.modelo;
@@ -208,7 +257,6 @@ function cargarDatosEnFormulario(datos) {
 
     mostrarInputsParaAbm();
 }
-
 function filtrarVehiculos(filtro, listaVehiculos = vehiculos) {
     return listaVehiculos.filter(vehiculo => {
         if (filtro === 'autos') {
@@ -219,7 +267,6 @@ function filtrarVehiculos(filtro, listaVehiculos = vehiculos) {
         return true;
     });
 }
-
 function manejarVisibilidadColumnas() {
     const checkboxes = document.querySelectorAll('#checkboxContainer input[type="checkbox"]');
     const headers = document.querySelectorAll('th');
@@ -258,16 +305,13 @@ function manejarVisibilidadColumnas() {
         });
     });
 }
-
 function manejarCambioFiltro() {
     const filtroSeleccionado = this.value;
     actualizarTabla(filtroSeleccionado);
 }
-
 function manejarCambioCheckbox(checkbox, index) {
     manejarVisibilidadColumnas(checkbox, index);
 }
-
 function ordenarTabla(columna) {
     const filtroActual = document.getElementById('filtro').value;
 
@@ -286,7 +330,6 @@ function ordenarTabla(columna) {
     ordenAscendente = !ordenAscendente;
     actualizarTabla(filtroActual, datosFiltrados);
 }
-
 function obtenerValorParaOrdenar(dato, columna) {
     if (columna === 'id') return dato.id;
     if (columna === 'modelo') return dato.modelo;
@@ -298,17 +341,14 @@ function obtenerValorParaOrdenar(dato, columna) {
     if (columna === 'autonomia') return dato.autonomia || 0;
     return ''; 
 }
-
 function mostrarSpinner() {
     console.log("Mostrando spinner...");
     document.getElementById('spinner').style.display = 'flex';
 }
-
 function ocultarSpinner() {
     console.log("Ocultando spinner...");
     document.getElementById('spinner').style.display = 'none';
 }
-
 function iniciarEscucharEventos() {
     const filtroSelect = document.getElementById('filtro');
     filtroSelect.addEventListener('change', manejarCambioFiltro);
@@ -318,7 +358,6 @@ function iniciarEscucharEventos() {
         checkbox.addEventListener('change', manejarVisibilidadColumnas);
     });
 }
-
 async function crearNuevoVehiculo(datos) {
     const { modelo, anoFabricacion, velMax, cantidadPuertas, carga, asientos, autonomia, tipoSeleccionado } = datos;
     let nuevoVehiculo;
@@ -359,7 +398,6 @@ async function crearNuevoVehiculo(datos) {
         ocultarSpinner();
     }
 }
-
 async function agregarElemento() {
     const datos = obtenerDatosDelFormulario();
     const errorMensaje = validarDatosVehiculo(datos);
@@ -389,7 +427,6 @@ async function agregarElemento() {
     ocultarFormularioABM();
     limpiarFormularioABM();
 }
-
 function modificarVehiculo() {
     mostrarSpinner();
     const id = parseInt(document.getElementById('id').value);
@@ -449,7 +486,6 @@ function modificarVehiculo() {
         alert('No se pudo realizar la modificación: ' + error.message);
     });
 }
-
 async function eliminarVehiculo(id) {
     mostrarSpinner();
     try {
@@ -477,7 +513,6 @@ async function eliminarVehiculo(id) {
         alert(error.message);
     }
 }
-
 function validarDatosVehiculo(datos) {
     const { modelo, anoFabricacion, velMax, tipoSeleccionado } = datos;
     
@@ -498,7 +533,6 @@ function validarDatosVehiculo(datos) {
         return "Tipo seleccionado no válido. Por favor, seleccione 'auto' o 'camion'.";
     }
 }
-
 function validarDatosAuto(datos) {
     const { cantidadPuertas, asientos } = datos;
 
@@ -510,7 +544,6 @@ function validarDatosAuto(datos) {
     }
     return null;
 }
-
 function validarDatosCamion(datos) {
     const { carga, autonomia } = datos;
 
@@ -520,7 +553,6 @@ function validarDatosCamion(datos) {
     if (isNaN(autonomia) || autonomia <= 0) {
         return "La autonomía debe ser un número mayor a 0.";
     }
-    
     return null;
 }
 function obtenerDatosDelFormulario() {
