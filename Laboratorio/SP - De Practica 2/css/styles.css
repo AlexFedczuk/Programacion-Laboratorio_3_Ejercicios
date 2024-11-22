@@ -102,15 +102,31 @@ button.delete-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Asegurarnos de que esté encima cuando se muestre */
-    pointer-events: none; /* Evitar interferencias al interactuar con elementos subyacentes */
-    opacity: 1; /* Por defecto visible */
-    transition: opacity 0.3s ease-in-out; /* Transición suave al mostrar/ocultar */
+    z-index: 1000; /* Asegúrate de que esté encima */
 }
 
 #spinner.hidden {
-    opacity: 0; /* Totalmente transparente */
-    pointer-events: none; /* Asegura que no bloquee clics */
+    display: none;
+}
+
+/* Spinner */
+#spinner .loader {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3; /* Gris claro */
+    border-top: 5px solid #3498db; /* Azul */
+    border-radius: 50%; /* Hacerlo circular */
+    animation: spin 1s linear infinite; /* Animación de giro */
+}
+
+/* Animación del spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 #abm-container {
