@@ -663,9 +663,12 @@ function validarDatosPersona(datos) {
     if (!apellido || apellido.trim() === "") {
         return "El apellido no puede estar vacío.";
     }
-    if (!fechaNacimiento) {
-        return "Debe tener una fecha de nacimiento.";
+
+    resultado = validarFechaNacimiento(fechaNacimiento);
+    if (resultado) {
+        return resultado;
     }
+
     if (tipoSeleccionado === 'ciudadano') {
         return validarDatosCiudadano(datos);
     } else if (tipoSeleccionado === 'camion') {
@@ -673,6 +676,49 @@ function validarDatosPersona(datos) {
     } else {
         return "Tipo seleccionado no válido. Por favor, seleccione 'ciudadano' o 'camion'.";
     }
+}
+
+/**
+ * Valida si una fecha cumple con el formato AAAAMMDD.
+ * @param {number} fechaNacimiento - Fecha a validar en formato AAAAMMDD.
+ * @returns {string|null} Mensaje de error si no es válida; `null` si es válida.
+ */
+function validarFechaNacimiento(fechaNacimiento) {
+    if (isNaN(fechaNacimiento)) {
+        return "La fecha de nacimiento debe ser un número.";
+    }
+
+    // Convertir el número a string para trabajar con sus partes
+    const fechaStr = fechaNacimiento.toString();
+
+    // Verificar que tenga exactamente 8 dígitos
+    if (fechaStr.length !== 8) {
+        return "La fecha de nacimiento debe tener exactamente 8 dígitos.";
+    }
+
+    // Extraer año, mes y día
+    const anio = parseInt(fechaStr.substring(0, 4), 10);
+    const mes = parseInt(fechaStr.substring(4, 6), 10);
+    const dia = parseInt(fechaStr.substring(6, 8), 10);
+
+    // Validar rango de año (opcional: ajustar según el contexto)
+    if (anio < 1900 || anio > new Date().getFullYear()) {
+        return "El año debe estar entre 1900 y el año actual.";
+    }
+
+    // Validar mes
+    if (mes < 1 || mes > 12) {
+        return "El mes debe estar entre 01 y 12.";
+    }
+
+    // Validar día
+    const diasEnMes = new Date(anio, mes, 0).getDate(); // Obtiene el último día del mes
+    if (dia < 1 || dia > diasEnMes) {
+        return `El día debe estar entre 01 y ${diasEnMes} para el mes ${mes}.`;
+    }
+
+    // Si todo es válido
+    return null;
 }
 
 /**
